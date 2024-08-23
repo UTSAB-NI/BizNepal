@@ -1,35 +1,60 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState, useEffect } from "react";
+import "./App.css";
 
-function App() {
-  const [count, setCount] = useState(0)
-
-  return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+interface tempData {
+  date: string;
+  temperatureC: number;
+  summary: string;
 }
 
-export default App
+function App() {
+  const [data, setData] = useState<tempData[] | null>(null); // Updated to expect an array of tempData
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  // Call the .NET API on component mount
+  useEffect(() => {
+    const apiUrl = "https://localhost:5000/weatherforecast"; // Full API URL
+
+    const fetchData = async () => {
+      try {
+        const response = await fetch(apiUrl);
+        if (!response.ok) {
+          throw new Error("API call failed");
+        }
+        const result: tempData[] = await response.json(); // Ensure the response is typed correctly
+        setData(result); // Set the data from the API
+      } catch (error: any) {
+        setError(error.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []); // Empty dependency array to ensure the API call runs only on component mount
+
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error}</div>;
+
+  return (
+    <div className="App">
+      <h1>Weather Forecast</h1>
+      {data && data.length > 0 ? (
+        <ul>
+          {data.map((item, index) => (
+            <li key={index}>
+              <p>Date: {item.date}</p>
+              <p>Temperature (C): {item.temperatureC}</p>
+              <p>Summary: {item.summary}</p>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p>No data available</p>
+      )}
+    </div>
+  );
+}
+
+export default App;

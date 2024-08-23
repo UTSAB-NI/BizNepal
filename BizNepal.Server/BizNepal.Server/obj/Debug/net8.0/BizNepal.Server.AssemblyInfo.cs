@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("BizNepal.Server")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+46397b5cc8c49370a1048f1e804802bf134b6d47")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+69e03cd390b02ac52711ac7eaf0c59e028d24c51")]
 [assembly: System.Reflection.AssemblyProductAttribute("BizNepal.Server")]
 [assembly: System.Reflection.AssemblyTitleAttribute("BizNepal.Server")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
