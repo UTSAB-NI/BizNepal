@@ -1,19 +1,14 @@
 import { useState, useEffect } from "react";
 import "./App.css";
 
-interface tempData {
-  date: string;
-  temperatureC: number;
-  summary: string;
-}
-
 function App() {
-  const [data, setData] = useState<tempData[] | null>(null); // Updated to expect an array of tempData
+  const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState(null);
 
   // Call the .NET API on component mount
   useEffect(() => {
+    // Replace 'weatherforecast' with your actual API endpoint
     const apiUrl = "https://localhost:5000/weatherforecast"; // Full API URL
 
     const fetchData = async () => {
@@ -22,9 +17,9 @@ function App() {
         if (!response.ok) {
           throw new Error("API call failed");
         }
-        const result: tempData[] = await response.json(); // Ensure the response is typed correctly
+        const result = await response.json();
         setData(result); // Set the data from the API
-      } catch (error: any) {
+      } catch (error) {
         setError(error.message);
       } finally {
         setLoading(false);
@@ -34,24 +29,18 @@ function App() {
     fetchData();
   }, []); // Empty dependency array to ensure the API call runs only on component mount
 
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error}</div>;
-
   return (
-    <div className="App">
-      <h1>Weather Forecast</h1>
-      {data && data.length > 0 ? (
+    <div>
+      {loading && <p>Loading...</p>}
+      {error && <p>Error: {error}</p>}
+      {data && (
         <ul>
           {data.map((item, index) => (
             <li key={index}>
-              <p>Date: {item.date}</p>
-              <p>Temperature (C): {item.temperatureC}</p>
-              <p>Summary: {item.summary}</p>
+              {item.date} - {item.temperatureC}°C - {item.summary}
             </li>
           ))}
         </ul>
-      ) : (
-        <p>No data available</p>
       )}
     </div>
   );
