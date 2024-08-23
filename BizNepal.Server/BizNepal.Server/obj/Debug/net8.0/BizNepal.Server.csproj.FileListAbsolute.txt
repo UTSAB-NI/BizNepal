@@ -30,3 +30,4 @@ D:\BizNepal\BizNepal.Server\BizNepal.Server\obj\Debug\net8.0\refint\BizNepal.Ser
 D:\BizNepal\BizNepal.Server\BizNepal.Server\obj\Debug\net8.0\BizNepal.Server.pdb
 D:\BizNepal\BizNepal.Server\BizNepal.Server\obj\Debug\net8.0\BizNepal.Server.genruntimeconfig.cache
 D:\BizNepal\BizNepal.Server\BizNepal.Server\obj\Debug\net8.0\ref\BizNepal.Server.dll
+D:\BizNepal\BizNepal.Server\BizNepal.Server\obj\Debug\net8.0\BizNepal.Server.sourcelink.json
