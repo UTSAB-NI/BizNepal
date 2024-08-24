@@ -11,6 +11,6 @@ namespace BizNepal.Server.Models.DTO
         [DataType(DataType.Password)]
         public string Password { get; set; } 
 
-        public string[] Roles { get; set; }
+        public string Role { get; set; }
     }
 }

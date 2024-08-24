@@ -4,6 +4,6 @@ namespace BizNepal.Server.Repositories
 {
     public interface ITokenRepository
     {
-       string CreateJWTToken(IdentityUser user, List<string> roles);
+       string CreateJWTToken(IdentityUser user, string role);
     }
 }

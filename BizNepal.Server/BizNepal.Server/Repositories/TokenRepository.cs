@@ -14,17 +14,18 @@ namespace BizNepal.Server.Repositories
         {
             this.configuration = configuration;
         }
-        public string CreateJWTToken(IdentityUser user, List<string> roles)
+        public string CreateJWTToken(IdentityUser user, string role)
         {
             //create claims
             var claims = new List<Claim>();
 
-            claims.Add(new Claim(ClaimTypes.Email, user.Email));
+            //uncomment if need claim with url
+            //claims.Add(new Claim(ClaimTypes.Email, user.Email));
+            //claims.Add(new Claim(ClaimTypes.Role, role));
 
-            foreach (var role in roles)
-            {
-                claims.Add(new Claim(ClaimTypes.Role, role));
-            }
+            claims.Add(new Claim(JwtRegisteredClaimNames.Email, user.Email));
+            claims.Add(new Claim("role", role));
+
 
             //create token
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:Key"]));
@@ -33,6 +34,7 @@ namespace BizNepal.Server.Repositories
 
 
             var token = new JwtSecurityToken(
+                
                 issuer: configuration["Jwt:Issuer"],
                 audience: configuration["Jwt:Audience"],
                 claims: claims,

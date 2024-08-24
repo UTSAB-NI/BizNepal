@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using BizNepal.Server.Models;
 using BizNepal.Server.Models.DTO;
 using BizNepal.Server.Repositories;
+using System.Data;
 
 namespace BizNepal.Server.Controllers
 {
@@ -42,9 +43,9 @@ namespace BizNepal.Server.Controllers
 
             if (identityResult.Succeeded)
             {
-                if (registerRequestDto.Roles != null && registerRequestDto.Roles.Any())
+                if (registerRequestDto.Role != null && registerRequestDto.Role.Any())
                 {
-                    identityResult = await _userManager.AddToRolesAsync(identityUser, registerRequestDto.Roles);
+                    identityResult = await _userManager.AddToRoleAsync(identityUser, registerRequestDto.Role);
 
                     if (identityResult.Succeeded)
                     {
@@ -76,10 +77,11 @@ namespace BizNepal.Server.Controllers
                     //get roles for user
 
                     var roles = await _userManager.GetRolesAsync(user);
-                    if (roles != null)
+                    var role = roles.FirstOrDefault();
+                    if (role != null)
                     {
                         //Create JWT token
-                        var jwtToken = _tokenRepository.CreateJWTToken(user, roles.ToList());
+                        var jwtToken = _tokenRepository.CreateJWTToken(user, role);
 
                         var response = new LoginResponseDto
                         {
