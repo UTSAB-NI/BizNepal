@@ -1,47 +1,24 @@
-import { useState, useEffect } from "react";
-import "./App.css";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 function App() {
-  const [data, setData] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [message, setMessage] = useState("");
 
-  // Call the .NET API on component mount
   useEffect(() => {
-    // Replace 'weatherforecast' with your actual API endpoint
-    const apiUrl = "https://localhost:5000/weatherforecast"; // Full API URL
-
-    const fetchData = async () => {
-      try {
-        const response = await fetch(apiUrl);
-        if (!response.ok) {
-          throw new Error("API call failed");
-        }
-        const result = await response.json();
-        setData(result); // Set the data from the API
-      } catch (error) {
-        setError(error.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchData();
-  }, []); // Empty dependency array to ensure the API call runs only on component mount
+    axios
+      .get("https://localhost:5000/api/Home/test")
+      .then((response) => {
+        setMessage(response.data);
+      })
+      .catch((error) => {
+        console.error("There was an error!", error);
+      });
+  }, []);
 
   return (
     <div>
-      {loading && <p>Loading...</p>}
-      {error && <p>Error: {error}</p>}
-      {data && (
-        <ul>
-          {data.map((item, index) => (
-            <li key={index}>
-              {item.date} - {item.temperatureC}°C - {item.summary}
-            </li>
-          ))}
-        </ul>
-      )}
+      <h1>Ping Response:</h1>
+      <p>{message}</p>
     </div>
   );
 }
