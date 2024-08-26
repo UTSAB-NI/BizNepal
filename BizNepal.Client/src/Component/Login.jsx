@@ -1,6 +1,6 @@
-import { useState} from "react";
+import { useState } from "react";
 import axios from "axios";
-
+import { toast } from "react-toastify";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -11,27 +11,28 @@ const Login = () => {
     password,
   };
 
-
-  const submithandler = (e) => {
+  const submithandler = async (e) => {
     e.preventDefault();
-  
+
     try {
-      const response = axios.post("https://localhost:5000/api/Auth/login", userDetails);
-
+      const response = await axios.post(
+        "https://localhost:5000/api/Auth/login",
+        userDetails
+      );
+      // console.log(response.data)
       if (response && response.data) {
-
-        const token = response.data.token;
+        const token = response.data.jwtToken;
         console.log(token);
         localStorage.setItem("token", token);
-        
         setEmail("");
         setPassword("");
-      }
-      else{
-        console.log({message: "Invalid credentials"});
+      } else {
+        console.log({ message: "Invalid credentials" });
+        toast.error("Invalid credentials");
       }
     } catch (error) {
       console.log("Error:", error);
+      toast.error("Error:", error);
     }
   };
 
