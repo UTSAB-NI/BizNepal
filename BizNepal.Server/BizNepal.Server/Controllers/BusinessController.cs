@@ -65,7 +65,7 @@ namespace BizNepal.Server.Controllers
                 Description = businessDto.Description,
                 Website = businessDto.Website,
                 PhoneNumber = businessDto.PhoneNumber,
-                UserId = Guid.Parse(userId),
+                UserId = userId,
                 LocationId = location.LocationId
             };
 

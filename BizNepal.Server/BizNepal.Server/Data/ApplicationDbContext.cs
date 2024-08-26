@@ -13,6 +13,9 @@ namespace BizNepal.Server.Data
         public DbSet<Business> Businesses { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Location> Locations { get; set; }
+        public DbSet<Review> Reviews { get; set; }
+
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -49,6 +52,24 @@ namespace BizNepal.Server.Data
             };
 
             modelBuilder.Entity<IdentityRole>().HasData(roles);
+
+
+
+            modelBuilder.Entity<Review>()
+            .HasKey(r => r.ReviewId);
+
+            modelBuilder.Entity<Review>()
+                .HasOne(r => r.Business)
+                .WithMany(b => b.Reviews)
+                .HasForeignKey(r => r.BusinessId)
+                .OnDelete(DeleteBehavior.Restrict); 
+
+
+            modelBuilder.Entity<Review>()
+            .HasOne(r => r.ApplicationUser)
+            .WithMany(u => u.Reviews)
+            .HasForeignKey(r => r.UserId)
+            .OnDelete(DeleteBehavior.Cascade);
 
 
 
