@@ -1,12 +1,10 @@
-
-import Login from '../Component/login.tsx'
+import Header from "../Component/Header.tsx";
 const HomeScreen = () => {
   return (
     <div>
-      This is HomeScreen
-      <Login/>
+      <Header />
     </div>
-  )
-}
+  );
+};
 
-export default HomeScreen
+export default HomeScreen;
