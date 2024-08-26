@@ -10,6 +10,9 @@ namespace BizNepal.Server.Data
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
         }
+        public DbSet<Business> Businesses { get; set; }
+        public DbSet<Category> Categories { get; set; }
+        public DbSet<Location> Locations { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

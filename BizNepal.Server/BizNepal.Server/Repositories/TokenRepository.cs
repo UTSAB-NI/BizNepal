@@ -23,7 +23,8 @@ namespace BizNepal.Server.Repositories
             //claims.Add(new Claim(ClaimTypes.Email, user.Email));
             //claims.Add(new Claim(ClaimTypes.Role, role));
 
-            claims.Add(new Claim(JwtRegisteredClaimNames.Email, user.Email));
+            claims.Add(new Claim(ClaimTypes.NameIdentifier, user.Id));
+            claims.Add(new Claim(ClaimTypes.Email, user.Email));
             claims.Add(new Claim("role", role));
 
 

@@ -12,7 +12,12 @@ namespace BizNepal.Server.Controllers
 
       public IActionResult Index()
         {
-            return Ok("Welcome to BizNepal!");
+           
+            
+
+            
+            return Ok("Welcome from backend");
+
         }
     }
 }

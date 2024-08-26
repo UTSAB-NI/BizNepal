@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace BizNepal.Server.Migrations
 {
     /// <inheritdoc />
-    public partial class initialdatabase : Migration
+    public partial class intitialdb : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -50,6 +50,31 @@ namespace BizNepal.Server.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Categories",
+                columns: table => new
+                {
+                    CategoryId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CategoryName = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Categories", x => x.CategoryId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Locations",
+                columns: table => new
+                {
+                    LocationId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Latitude = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Longitude = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Locations", x => x.LocationId);
                 });
 
             migrationBuilder.CreateTable(
@@ -158,6 +183,35 @@ namespace BizNepal.Server.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Businesses",
+                columns: table => new
+                {
+                    BusinessId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    BusinessName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Website = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ApplicationUserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    LocationId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Businesses", x => x.BusinessId);
+                    table.ForeignKey(
+                        name: "FK_Businesses_AspNetUsers_ApplicationUserId",
+                        column: x => x.ApplicationUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Businesses_Locations_LocationId",
+                        column: x => x.LocationId,
+                        principalTable: "Locations",
+                        principalColumn: "LocationId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
@@ -206,6 +260,16 @@ namespace BizNepal.Server.Migrations
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Businesses_ApplicationUserId",
+                table: "Businesses",
+                column: "ApplicationUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Businesses_LocationId",
+                table: "Businesses",
+                column: "LocationId");
         }
 
         /// <inheritdoc />
@@ -227,10 +291,19 @@ namespace BizNepal.Server.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "Businesses");
+
+            migrationBuilder.DropTable(
+                name: "Categories");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "Locations");
         }
     }
 }
