@@ -9,7 +9,7 @@ import {
 } from "react-router-dom";
 
 import 'react-toastify/dist/ReactToastify.css';
-
+// import "bootstrap/dist/css/bootstrap.min.css"; //bootstrap
 
 import App from "./App.tsx"
 import HomeScreen from "./screen/HomeScreen.tsx";
