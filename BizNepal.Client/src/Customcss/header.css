@@ -3,13 +3,16 @@
     color: white;
     border: none;
     border-radius: 5px;
-    padding: 10px 20px;
-
 }
 .btn-business{
-    background: linear-gradient(45deg, #da7808 0%, #e75d2b 100%);
+    background: linear-gradient(45deg, #da3d08 0%, #e73b2b 100%);
         color: white;
         border: none;
         border-radius: 5px;
-        padding: 10px 20px;
+}
+.toggle-btn{
+    background: linear-gradient(45deg, #95730b 0%, #e2ac0a 100%);
+    color: white;
+    border: none;
+    border-radius: 5px;
 }

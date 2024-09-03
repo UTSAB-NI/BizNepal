@@ -9,17 +9,21 @@ import {
 } from "react-router-dom";
 
 import 'react-toastify/dist/ReactToastify.css';
+import 'mdb-react-ui-kit/dist/css/mdb.min.css';
+import "@fortawesome/fontawesome-free/css/all.min.css";
 // import "bootstrap/dist/css/bootstrap.min.css"; //bootstrap
 
 import App from "./App.tsx"
 import HomeScreen from "./screen/HomeScreen.tsx";
-import Login from "./Component/Login.tsx";
+import LoginScreen from "./screen/LoginScreen.tsx";
+import RegisterScreen from "./screen/RegisterScreen.tsx"
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<App />}>
       <Route path="/" element={<HomeScreen />} />
-      <Route path ="/login" element ={<Login/>}/>
+      <Route path ="/login" element ={<LoginScreen/>}/>
+      <Route path ="/register" element ={<RegisterScreen/>}/>
     </Route>
   )
 );
