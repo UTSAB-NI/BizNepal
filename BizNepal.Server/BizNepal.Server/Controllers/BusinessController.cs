@@ -142,6 +142,32 @@ namespace BizNepal.Server.Controllers
             return Ok(business);
         }
 
+        [HttpGet("search")]
+        public async Task<IActionResult> SearchByName([FromQuery] string keyword)
+        {
+            // Check if keyword is provided
+            if (string.IsNullOrEmpty(keyword))
+            {
+                return BadRequest("Search keyword is required.");
+            }
+
+            
+            var businesses = await _context.Businesses
+                .Include(b => b.Category)
+                .Include(b => b.Location)
+                .Where(b => b.BusinessName.Contains(keyword))
+                .ToListAsync();
+
+            // Return not found if no businesses are matched
+            if (!businesses.Any())
+            {
+                return NotFound($"No businesses found containing '{keyword}'");
+            }
+
+            return Ok(businesses);
+        }
+
+
 
     }
 }
