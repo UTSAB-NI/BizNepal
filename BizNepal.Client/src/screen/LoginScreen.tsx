@@ -34,8 +34,6 @@ const Login = () => {
       );
       if (response && response.data) {
         const token = response.data.jwtToken;
-        console.log(response.data);
-        console.log(token);
         localStorage.setItem("token", token);
         setEmail("");
         setPassword("");
