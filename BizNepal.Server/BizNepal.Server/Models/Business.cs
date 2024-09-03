@@ -20,6 +20,9 @@ namespace BizNepal.Server.Models
         public Guid LocationId { get; set; }
         public Location Location { get; set; }
 
+        public Guid CategoryId { get; set; }
+        public Category Category { get; set; }
+
         public ICollection<Review>? Reviews { get; set; }
     }
 }
