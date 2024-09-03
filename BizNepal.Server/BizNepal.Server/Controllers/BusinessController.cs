@@ -48,6 +48,14 @@ namespace BizNepal.Server.Controllers
                 return Unauthorized();
             }
 
+            var category = await _context.Categories
+              .FirstOrDefaultAsync(c => c.CategoryName == businessDto.CategoryName);
+
+            if (category == null)
+            {
+                return BadRequest($"Category '{businessDto.CategoryName}' does not exist.");
+            }
+
             // Proceed with business creation
             var location = new Location
             {
@@ -65,7 +73,8 @@ namespace BizNepal.Server.Controllers
                 Website = businessDto.Website,
                 PhoneNumber = businessDto.PhoneNumber,
                 UserId = userId,
-                LocationId = location.LocationId
+                LocationId = location.LocationId,
+                CategoryId = category.CategoryId
             };
 
             _context.Businesses.Add(business);
@@ -99,8 +108,8 @@ namespace BizNepal.Server.Controllers
                 {
                     ReviewId = r.ReviewId,
                     Comment = r.Comment,
-                    BusinessId=r.BusinessId,
-                     UserId= r.UserId,
+                    BusinessId = r.BusinessId,
+                    UserId = r.UserId,
                     // Any other properties from Review can be included here
                 }).ToList()
             }).ToList();
@@ -109,17 +118,30 @@ namespace BizNepal.Server.Controllers
 
             return Ok(businessDto);
         }
-        
+
 
 
         [HttpGet("id")]
-        public async Task<IActionResult> GetById(Guid businessId) {
+        public async Task<IActionResult> GetById(Guid businessId)
+        {
 
-            var business = _context.Businesses.Include(b => b.Location).First(m=>m.BusinessId==businessId);
+            var business = _context.Businesses.Include(b => b.Location).First(m => m.BusinessId == businessId);
             return Ok(business);
 
         }
-     
 
-       }
+
+        [HttpGet("searchByCategory")]
+        public async Task<IActionResult> GetBusinessByCategory([FromQuery] string category)
+        {
+            var business = await _context.Businesses.Include(b => b.Category).Include(b => b.Location).Where(b=>b.Category.CategoryName == category).ToListAsync();
+            if (business == null)
+            {
+                return NotFound();
+            }
+            return Ok(business);
+        }
+
+
+    }
 }

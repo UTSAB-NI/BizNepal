@@ -21,6 +21,8 @@ namespace BizNepal.Server.Data
         {
             base.OnModelCreating(modelBuilder);
 
+            //seed role table
+
             var BusinessOwner = "e2ae5491-a104-4f69-af2e-28f021b9b762";
             var Admin = "f5af7f50-f4e6-412a-a82b-bcba7bd63abd";
             var GeneralUser = "0ddc3a39-2a47-4bcd-8ecf-1d68ec35eee5";
@@ -52,6 +54,44 @@ namespace BizNepal.Server.Data
             };
 
             modelBuilder.Entity<IdentityRole>().HasData(roles);
+
+            //seed category table
+
+            var categories = new List<Category>
+            {
+                new Category
+                {
+                    CategoryId = Guid.NewGuid(),
+                    CategoryName="Resturant"
+                },
+                new Category
+                {
+                    CategoryId = Guid.NewGuid(),
+                    CategoryName="Cafe"
+                },
+                new Category
+                {
+                    CategoryId = Guid.NewGuid(),
+                    CategoryName="Hospital"
+                },
+                new Category
+                {
+                    CategoryId = Guid.NewGuid(),
+                    CategoryName="Hotels"
+                },
+                new Category
+                {
+                    CategoryId = Guid.NewGuid(),
+                    CategoryName="Gym"
+                },
+                new Category
+                {
+                    CategoryId = Guid.NewGuid(),
+                    CategoryName="Shopping"
+                },
+
+            };
+            modelBuilder.Entity<Category>().HasData(categories);
 
 
 
