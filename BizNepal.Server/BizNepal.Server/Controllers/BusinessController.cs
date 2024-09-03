@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
+using System.Text.Json.Serialization;
+using System.Text.Json;
 
 namespace BizNepal.Server.Controllers
 {
@@ -24,9 +26,6 @@ namespace BizNepal.Server.Controllers
 
         public IActionResult Index()
         {
-
-
-
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             return Ok(userId);
 
@@ -80,10 +79,37 @@ namespace BizNepal.Server.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var businesses = await _context.Businesses.Include(b => b.Location).ToListAsync();
-            return Ok(businesses);
+            var businesses = await _context.Businesses.Include(b => b.Location).Include(c => c.Reviews).ToListAsync();
 
+            var businessDto = businesses.Select(b => new BusinessResponseDto
+            {
+                BusinessId = b.BusinessId,
+                BusinessName = b.BusinessName,
+                Description = b.Description,
+                Website = b.Website,
+                PhoneNumber = b.PhoneNumber,
+                UserId = b.UserId,
+                Location = new Location
+                {
+                    LocationId = b.Location.LocationId,
+                    Latitude = b.Location.Latitude,
+                    Longitude = b.Location.Longitude
+                },
+                Reviews = b.Reviews.Select(r => new Review
+                {
+                    ReviewId = r.ReviewId,
+                    Comment = r.Comment,
+                    BusinessId=r.BusinessId,
+                     UserId= r.UserId,
+                    // Any other properties from Review can be included here
+                }).ToList()
+            }).ToList();
+
+
+
+            return Ok(businessDto);
         }
+        
 
 
         [HttpGet("id")]
