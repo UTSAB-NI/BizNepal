@@ -20,14 +20,13 @@ import App from "./App.jsx";
 import HomeScreen from "./screen/HomeScreen.jsx";
 import LoginScreen from "./screen/LoginScreen.jsx";
 import RegisterScreen from "./screen/RegisterScreen.jsx";
-import FakeLogin from "./screen/FakeLoginScreen.jsx";
 // import { Provider } from "react-redux";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<App />}>
       <Route path="/" element={<HomeScreen />} />
-      <Route path="/login" element={<FakeLogin />} />
+      <Route path="/login" element={<LoginScreen />} />
       <Route path="/register" element={<RegisterScreen />} />
     </Route>
   )
