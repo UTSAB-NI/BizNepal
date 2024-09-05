@@ -8,6 +8,8 @@ import "../Customcss/loginpage.css";
 import { useLoginMutation } from "../slices/userApiSlices";
 import { setCredentials } from "../slices/authSlices";
 
+import Loader from "../Component/Loader";
+
 const LoginScreen = () => {
   const [userName, setusername] = useState("");
   const [password, setPassword] = useState("");
@@ -48,6 +50,7 @@ const LoginScreen = () => {
           {feedback}
         </Alert>
       )}
+      {isLoading && <Loader />}
       <MDBContainer className="my-5 gradient-form">
         <MDBRow>
           <MDBCol col="6" className="mb-5">

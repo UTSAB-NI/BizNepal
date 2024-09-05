@@ -1,35 +1,29 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Form, Button, Alert, Container } from "react-bootstrap";
 import { toast } from "react-toastify";
-
-import Loader from "../Component/Loader";
-
-import { useRegisterMutation } from "../slices/userApiSlices";
+import axios from "axios";
 
 const RegisterScreen = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [role, setRole] = useState("");
   const [feedback, setFeedback] = useState("");
-
-  const [register, { isLoading}] = useRegisterMutation();
   const navigate = useNavigate(); // To handle redirection
 
   const submitHandler = async (e) => {
     e.preventDefault();
 
+    const Registerdetails = {
+      userName: username,
+      password,
+      role,
+    };
     try {
-      const RegistrationDetails = {
-        userName: username,
-        password,
-        role,
-      };
-      // console.log(RegistrationDetails);
-      
-      const response = await register(RegistrationDetails).unwrap();
-      // console.log(response);
-
+      const response = await axios.post(
+        "https://localhost:5000/api/Auth/Register",
+        Registerdetails
+      );
       if (response.status === 200) {
         toast.success("Register success");
         setUsername("");
@@ -38,7 +32,7 @@ const RegisterScreen = () => {
         navigate("/login"); // Redirect to login after successful registration
       }
     } catch (error) {
-      setFeedback(error.message);
+      setFeedback("Registration failed");
     }
   };
 
@@ -49,9 +43,6 @@ const RegisterScreen = () => {
           {feedback}
         </Alert>
       )}
-      
-      {isLoading && <Loader />}
-
       <Container className="my-3">
         <h1>
           Register To <span className="text-primary">biz</span>

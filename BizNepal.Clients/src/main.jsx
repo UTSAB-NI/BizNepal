@@ -17,6 +17,7 @@ import "@fortawesome/fontawesome-free/css/all.min.css";
 // import "bootstrap/dist/css/bootstrap.min.css"; //bootstrap
 
 import App from "./App.jsx";
+import Loader from "./Component/Loader.jsx";
 import HomeScreen from "./screen/HomeScreen.jsx";
 import LoginScreen from "./screen/LoginScreen.jsx";
 import RegisterScreen from "./screen/RegisterScreen.jsx";
