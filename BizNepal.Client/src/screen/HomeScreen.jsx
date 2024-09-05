@@ -6,10 +6,10 @@ import Category from "../Component/Category.jsx";
 const HomeScreen = () => {
   return (
     <div>
-      <Coverpage/>
-      <Section/>
-      <Category/>
- 
+      <Coverpage />
+      <Section />
+      <Category />
+      
     </div>
   );
 };
