@@ -1,0 +1,18 @@
+.btn-login {
+  background: linear-gradient(45deg, #060871 0%, #606bdf 100%);
+    color: white;
+    border: none;
+    border-radius: 5px;
+}
+.btn-business{
+    background: linear-gradient(45deg, #da3d08 0%, #e73b2b 100%);
+        color: white;
+        border: none;
+        border-radius: 5px;
+}
+.toggle-btn{
+    background: linear-gradient(45deg, #95730b 0%, #e2ac0a 100%);
+    color: white;
+    border: none;
+    border-radius: 5px;
+}
