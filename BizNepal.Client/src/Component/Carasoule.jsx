@@ -1,24 +1,10 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import { Container, Row, Col, Card, Image, Carousel } from "react-bootstrap";
-import {
-  MDBCarousel,
-  MDBCarouselItem,
-  MDBCarouselCaption,
-  MDBBtn,
-  MDBContainer,
-  MDBRow,
-  MDBCol,
-} from "mdb-react-ui-kit";
-import "../Customcss/coverpage.css";
-
-const Coverpage = () => {
+import React from 'react'
+import { Link } from 'react-router-dom'
+import { MDBCarousel,MDBCarouselCaption,MDBCarouselItem,MDBBtn } from 'mdb-react-ui-kit'
+const Carasoule = () => {
   return (
-    <>
-      <MDBContainer>
-        <MDBRow>
-          <MDBCol md={8} className="left-cover-page">
-            <MDBCarousel fade>
+    <div>
+      <MDBCarousel fade>
               <MDBCarouselItem itemId={1}>
                 <img
                   src="https://mdbootstrap.com/img/Photos/Slides/img%20(15).jpg"
@@ -58,27 +44,8 @@ const Coverpage = () => {
                 </MDBCarouselCaption>
               </MDBCarouselItem>
             </MDBCarousel>
-          </MDBCol>
-          <MDBCol md={4} className="right-cover-page">
-            <MDBRow style={{display:"flex",justifyContent:"center",alignItems:"center"}}>
-              <MDBCol md={6} className="box">
-                <img src="/images/1.png" className="img"></img>
-              </MDBCol>
-              <MDBCol md={6} className="box">
-                <img src="/images/2.png" className="img"></img>
-              </MDBCol>
-              <MDBCol md={6} className="box">
-                <img src="/images/3.png" className="img"></img>
-              </MDBCol>
-              <MDBCol md={6} className="box">
-                <img src="/images/4.png" className="img"></img>
-              </MDBCol>
-            </MDBRow>
-          </MDBCol>
-        </MDBRow>
-      </MDBContainer>
-    </>
-  );
-};
+    </div>
+  )
+}
 
-export default Coverpage;
+export default Carasoule

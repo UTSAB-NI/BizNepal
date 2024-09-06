@@ -1,40 +1,45 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Form, Button, Alert, Container } from "react-bootstrap";
+import { useDispatch, useSelector } from "react-redux";
+
 import { toast } from "react-toastify";
-import axios from "axios";
+
+import Loader from "../Component/Loader";
+import { useRegisterMutation } from "../slices/userApiSlices";
 
 const RegisterScreen = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [role, setRole] = useState("");
   const [feedback, setFeedback] = useState("");
-  const navigate = useNavigate(); // To handle redirection
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const [register, { isLoading }] = useRegisterMutation();
 
   const submitHandler = async (e) => {
     e.preventDefault();
 
-    const Registerdetails= {
+    const RegistrationDetails = {
       userName: username,
       password,
       role,
     };
+
     try {
-      const response = await axios.post(
-        "https://localhost:5000/api/Auth/Register",
-        Registerdetails
-      );
-      if (response.status === 200) {
-        toast.success("Register success");
-        setUsername("");
-        setPassword("");
-        setRole("");
-        navigate("/login"); // Redirect to login after successful registration
+      const response = await register(RegistrationDetails).unwrap();
+      if(response){
+        toast.success(response.message);
+        navigate("/login");
       }
     } catch (error) {
-      setFeedback("Registration failed");
+      console.error("Registration Error:", error);
+      setFeedback(error.message || "An unexpected error occurred.");
     }
   };
+
+  // console.log("isLoading", isLoading);
 
   return (
     <>
@@ -86,13 +91,14 @@ const RegisterScreen = () => {
             </Form.Control>
           </Form.Group>
 
-          <Button variant="primary" type="submit" className="my-3">
+          <Button variant="primary" type="submit" className="mt-3">
             Register
           </Button>
-          <span>
-            Already have an account? <Link to="/login">Login</Link>
-          </span>
+          {isLoading && <Loader />}
         </Form>
+        <span>
+          Already have an account? <Link to="/login">Login</Link>
+        </span>
       </Container>
     </>
   );
