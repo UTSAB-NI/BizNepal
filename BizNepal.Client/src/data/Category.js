@@ -3,7 +3,7 @@ import Category from "../Component/Category";
 const Categorydata = [
   {
     id: 1,
-    name: "Restaurants",
+    name: "Gym",
     image:
       "/images/1.png",
     category: "Gym",

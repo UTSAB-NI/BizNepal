@@ -11,11 +11,13 @@ import {
 } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
 import { Logout } from "../slices/authSlices";
-
+import TokenDecode from "./TokenDecode";
 import "../Customcss/header.css";
 import Searchbox from "./Searchbox";
 
-const Header = () => {
+const Header = ({ toggleTheme, currentTheme }) => {
+  const themeIcon = currentTheme === "light" ? "🌙" : "🌞";
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -26,9 +28,35 @@ const Header = () => {
     dispatch(Logout());
     navigate("/");
   };
+
+  const getTime = () => {
+    const date = new Date();
+    const hours = date.getHours();
+    if (hours < 12) {
+      return (
+        <div>
+          <small className="mx-3 fs-1">🌅 </small>
+        </div>
+      );
+    } else if (hours < 18) {
+      return (
+        <div>
+          <small className="mx-3 fs-1">🌞</small>
+        </div>
+      );
+    } else {
+      return (
+        <div>
+          <small className="mx-3 fs-1">🌙</small>
+        </div>
+      );
+    }
+  };
+
   return (
     <Navbar expand="lg" className="bg-body-tertiary">
-      <Container>
+      <Container fluid>
+        {getTime()}
         <Navbar.Brand as={Link} to="/">
           <Image src="/images/biznepallogo.png" style={{ width: "150px" }} />
         </Navbar.Brand>
@@ -41,58 +69,52 @@ const Header = () => {
             <Nav.Link as={Link} to="/">
               Home
             </Nav.Link>
-
-            <Searchbox/>
+            <Searchbox />
           </Nav>
-
-          {/* search bar  */}
-          
 
           <Nav>
             {userInfo ? (
-              <NavDropdown title={userInfo.userName} id="username">
-                <LinkContainer to="/profile">
-                  <NavDropdown.Item>Profile</NavDropdown.Item>
-                </LinkContainer>
-                <NavDropdown.Item onClick={logouthandler}>
-                  Logout
-                </NavDropdown.Item>
-              </NavDropdown>
+              <>
+                <NavDropdown title={<TokenDecode />} id="username">
+                  <LinkContainer to="/profile">
+                    <NavDropdown.Item>Profile</NavDropdown.Item>
+                  </LinkContainer>
+                  <NavDropdown.Item onClick={logouthandler}>
+                    Logout
+                  </NavDropdown.Item>
+                </NavDropdown>
+              </>
             ) : (
-              // <Button
-              //   variant="primary"
-              //   className="btn-login"
-              //   onClick={logouthandler}
-              // >
-              //   Logout
-              // </Button>
               <Nav.Link as={Link} to="/login">
                 <Button variant="primary" className="btn-login">
                   Login
                 </Button>
               </Nav.Link>
             )}
-            {/* <Nav.Link as={Link} to="/login">
-              <Button variant="primary" className="btn-login">
-                Login
-              </Button>
-            </Nav.Link> */}
-            <Nav.Link as={Link} to="/register">
-              <Button variant="primary" className="btn-business">
-                + List Your Business
-              </Button>
-            </Nav.Link>
 
-            {userInfo && userInfo.role === "Admin" && (
+            {userInfo && userInfo.role === "Admin" ? (
               <Button
                 variant="primary"
-                className="btn btn-primary"
-                as={Link}
-                to="/admin"
+                className="btn-business"
+                onClick={() => navigate("/admin")}
               >
                 Admin
               </Button>
+            ) : (
+              <Nav.Link as={Link} to="/register">
+                <Button variant="primary" className="btn-business">
+                  + List Your Business
+                </Button>
+              </Nav.Link>
             )}
+
+            <Button
+              variant="outline-primary"
+              className="btn-theme mx-2"
+              onClick={toggleTheme}
+            >
+              {themeIcon}
+            </Button>
           </Nav>
         </Navbar.Collapse>
       </Container>

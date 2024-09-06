@@ -5,7 +5,7 @@ const Section = () => {
   return (
     <div>
       <MDBContainer fluid>
-        <MDBRow className='bg-color'>
+        <MDBRow className='bg-color text-dark'>
             <MDBCol size='12' lg='6' >
                 <MDBContainer className='p-2'>
                    <MDBRow style={{display:"flex",justifyContent:"center",alignItems:"center"}}>

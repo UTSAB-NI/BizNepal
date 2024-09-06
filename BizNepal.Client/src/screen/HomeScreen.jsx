@@ -8,6 +8,7 @@ const HomeScreen = () => {
       <Coverpage />
       <Section />
       <Category />
+      
     </div>
   );
 };
