@@ -1,0 +1,30 @@
+/* Sidenavbar.css */
+.sidenav {
+  padding: 20px;
+  height: 100vh; /* Full viewport height */
+  width: 250px; /* Fixed width */
+  background-color: #333;
+  color: white;
+  position: fixed; /* Stay fixed on the left side */
+  overflow-y: auto; /* Enables vertical scrolling */
+}
+
+.sidenav ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.sidenav ul li {
+  margin-bottom: 20px;
+}
+
+.sidenav ul li a {
+  color: white;
+  text-decoration: none;
+  padding: 10px 0;
+  display: block;
+}
+
+.sidenav ul li a:hover {
+  background-color: #444;
+}

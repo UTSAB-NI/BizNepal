@@ -21,8 +21,14 @@ import HomeScreen from "./screen/HomeScreen.jsx";
 import LoginScreen from "./screen/LoginScreen.jsx";
 import RegisterScreen from "./screen/RegisterScreen.jsx";
 import GetCategory from "./screen/GetCategory.jsx";
-import AdimRoute from "./Component/AdimRoute.jsx";
 import SearchScreen from "./screen/SearchScreen.jsx";
+import UserprofileScreen from "./screen/UserprofileScreen.jsx";
+
+import AdimRoute from "./Component/AdimRoute.jsx";
+import BusinessOwner from "./screen/Admin/BusinessOwner.jsx";
+import GeneralUser from "./screen/Admin/GeneralUser.jsx";
+import ManageBusiness from "./screen/Admin/ManageBusiness.jsx";
+import ManageCategory from "./screen/Admin/ManageCategory.jsx";
 // import { Provider } from "react-redux";
 
 const router = createBrowserRouter(
@@ -31,11 +37,16 @@ const router = createBrowserRouter(
       <Route path="/" element={<HomeScreen />} />
       <Route path="/search/:keyword" element={<SearchScreen />} />
       <Route path="/login" element={<LoginScreen />} />
+      <Route path="/profile" element={<UserprofileScreen />} />
       <Route path="/register" element={<RegisterScreen />} />
       <Route path="/category/:category" element={<GetCategory />} />
 
     {/* //admin route */}
       <Route path="/admin" element={<AdimRoute />}>
+        <Route path="/admin/generaluser" element={<GeneralUser />} />
+        <Route path="businessowner" element={<BusinessOwner />} />
+        <Route path="business" element={<ManageBusiness />} />
+        <Route path="category" element={<ManageCategory />} />
       
       
       </Route>
