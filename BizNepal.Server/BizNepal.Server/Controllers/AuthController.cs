@@ -50,8 +50,13 @@ namespace BizNepal.Server.Controllers
                     if (identityResult.Succeeded)
                     {
 
-                        return Ok("Registration Successful! Please login");
+                        return Ok(new { 
+                            
+                            message = "Registration Successful! please login",
+                            username = identityUser.UserName
 
+                    });
+                        
                     }
 
                 }
@@ -85,7 +90,8 @@ namespace BizNepal.Server.Controllers
 
                         var response = new LoginResponseDto
                         {
-                            JwtToken = jwtToken
+                            JwtToken = jwtToken,
+                            Role = role
                         };
 
                         return Ok(response);
