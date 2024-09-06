@@ -20,16 +20,21 @@ import App from "./App.jsx";
 import HomeScreen from "./screen/HomeScreen.jsx";
 import LoginScreen from "./screen/LoginScreen.jsx";
 import RegisterScreen from "./screen/RegisterScreen.jsx";
+import GetCategory from "./screen/GetCategory.jsx";
 import AdimRoute from "./Component/AdimRoute.jsx";
+import SearchScreen from "./screen/SearchScreen.jsx";
 // import { Provider } from "react-redux";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<App />}>
       <Route path="/" element={<HomeScreen />} />
+      <Route path="/search/:keyword" element={<SearchScreen />} />
       <Route path="/login" element={<LoginScreen />} />
       <Route path="/register" element={<RegisterScreen />} />
+      <Route path="/category/:category" element={<GetCategory />} />
 
+    {/* //admin route */}
       <Route path="/admin" element={<AdimRoute />}>
       
       

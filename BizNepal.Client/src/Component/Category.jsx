@@ -2,8 +2,17 @@ import React from "react";
 import { MDBContainer, MDBRow, MDBCol, MDBCard } from "mdb-react-ui-kit";
 import { Link } from "react-router-dom";
 import Categorydata from "../data/Category.js";
+// import { useParams } from "react-router-dom";
+
+// import { useSearchByCategoryQuery } from "../slices/categoryApiSlices";
+
 
 const Category = () => {
+
+  // const { category } = useParams();
+  // const { data, error, isLoading } = useSearchByCategoryQuery(category);
+
+
   return (
     <div>
       <MDBContainer className="category-container" style={{ marginTop: "6rem" }}>
@@ -12,7 +21,7 @@ const Category = () => {
           {Categorydata.map((c) => (
             <MDBCol key={c.id} xs={6} sm={4} md={3} lg={2} className="mb-4">
               <MDBCard className="p-4 border border-gray-600 mx-2" style={{display:"flex",justifyContent:"center",alignItems:"center"}}>
-                <Link to={`/category/${c.id}`}>
+                <Link to={`/category/${c.category}`}>
                   <img
                     src={c.image}
                     alt={c.name}
