@@ -1,4 +1,4 @@
-import React from 'react'
+
 import { MDBContainer,MDBRow,MDBCol } from 'mdb-react-ui-kit'
 import "../Customcss/section.css"
 const Section = () => {
