@@ -8,7 +8,7 @@ import {
   RouterProvider,
 } from "react-router-dom";
 
-import { Provider } from 'react-redux';
+import { Provider } from "react-redux";
 import Store from "./Store.js";
 
 import "react-toastify/dist/ReactToastify.css";
@@ -20,6 +20,7 @@ import App from "./App.jsx";
 import HomeScreen from "./screen/HomeScreen.jsx";
 import LoginScreen from "./screen/LoginScreen.jsx";
 import RegisterScreen from "./screen/RegisterScreen.jsx";
+import AdimRoute from "./Component/AdimRoute.jsx";
 // import { Provider } from "react-redux";
 
 const router = createBrowserRouter(
@@ -28,6 +29,11 @@ const router = createBrowserRouter(
       <Route path="/" element={<HomeScreen />} />
       <Route path="/login" element={<LoginScreen />} />
       <Route path="/register" element={<RegisterScreen />} />
+
+      <Route path="/admin" element={<AdimRoute />}>
+      
+      
+      </Route>
     </Route>
   )
 );
