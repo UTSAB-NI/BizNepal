@@ -2,11 +2,12 @@
 
 body.light {
   --background-color: #ffffff;
-  --text-color: #000000;
+  --text-color: #393838;
+  --nav-link: #393838;
 }
 
 body.dark {
-  --background-color: #000000;
+  --background-color: #484444;
   --text-color: #ffffff;
 }
 

@@ -83,16 +83,30 @@ const Header = ({ toggleTheme, currentTheme }) => {
                     Logout
                   </NavDropdown.Item>
                 </NavDropdown>
+
+                <Nav.Link as={Link} to="/businesslist">
+                  <Button variant="primary" className="btn-business">
+                    + List Your Business
+                  </Button>
+                </Nav.Link>
               </>
             ) : (
-              <Nav.Link as={Link} to="/login">
-                <Button variant="primary" className="btn-login">
-                  Login
-                </Button>
-              </Nav.Link>
+              <>
+                <Nav.Link as={Link} to="/login">
+                  <Button variant="primary" className="btn-login">
+                    Login
+                  </Button>
+                </Nav.Link>
+
+                <Nav.Link as={Link} to="/register">
+                  <Button variant="primary" className="btn-register">
+                    SignUp
+                  </Button>
+                </Nav.Link>
+              </>
             )}
 
-            {userInfo && userInfo.role === "Admin" ? (
+            {userInfo && userInfo.role === "Admin" && (
               <Button
                 variant="primary"
                 className="btn-business"
@@ -100,14 +114,7 @@ const Header = ({ toggleTheme, currentTheme }) => {
               >
                 Admin
               </Button>
-            ) : (
-              <Nav.Link as={Link} to="/register">
-                <Button variant="primary" className="btn-business">
-                  + List Your Business
-                </Button>
-              </Nav.Link>
             )}
-
             <Button
               variant="outline-primary"
               className="btn-theme mx-2"
