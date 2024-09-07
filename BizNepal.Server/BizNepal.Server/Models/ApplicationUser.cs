@@ -7,5 +7,6 @@ namespace BizNepal.Server.Models
     {
         
         public ICollection<Review>? Reviews { get; set; } 
+
     }
 }

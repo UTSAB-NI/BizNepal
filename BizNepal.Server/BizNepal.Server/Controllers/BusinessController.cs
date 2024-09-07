@@ -145,7 +145,9 @@ namespace BizNepal.Server.Controllers
             // Check if keyword is provided
             if (string.IsNullOrEmpty(keyword))
             {
+
                 return BadRequest("Search keyword is required.");
+
             }
 
             
