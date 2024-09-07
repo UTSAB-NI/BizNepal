@@ -37,11 +37,16 @@ const LoginScreen = () => {
     console.log("Submitting form with data:", { userName, password });
     try {
       const res = await login({ userName, password }).unwrap();
-      dispatch(setCredentials(res));
-      navigate("/");
-      toast.success("Login Success");
+
+      if (res) {
+        dispatch(setCredentials(res));
+        navigate("/");
+        toast.success("Login Success");
+      } else {
+        setFeedback("Username or password Incorrect");
+      }
     } catch (error) {
-      throw new Error(error);
+      setFeedback("🤦‍♂️< oops Failed to Login");
     }
   };
 
@@ -52,7 +57,7 @@ const LoginScreen = () => {
           {feedback}
         </Alert>
       )}
-     
+
       <MDBContainer className="my-5 gradient-form">
         <MDBRow>
           <MDBCol col="6" className="mb-5">
