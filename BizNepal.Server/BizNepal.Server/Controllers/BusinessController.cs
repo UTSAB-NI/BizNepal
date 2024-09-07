@@ -1,14 +1,9 @@
 ﻿using BizNepal.Server.Data;
 using BizNepal.Server.Models;
 using BizNepal.Server.Models.DTO;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
-using System.Text.Json.Serialization;
-using System.Text.Json;
 
 namespace BizNepal.Server.Controllers
 {
@@ -19,7 +14,9 @@ namespace BizNepal.Server.Controllers
         private readonly ApplicationDbContext _context;
         public BusinessController(ApplicationDbContext context)
         {
+
             _context = context;
+            
         }
 
         [HttpGet("test")]
@@ -148,7 +145,9 @@ namespace BizNepal.Server.Controllers
             // Check if keyword is provided
             if (string.IsNullOrEmpty(keyword))
             {
+
                 return BadRequest("Search keyword is required.");
+
             }
 
             
