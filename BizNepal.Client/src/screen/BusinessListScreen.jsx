@@ -1,3 +1,4 @@
+// Desc: BusinessListScreen component to add business details
 import React, { useState, useEffect, useCallback } from "react";
 import { Container, Form, Button, Row, Col, Alert } from "react-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
@@ -37,9 +38,9 @@ const BusinessListScreen = () => {
   const dispatch = useDispatch();
 
   const [listbusiness, { error: businesslisterror, isLoading:businessLoading }] =
-    useListbusinessMutation();
+    useListbusinessMutation(); // Fetching listbusiness mutation
 
-  const fetchLocation = () => {
+  const fetchLocation = () => { // Fetching current location
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
@@ -59,12 +60,7 @@ const BusinessListScreen = () => {
     }
   };
 
-  // console.log("Reduxlocation",location);
-  // console.log("Mylocation",myLocation);
-  // console.log(latitude);
-  // console.log(longitude);
-
-  const submitHandler = async (e) => {
+  const submitHandler = async (e) => { // Submitting business data
     e.preventDefault();
     try {
       const businessData = {
@@ -99,7 +95,7 @@ const BusinessListScreen = () => {
     }
   };
 
-  const handleMapClick = ({ lat, lng }) => {
+  const handleMapClick = ({ lat, lng }) => { // Handling map click
     SetMyLocation({ lat, lng });
     dispatch(setLocation({ lat, lng }));
   };

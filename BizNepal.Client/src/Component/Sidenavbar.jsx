@@ -12,6 +12,7 @@ const Sidenavbar = () => {
         <li><Link to="/admin/businessowner">Business Owner</Link></li>
         <li><Link to="/admin/business">Business</Link></li>
         <li><Link to="/admin/category">Category</Link></li>
+        <li><Link to="/admin/alluser">All User</Link></li>
       </ul>
     </div>
   );

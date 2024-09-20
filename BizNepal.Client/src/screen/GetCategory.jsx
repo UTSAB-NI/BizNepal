@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
-import { MDBContainer, MDBRow, MDBCol, MDBCard} from "mdb-react-ui-kit";
-import { Alert,Button } from "react-bootstrap";
+import { MDBContainer, MDBRow, MDBCol, MDBCard } from "mdb-react-ui-kit";
+import { Alert, Button } from "react-bootstrap";
 import Loader from "../Component/Loader";
 import { useSearchByCategoryQuery } from "../slices/categoryApiSlices";
 
@@ -22,62 +22,54 @@ const GetCategory = () => {
     }
   }, [data, error]);
 
-
-  const getCurrentLocation = () =>{
-    if(navigator.geolocation){
-      navigator.geolocation.getCurrentPosition(showPosition);
-    }
-    else{
-      alert("Geolocation is not supported by this browser.");
-    }
-  }
-
-  function showPosition(position){
-    alert("Latitude: " + position.coords.latitude + "Longitude: " + position.coords.longitude);
-  }
-
   console.log(categoryData);
   return (
     <div>
       {isLoading && <Loader />} {/* Show loader when fetching data */}
-      {feedback && <Alert variant="danger">{feedback}</Alert>} {/* Show error message if error occurs */}
-
+      {feedback && <Alert variant="danger">{feedback}</Alert>}{" "}
+      {/* Show error message if error occurs */}
       {/* dropdown for filter the category  */}
-
-        <Button onClick={getCurrentLocation} className="btn btn-outline-success">Get Current Location</Button>
-      
-       
       <MDBContainer
         className="category-container"
         style={{ marginTop: "6rem" }}
       >
         <h2 className="text-dark">Our Category</h2>
         <MDBRow className="my-2">
-          {categoryData.length > 0 ? (
-            categoryData.map((c) => (
-              <MDBCol key={c.businessId} xs={6} sm={4} md={3} lg={2} className="mb-4">
-                <MDBCard
-                  className="p-4 border border-gray-600 mx-2"
-                  style={{
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                  }}
+          {categoryData.length > 0
+            ? categoryData.map((c) => (
+                <MDBCol
+                  key={c.businessId}
+                  xs={6}
+                  sm={4}
+                  md={3}
+                  lg={2}
+                  className="mb-4"
                 >
-                  <Link to={`/category/${c.category}`}>
-                    <img
-                      src={c.image}
-                      alt={c.name}
-                      className="img-fluid rounded-circle"
-                    />
-                  </Link>
-                </MDBCard>
-                <p className="text-danger text-center my-2">{c.businessName}</p>
-              </MDBCol>
-            ))
-          ) : (
-            !isLoading && <p>No categories found.</p> // Show message if no categories
-          )}
+                  <MDBCard
+                    className="p-4 border border-gray-600 mx-2"
+                    style={{
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    <Link to={`/category/${c.category}`}>
+                      <img
+                        src={c.image}
+                        alt={c.name}
+                        className="img-fluid rounded-circle"
+                      />
+                    </Link>
+                  </MDBCard>
+                  <p className="text-danger text-center my-2">
+                    {c.businessName}
+                  </p>
+                </MDBCol>
+              ))
+            : !isLoading && (
+                <p>No categories found.</p>
+              ) // Show message if no categories
+          }
         </MDBRow>
       </MDBContainer>
     </div>
