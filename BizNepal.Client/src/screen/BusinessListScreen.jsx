@@ -38,7 +38,7 @@ const BusinessListScreen = () => {
   };
 
   //map intergration
-  const apiKey = "AIzaSyD-9tSrke72PouQMnMX-a7eZSW0jkFMBWY";
+  const apiKey = "AIzaSyD1RO9GfOjORh4culViEC-2ZZbakdvc7Gk";
 
   const { isLoaded } = useJsApiLoader({
     id: "google-map-script",
