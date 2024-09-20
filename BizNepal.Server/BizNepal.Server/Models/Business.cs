@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BizNepal.Server.Models
 {
@@ -15,6 +16,7 @@ namespace BizNepal.Server.Models
         public string PhoneNumber { get; set; } 
 
         public string UserId { get; set; }
+        [ForeignKey("UserId")]
         public ApplicationUser ApplicationUser { get; set; }
 
         public Guid LocationId { get; set; }
