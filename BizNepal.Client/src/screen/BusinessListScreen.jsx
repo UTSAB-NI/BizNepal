@@ -81,6 +81,11 @@ const BusinessListScreen = () => {
       if (!businessData.latitude || !businessData.longitude) {
         setFeedback("Please select location from map");
         setFeedbackType("danger");
+        setBusinessname("");
+        setDescription("");
+        setWebsite("");
+        setPhone("");
+        setCategoryName("");
         return;
       }
       if (businessData) {
