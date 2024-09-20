@@ -2,20 +2,42 @@ import React, { useState, useEffect, useCallback } from "react";
 import { Container, Form, Button, Row, Col, Alert } from "react-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
 import { setLocation } from "../slices/getlocationSclies";
-import { GoogleMap, useJsApiLoader } from "@react-google-maps/api";
+import GoogleMapReact from "google-map-react";
+
+import { useListbusinessMutation } from "../slices/userApiSlices";
 
 import "../Customcss/BusinessList.css";
 
-const containerStyle = {
-  width: "100%",
-  height: "400px",
-};
+const MyLocationMarker = ({ text }) => (
+  <div>
+    <i
+      className="fas fa-map-marker-alt"
+      style={{ color: "red", fontSize: "24px" }}
+    ></i>
+    <p>{text}</p>
+  </div>
+);
 
 const BusinessListScreen = () => {
-  const [mylocation, SetMyLocation] = useState(null);
+  const [myLocation, SetMyLocation] = useState({ lat: 27.7172, lng: 85.324 });
+  const [businessName, setBusinessname] = useState("");
+  const [description, setDescription] = useState("");
+  const [website, setWebsite] = useState("");
+  const [phoneNumber, setPhone] = useState("");
+  const [categoryName, setCategoryName] = useState("");
   const [Feedback, setFeedback] = useState("");
+  const [FeedbackType, setFeedbackType] = useState("");
+
+  //getting location from redux
   const { location } = useSelector((state) => state.currentlocation);
+  const {userInfo} = useSelector((state) => state.auth);
+
+  console.log("Token",userInfo?.jwtToken);
+
   const dispatch = useDispatch();
+
+  const [listbusiness, { error: businesslisterror, isLoading:businessLoading }] =
+    useListbusinessMutation();
 
   const fetchLocation = () => {
     if (navigator.geolocation) {
@@ -23,7 +45,7 @@ const BusinessListScreen = () => {
         (position) => {
           const newLocation = {
             lat: position.coords.latitude,
-            long: position.coords.longitude,
+            lng: position.coords.longitude,
           };
           SetMyLocation(newLocation);
           dispatch(setLocation(newLocation)); // Dispatching location to Redux
@@ -37,44 +59,54 @@ const BusinessListScreen = () => {
     }
   };
 
-  //map intergration
-  const apiKey = "AIzaSyD-9tSrke72PouQMnMX-a7eZSW0jkFMBWY";
+  // console.log("Reduxlocation",location);
+  // console.log("Mylocation",myLocation);
+  // console.log(latitude);
+  // console.log(longitude);
 
-  const { isLoaded } = useJsApiLoader({
-    id: "google-map-script",
-    googleMapsApiKey: apiKey,
-  });
-
-  const [map, setMap] = useState(null);
-
-  const onLoad = useCallback(
-    function callback(map) {
-      const bounds = new window.google.maps.LatLngBounds();
-      if (mylocation) {
-        bounds.extend(
-          new window.google.maps.LatLng(mylocation.lat, mylocation.long)
-        );
-      }
-      map.fitBounds(bounds);
-      setMap(map);
-    },
-    [mylocation]
-  );
-
-  const onUnmount = useCallback(function callback(map) {
-    setMap(null);
-  }, []);
-
-  //submit handler
-  const submitHandler = (e) => {
+  const submitHandler = async (e) => {
     e.preventDefault();
-    console.log("submitted");
+    try {
+      const businessData = {
+        businessName,
+        description,
+        website,
+        phoneNumber,
+        latitude: location?.lat.toString(),
+        longitude: location?.lng.toString(),
+        categoryName,
+      };
+      console.log(businessData);
+
+      if (!businessData.latitude || !businessData.longitude) {
+        setFeedback("Please select location from map");
+        setFeedbackType("danger");
+        return;
+      }
+      if (businessData) {
+        await listbusiness(businessData).unwrap();
+        setFeedback("Business Added Successfully");
+        setFeedbackType("success");
+      }
+    } catch (error) {
+      setFeedback(error?.data?.message || "Failed to add business");
+      setFeedbackType("danger");
+    }
   };
 
-  return isLoaded ? (
+  const handleMapClick = ({ lat, lng }) => {
+    SetMyLocation({ lat, lng });
+    dispatch(setLocation({ lat, lng }));
+  };
+
+  return (
     <div>
       {Feedback && (
-        <Alert variant="danger" onClose={() => setFeedback("")} dismissible>
+        <Alert
+          variant={FeedbackType}
+          onClose={() => setFeedback("")}
+          dismissible
+        >
           {Feedback}
         </Alert>
       )}
@@ -82,7 +114,7 @@ const BusinessListScreen = () => {
       <Container>
         <h3 className="my-3">Enter Your Business Details Here</h3>
         <Row>
-          <Col md="9" className="my-4">
+          <Col md="6" className="my-4">
             <Form onSubmit={submitHandler}>
               <Row>
                 <Col md="6">
@@ -90,6 +122,8 @@ const BusinessListScreen = () => {
                     <Form.Label>Business Name </Form.Label>
                     <Form.Control
                       type="text"
+                      value={businessName}
+                      onChange={(e) => setBusinessname(e.target.value)}
                       placeholder="Enter Business Name"
                       required
                     />
@@ -99,6 +133,9 @@ const BusinessListScreen = () => {
                     <Form.Label>Description </Form.Label>
                     <Form.Control
                       as="textarea"
+                      rows={3}
+                      value={description}
+                      onChange={(e) => setDescription(e.target.value)}
                       placeholder="Enter Description"
                       required
                     />
@@ -108,6 +145,8 @@ const BusinessListScreen = () => {
                     <Form.Label>Website </Form.Label>
                     <Form.Control
                       type="text"
+                      value={website}
+                      onChange={(e) => setWebsite(e.target.value)}
                       placeholder="Enter Website"
                       required
                     />
@@ -117,6 +156,8 @@ const BusinessListScreen = () => {
                     <Form.Label>Phone </Form.Label>
                     <Form.Control
                       type="text"
+                      value={phoneNumber}
+                      onChange={(e) => setPhone(e.target.value)}
                       placeholder="Enter Phone"
                       required
                     />
@@ -128,8 +169,10 @@ const BusinessListScreen = () => {
                     <Form.Label>Latitude </Form.Label>
                     <Form.Control
                       type="text"
-                      value={location.lat}
+                      value={location?.lat || ""}
+                      onChange={(e) => setLatitude(e.target.value)}
                       placeholder="Enter Latitude"
+                      readOnly
                       required
                     />
                   </Form.Group>
@@ -138,8 +181,10 @@ const BusinessListScreen = () => {
                     <Form.Label>Longitude </Form.Label>
                     <Form.Control
                       type="text"
-                      value={location.long}
+                      value={location?.lng || ""}
+                      onChange={(e) => setLongitude(e.target.value)}
                       placeholder="Enter Longitude"
+                      readOnly
                       required
                     />
                   </Form.Group>
@@ -148,41 +193,51 @@ const BusinessListScreen = () => {
                     <Form.Label>Category Name </Form.Label>
                     <Form.Control
                       type="text"
+                      value={categoryName}
+                      onChange={(e) => setCategoryName(e.target.value)}
                       placeholder="Enter Category Name"
                       required
                     />
                   </Form.Group>
-
-                  <Button
-                    onClick={fetchLocation}
-                    variant="outline-primary"
-                    className="my-3"
-                  >
-                    Get Current Location
-                  </Button>
                 </Col>
               </Row>
 
               <Button type="submit" variant="primary" className="my-3">
-                Submit
+                {
+                  businessLoading ? <i className="fas fa-spinner fa-spin"></i> : "Add Business"
+                }
               </Button>
             </Form>
           </Col>
 
-          <Col md="3" className="businesslist-right-col">
-            <GoogleMap
-              mapContainerStyle={containerStyle}
-              center={mylocation}
-              zoom={10}
-              onLoad={onLoad}
-              onUnmount={onUnmount}
-            ></GoogleMap>
+          <Col md="6" className="businesslist-right-col">
+            <Button
+              onClick={fetchLocation}
+              variant="outline-primary"
+              className="my-3"
+            >
+              Get Current Location
+            </Button>
+            <div style={{ height: "400px", width: "100%" }}>
+              <GoogleMapReact
+                bootstrapURLKeys={{
+                  key: "AIzaSyD1RO9GfOjORh4culViEC-2ZZbakdvc7Gk",
+                }} // Replace with your API key
+                center={myLocation}
+                zoom={11}
+                onClick={handleMapClick}
+              >
+                <MyLocationMarker
+                  lat={myLocation.lat}
+                  lng={myLocation.lng}
+                  text="Selected Location"
+                />
+              </GoogleMapReact>
+            </div>
           </Col>
         </Row>
       </Container>
     </div>
-  ) : (
-    <></>
   );
 };
 

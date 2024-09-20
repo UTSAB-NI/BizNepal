@@ -46,7 +46,7 @@ const LoginScreen = () => {
         setFeedback("Username or password Incorrect");
       }
     } catch (error) {
-      setFeedback("🤦‍♂️< oops Failed to Login");
+      setFeedback("🤦‍♂️ oops Failed to Login");
     }
   };
 

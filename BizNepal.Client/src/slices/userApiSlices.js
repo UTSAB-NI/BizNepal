@@ -1,6 +1,5 @@
 import { apiSlice } from "./apiSlices";
-import { USERS_URL } from "../constant";
-
+import { USERS_URL, BUSINESS_URL } from "../constant";
 
 const userApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -8,7 +7,7 @@ const userApiSlice = apiSlice.injectEndpoints({
       query: (data) => ({
         url: `${USERS_URL}/login`,
         method: "POST",
-        body:data
+        body: data,
       }),
     }),
 
@@ -16,7 +15,16 @@ const userApiSlice = apiSlice.injectEndpoints({
       query: (data) => ({
         url: `${USERS_URL}/Register`,
         method: "POST",
-        body:data
+
+        body: data,
+      }),
+    }),
+
+    listbusiness: builder.mutation({
+      query: (businessData) => ({
+        url: `${BUSINESS_URL}/Create`,
+        method: "POST",
+        body: businessData,
       }),
     }),
 
@@ -29,4 +37,9 @@ const userApiSlice = apiSlice.injectEndpoints({
   }),
 });
 
-export const { useLoginMutation, useRegisterMutation, useLogoutMutation } = userApiSlice;
+export const {
+  useLoginMutation,
+  useRegisterMutation,
+  useLogoutMutation,
+  useListbusinessMutation,
+} = userApiSlice;
