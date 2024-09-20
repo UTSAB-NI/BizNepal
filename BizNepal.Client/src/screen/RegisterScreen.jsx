@@ -16,7 +16,7 @@ const RegisterScreen = () => {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [register, { isLoading }] = useRegisterMutation();
+  const [register, { isLoading, error }] = useRegisterMutation();
 
   const submitHandler = async (e) => {
     e.preventDefault();
@@ -26,16 +26,18 @@ const RegisterScreen = () => {
       password,
       role,
     };
+    console.log("RegistrationDetails", RegistrationDetails);
 
     try {
       const response = await register(RegistrationDetails).unwrap();
-      if(response){
+      console.log("response", response);
+      if (response) {
         toast.success(response.message);
         navigate("/login");
       }
     } catch (error) {
-      console.error("Registration Error:", error);
-      setFeedback(error.message || "An unexpected error occurred.");
+      console.log("error", error.data[0].code);
+      setFeedback(error.data[0].code);
     }
   };
 
@@ -57,7 +59,7 @@ const RegisterScreen = () => {
           <Form.Group controlId="username">
             <Form.Label>Username</Form.Label>
             <Form.Control
-              type="text"
+              type="email"
               placeholder="Enter username"
               value={username}
               onChange={(e) => setUsername(e.target.value)}

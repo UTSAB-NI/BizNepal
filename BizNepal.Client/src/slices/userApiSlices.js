@@ -15,7 +15,6 @@ const userApiSlice = apiSlice.injectEndpoints({
       query: (data) => ({
         url: `${USERS_URL}/Register`,
         method: "POST",
-
         body: data,
       }),
     }),
@@ -27,7 +26,7 @@ const userApiSlice = apiSlice.injectEndpoints({
         body: businessData,
       }),
     }),
-
+    
     logout: builder.mutation({
       query: () => ({
         url: `${USERS_URL}/logout`,

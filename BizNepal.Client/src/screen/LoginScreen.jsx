@@ -68,7 +68,7 @@ const LoginScreen = () => {
                   style={{ width: "185px" }}
                   alt="logo"
                 />
-                <div className="text-center mb-2">
+                {/* <div className="text-center mb-2">
                   <p className="lead fw-normal mb-3 me-3">Sign in with</p>
                   <MDBBtn floating size="md" tag="a" className="me-2 mb-3">
                     <MDBIcon fab icon="google" />
@@ -76,7 +76,7 @@ const LoginScreen = () => {
                 </div>
                 <div className="divider d-flex align-items-center justify-content-center my-4">
                   <p className="text-center fw-bold mx-3 mb-0">Or</p>
-                </div>
+                </div> */}
               </div>
               <Form onSubmit={submitHandler}>
                 <MDBInput
