@@ -45,6 +45,7 @@ const router = createBrowserRouter(
       <Route path="/register" element={<RegisterScreen />} />
       <Route path="/category/:category" element={<GetCategory />} />
 
+
       {/* //protected route */}
       <Route path="/" element={<ProtectedRoute />}>
         <Route path="/profile" element={<UserprofileScreen />} />
