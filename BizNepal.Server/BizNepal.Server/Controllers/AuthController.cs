@@ -1,37 +1,79 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-using BizNepal.Server.Models;
-using BizNepal.Server.Models.DTO;
-using BizNepal.Server.Repositories;
-using System.Data;
-
-namespace BizNepal.Server.Controllers
+﻿namespace BizNepal.Server.Controllers
 {
+    using BizNepal.Server.Models;
+    using BizNepal.Server.Models.DTO;
+    using BizNepal.Server.Repositories;
+    using Microsoft.AspNetCore.Identity;
+    using Microsoft.AspNetCore.Mvc;
+    using System.Text.RegularExpressions;
+
+    /// <summary>
+    /// Defines the <see cref="AuthController" />
+    /// </summary>
     [Route("api/[controller]")]
     [ApiController]
     public class AuthController : ControllerBase
     {
+        /// <summary>
+        /// Defines the _userManager
+        /// </summary>
         private readonly UserManager<ApplicationUser> _userManager;
+
+        /// <summary>
+        /// Defines the _tokenRepository
+        /// </summary>
         private readonly ITokenRepository _tokenRepository;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AuthController"/> class.
+        /// </summary>
+        /// <param name="userManager">The userManager<see cref="UserManager{ApplicationUser}"/></param>
+        /// <param name="tokenRepository">The tokenRepository<see cref="ITokenRepository"/></param>
         public AuthController(UserManager<ApplicationUser> userManager, ITokenRepository tokenRepository)
         {
             _userManager = userManager;
             _tokenRepository = tokenRepository;
         }
 
-
         //POST: /api/auth/Register
+
+        /// <summary>
+        /// The Register
+        /// </summary>
+        /// <param name="registerRequestDto">The registerRequestDto<see cref="RegisterRequestDto"/></param>
+        /// <returns>The <see cref="Task{IActionResult}"/></returns>
         [HttpPost]
         [Route("Register")]
         public async Task<IActionResult> Register(RegisterRequestDto registerRequestDto)
         {
+            if (registerRequestDto == null)
+            {
+                return BadRequest("Invalid registration request.");
+            }
+
+            var existingUserName = await _userManager.FindByNameAsync(registerRequestDto.UserName);
+
+            var existingEmail = await _userManager.FindByEmailAsync(registerRequestDto.Email);
+
+            if (existingUserName != null && existingEmail != null)
+            {
+                return BadRequest("Username and email are already taken.");
+            }
+
+            if (existingUserName != null)
+            {
+                return BadRequest("A user with the same username already exists.");
+            }
+
+            if (existingEmail != null)
+            {
+                return BadRequest("A user with the same email already exists.");
+            }
 
             var identityUser = new ApplicationUser
             {
                 UserName = registerRequestDto.UserName,
-                Email = registerRequestDto.UserName
+                Email = registerRequestDto.Email
             };
 
             var identityResult = await _userManager.CreateAsync(identityUser, registerRequestDto.Password);
@@ -50,29 +92,54 @@ namespace BizNepal.Server.Controllers
                     if (identityResult.Succeeded)
                     {
 
-                        return Ok(new { 
-                            
+                        return Ok(new
+                        {
+
                             message = "Registration Successful! please login",
                             username = identityUser.UserName
+                        });
 
-                    });
-                        
                     }
 
                 }
-
             }
-            return BadRequest("Something went wrong!!");
 
+            return BadRequest("Failed to register user.");
         }
 
-
         //POST: /api/auth/Login
+
+        /// <summary>
+        /// The Login
+        /// </summary>
+        /// <param name="loginRequestDto">The loginRequestDto<see cref="LoginRequestDto"/></param>
+        /// <returns>The <see cref="Task{IActionResult}"/></returns>
         [HttpPost]
         [Route("login")]
         public async Task<IActionResult> Login(LoginRequestDto loginRequestDto)
         {
-            var user = await _userManager.FindByEmailAsync(loginRequestDto.UserName);
+            string emailPattern = @"^[^@\s]+@[^@\s]+\.[^@\s]+$";
+            bool isEmail = Regex.IsMatch(loginRequestDto.UserIdentifier, emailPattern);
+
+            ApplicationUser user;
+
+            if (isEmail)
+            {
+                user = await _userManager.FindByEmailAsync(loginRequestDto.UserIdentifier);
+
+            }
+            else
+            {
+                user = await _userManager.FindByNameAsync(loginRequestDto.UserIdentifier);
+            }
+
+            //if (user == null)
+            //{
+            //    return Unauthorized("Invalid login attempt.");
+            //}
+
+            Console.WriteLine("testing");
+
             if (user != null)
             {
                 var checkPassword = await _userManager.CheckPasswordAsync(user, loginRequestDto.Password);
@@ -100,7 +167,6 @@ namespace BizNepal.Server.Controllers
             }
 
             return BadRequest("Username or Password incorrect");
-
         }
     }
 }

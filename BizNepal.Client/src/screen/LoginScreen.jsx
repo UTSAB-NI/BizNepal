@@ -16,7 +16,7 @@ import { useLoginMutation } from "../slices/userApiSlices";
 import { setCredentials } from "../slices/authSlices";
 
 const LoginScreen = () => {
-  const [userName, setusername] = useState("");
+  const [userIdentifier, setUserIdentifier] = useState("");
   const [password, setPassword] = useState("");
   const [feedback, setFeedback] = useState("");
 
@@ -34,9 +34,9 @@ const LoginScreen = () => {
 
   const submitHandler = async (e) => {
     e.preventDefault();
-    console.log("Submitting form with data:", { userName, password });
+    console.log("Submitting form with data:", { userIdentifier, password });
     try {
-      const res = await login({ userName, password }).unwrap();
+      const res = await login({ userIdentifier, password }).unwrap();
 
       if (res) {
         dispatch(setCredentials(res));
@@ -46,7 +46,8 @@ const LoginScreen = () => {
         setFeedback("Username or password Incorrect");
       }
     } catch (error) {
-      setFeedback("🤦‍♂️ oops Failed to Login");
+      
+      setFeedback(error.data);
     }
   };
 
@@ -81,11 +82,11 @@ const LoginScreen = () => {
               <Form onSubmit={submitHandler}>
                 <MDBInput
                   wrapperClass="mb-4"
-                  label="Email address"
+                  label="Username or Email"
                   id="form1"
-                  type="email"
-                  value={userName}
-                  onChange={(e) => setusername(e.target.value)}
+                  type="text"
+                  value={userIdentifier}
+                  onChange={(e) => setUserIdentifier(e.target.value)}
                 />
                 <MDBInput
                   wrapperClass="mb-4"

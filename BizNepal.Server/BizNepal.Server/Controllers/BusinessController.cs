@@ -78,9 +78,21 @@ namespace BizNepal.Server.Controllers
             await _context.SaveChangesAsync();
 
             return Ok(business);
-
-
         }
+
+
+        //[HttpPost]
+        //public Task<IActionResult> Update(BusinessRequestDto businessDto)
+        //{
+
+        //    if (businessDto == null)
+        //    {
+        //        return BadRequest();
+        //    }
+            
+        //}
+
+
 
         [HttpGet]
         public async Task<IActionResult> GetAll()
