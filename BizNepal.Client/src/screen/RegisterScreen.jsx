@@ -10,6 +10,8 @@ import { useRegisterMutation } from "../slices/userApiSlices";
 
 const RegisterScreen = () => {
   const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+
   const [password, setPassword] = useState("");
   const [role, setRole] = useState("");
   const [feedback, setFeedback] = useState("");
@@ -23,6 +25,7 @@ const RegisterScreen = () => {
 
     const RegistrationDetails = {
       userName: username,
+      email,
       password,
       role,
     };
@@ -30,14 +33,15 @@ const RegisterScreen = () => {
 
     try {
       const response = await register(RegistrationDetails).unwrap();
-      console.log("response", response);
-      if (response) {
+      
+      
         toast.success(response.message);
         navigate("/login");
-      }
+
+      
     } catch (error) {
-      console.log("error", error.data[0].code);
-      setFeedback(error.data[0].code);
+    
+      setFeedback(error.data);
     }
   };
 
@@ -59,10 +63,21 @@ const RegisterScreen = () => {
           <Form.Group controlId="username">
             <Form.Label>Username</Form.Label>
             <Form.Control
-              type="email"
+              type="text"
               placeholder="Enter username"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
+              required
+            />
+          </Form.Group>
+
+          <Form.Group controlId="email">
+            <Form.Label>Email</Form.Label>
+            <Form.Control
+              type="email"
+              placeholder="Enter Email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               required
             />
           </Form.Group>

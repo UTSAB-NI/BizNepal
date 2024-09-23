@@ -78,9 +78,21 @@ namespace BizNepal.Server.Controllers
             await _context.SaveChangesAsync();
 
             return Ok(business);
-
-
         }
+
+
+        //[HttpPost]
+        //public Task<IActionResult> Update(BusinessRequestDto businessDto)
+        //{
+
+        //    if (businessDto == null)
+        //    {
+        //        return BadRequest();
+        //    }
+            
+        //}
+
+
 
         [HttpGet]
         public async Task<IActionResult> GetAll()
@@ -166,7 +178,30 @@ namespace BizNepal.Server.Controllers
             return Ok(businesses);
         }
 
+        //[HttpPut]
+        //public async Task<IActionResult> Update(BusinessRequestDto businessDto)
+        //{
 
 
-    }
+
+        //}
+
+
+            [HttpDelete]
+        public async Task<IActionResult> Delete([FromQuery] Guid id)
+        {
+            var business = await _context.Businesses.FindAsync(id);
+            if (business == null)
+            {
+                return NotFound("Business not found");
+            }
+
+            _context.Businesses.Remove(business);
+            await _context.SaveChangesAsync();
+
+            return Ok("Deleted Successfully");
+
+        }
+
+        }
 }
