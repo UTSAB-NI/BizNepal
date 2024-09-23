@@ -69,7 +69,8 @@ namespace BizNepal.Server.Controllers
             var identityUser = new ApplicationUser
             {
                 UserName = registerRequestDto.UserName,
-                Email = registerRequestDto.Email
+                Email = registerRequestDto.Email,
+                CreatedAt = DateTime.Now,
             };
 
             var identityResult = await _userManager.CreateAsync(identityUser, registerRequestDto.Password);
