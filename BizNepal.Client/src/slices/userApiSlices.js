@@ -1,11 +1,11 @@
 import { apiSlice } from "./apiSlices";
-import { USERS_URL, BUSINESS_URL } from "../constant";
+import { AUth_URL, BUSINESS_URL, USERS_URL } from "../constant";
 
 const userApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     login: builder.mutation({
       query: (data) => ({
-        url: `${USERS_URL}/login`,
+        url: `${AUth_URL}/login`,
         method: "POST",
         body: data,
       }),
@@ -13,7 +13,7 @@ const userApiSlice = apiSlice.injectEndpoints({
 
     register: builder.mutation({
       query: (data) => ({
-        url: `${USERS_URL}/Register`,
+        url: `${AUth_URL}/Register`,
         method: "POST",
         body: data,
       }),
@@ -26,11 +26,25 @@ const userApiSlice = apiSlice.injectEndpoints({
         body: businessData,
       }),
     }),
-    
+
     logout: builder.mutation({
       query: () => ({
-        url: `${USERS_URL}/logout`,
+        url: `${AUth_URL}/logout`,
         method: "POST",
+      }),
+    }),
+
+    getAlluser: builder.query({
+      query: () => ({
+        url: USERS_URL,
+        method: "GET",
+      }),
+    }),
+
+    DeleteUserbyId: builder.mutation({
+      query: (id) => ({
+        url: `${USERS_URL}/${id}`,
+        method: "DELETE",
       }),
     }),
   }),
@@ -41,4 +55,6 @@ export const {
   useRegisterMutation,
   useLogoutMutation,
   useListbusinessMutation,
+  useGetAlluserQuery,
+  useDeleteUserbyIdMutation
 } = userApiSlice;
