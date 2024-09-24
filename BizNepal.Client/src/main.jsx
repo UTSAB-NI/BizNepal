@@ -32,6 +32,7 @@ import BusinessOwner from "./screen/Admin/BusinessOwner.jsx";
 import GeneralUser from "./screen/Admin/GeneralUser.jsx";
 import ManageBusiness from "./screen/Admin/ManageBusiness.jsx";
 import ManageCategory from "./screen/Admin/ManageCategory.jsx";
+import AllUser from "./screen/Admin/AllUser.jsx";
 
 // import { Provider } from "react-redux";
 
@@ -45,7 +46,6 @@ const router = createBrowserRouter(
       <Route path="/register" element={<RegisterScreen />} />
       <Route path="/category/:category" element={<GetCategory />} />
 
-
       {/* //protected route */}
       <Route path="/" element={<ProtectedRoute />}>
         <Route path="/profile" element={<UserprofileScreen />} />
@@ -58,6 +58,7 @@ const router = createBrowserRouter(
         <Route path="businessowner" element={<BusinessOwner />} />
         <Route path="business" element={<ManageBusiness />} />
         <Route path="category" element={<ManageCategory />} />
+        <Route path="alluser" element={<AllUser />} />
       </Route>
     </Route>
   )

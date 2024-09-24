@@ -25,7 +25,7 @@ const GetCategory = () => {
   console.log(categoryData);
   return (
     <div>
-      {isLoading && <Loader />} {/* Show loader when fetching data */}
+      {isLoading && <Loader/>} {/* Show loader when fetching data */}
       {feedback && <Alert variant="danger">{feedback}</Alert>}{" "}
       {/* Show error message if error occurs */}
       {/* dropdown for filter the category  */}
