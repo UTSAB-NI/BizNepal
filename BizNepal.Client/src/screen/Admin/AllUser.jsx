@@ -8,6 +8,7 @@ import {
 
 import DataTable from "datatables.net-react";
 import DT from "datatables.net-bs5";
+import "datatables.net-bs5/css/dataTables.bootstrap5.min.css";
 
 DataTable.use(DT);
 
@@ -20,7 +21,8 @@ const AllUser = () => {
   const { data, error, isLoading } = useGetAlluserQuery();
 
   // Delete mutation
-  const [deleteUser, { isLoading: deleteLoading }] = useDeleteUserbyIdMutation();
+  const [deleteUser, { isLoading: deleteLoading }] =
+    useDeleteUserbyIdMutation();
 
   // Columns for DataTable
   const columns = [
@@ -42,29 +44,35 @@ const AllUser = () => {
   useEffect(() => {
     const table = document.querySelector("table");
 
-    // Handle delete button click
-    table.addEventListener("click", async (event) => {
-      const target = event.target;
+    // Only attach the event listener if the table exists
+    if (table) {
+      const handleClick = async (event) => {
+        const target = event.target;
 
-      if (target.classList.contains("delete-btn")) {
-        const userId = target.getAttribute("data-id");
-        const confirmDelete = window.confirm("Are you sure you want to delete this user?");
-        if (confirmDelete) {
-          try {
-            await deleteUser(userId);
-            alert("User deleted successfully!");
-          } catch (error) {
-            console.error("Failed to delete user:", error);
-            alert("Error deleting user.");
+        if (target.classList.contains("delete-btn")) {
+          const userId = target.getAttribute("data-id");
+          const confirmDelete = window.confirm(
+            "Are you sure you want to delete this user?"
+          );
+          if (confirmDelete) {
+            try {
+              await deleteUser(userId);
+              alert("User deleted successfully!");
+            } catch (error) {
+              console.error("Failed to delete user:", error);
+              alert("Error deleting user.");
+            }
           }
         }
-      }
-    });
+      };
 
-    // Clean up the event listener when the component unmounts
-    return () => {
-      table.removeEventListener("click", () => {});
-    };
+      table.addEventListener("click", handleClick);
+
+      // Clean up the event listener when the component unmounts
+      return () => {
+        table.removeEventListener("click", handleClick);
+      };
+    }
   }, [userData, deleteUser]);
 
   return (
