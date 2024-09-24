@@ -47,6 +47,14 @@ const userApiSlice = apiSlice.injectEndpoints({
         method: "DELETE",
       }),
     }),
+
+    addUserbyadmin: builder.mutation({
+      query: (data) => ({
+        url: USERS_URL,
+        method: "POST",
+        body: data,
+      }),
+    }),
   }),
 });
 
@@ -56,5 +64,6 @@ export const {
   useLogoutMutation,
   useListbusinessMutation,
   useGetAlluserQuery,
-  useDeleteUserbyIdMutation
+  useDeleteUserbyIdMutation,
+  useAddUserbyadminMutation,
 } = userApiSlice;
