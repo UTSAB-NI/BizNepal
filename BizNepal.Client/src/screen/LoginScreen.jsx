@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { useNavigate, Link } from "react-router-dom";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 import {
   MDBBtn,
   MDBContainer,
@@ -26,6 +27,8 @@ const LoginScreen = () => {
   const [login, { isLoading, isError }] = useLoginMutation();
   const { userInfo } = useSelector((state) => state.auth);
 
+  const [showPassword, setShowPassword] = useState(false);
+
   useEffect(() => {
     if (userInfo) {
       navigate("/");
@@ -46,9 +49,12 @@ const LoginScreen = () => {
         setFeedback("Username or password Incorrect");
       }
     } catch (error) {
-      
       setFeedback(error.data);
     }
+  };
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
   };
 
   return (
@@ -69,15 +75,6 @@ const LoginScreen = () => {
                   style={{ width: "185px" }}
                   alt="logo"
                 />
-                {/* <div className="text-center mb-2">
-                  <p className="lead fw-normal mb-3 me-3">Sign in with</p>
-                  <MDBBtn floating size="md" tag="a" className="me-2 mb-3">
-                    <MDBIcon fab icon="google" />
-                  </MDBBtn>
-                </div>
-                <div className="divider d-flex align-items-center justify-content-center my-4">
-                  <p className="text-center fw-bold mx-3 mb-0">Or</p>
-                </div> */}
               </div>
               <Form onSubmit={submitHandler}>
                 <MDBInput
@@ -88,14 +85,31 @@ const LoginScreen = () => {
                   value={userIdentifier}
                   onChange={(e) => setUserIdentifier(e.target.value)}
                 />
-                <MDBInput
-                  wrapperClass="mb-4"
-                  label="Password"
-                  id="form2"
-                  type="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                />
+                <div className="position-relative mb-4"> {/* Wrap password input and button */}
+                  <MDBInput
+                    label="Password"
+                    id="form2"
+                    type={showPassword ? "text" : "password"}
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                  />
+                  <button
+                    type="button"
+                    className="position-absolute"
+                    style={{
+                      right: "10px",
+                      top: "50%",
+                      transform: "translateY(-50%)", // Center vertically
+                      background: "none",
+                      border: "none",
+                      cursor: "pointer",
+                      zIndex: 1,
+                    }}
+                    onClick={togglePasswordVisibility}
+                  >
+                    {showPassword ? <FaEyeSlash /> : <FaEye />}
+                  </button>
+                </div>
                 <div>
                   <MDBBtn
                     type="submit"

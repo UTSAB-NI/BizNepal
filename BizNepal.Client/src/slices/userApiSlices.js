@@ -41,7 +41,7 @@ const userApiSlice = apiSlice.injectEndpoints({
       }),
     }),
 
-    DeleteUserbyId: builder.mutation({
+    deleteUserbyId: builder.mutation({
       query: (id) => ({
         url: `${USERS_URL}/${id}`,
         method: "DELETE",
@@ -52,6 +52,15 @@ const userApiSlice = apiSlice.injectEndpoints({
       query: (data) => ({
         url: USERS_URL,
         method: "POST",
+        body: data,
+      }),
+    }),
+
+    // Add the editUserbyadmin mutation here
+    editUserbyadmin: builder.mutation({
+      query: ({ id, ...data }) => ({
+        url: `${USERS_URL}/${id}`,
+        method: "PUT", // Use PUT or PATCH based on your API design
         body: data,
       }),
     }),
@@ -66,4 +75,5 @@ export const {
   useGetAlluserQuery,
   useDeleteUserbyIdMutation,
   useAddUserbyadminMutation,
+  useEditUserbyadminMutation, // Export the edit user hook
 } = userApiSlice;

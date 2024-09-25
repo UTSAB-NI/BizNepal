@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Form, Button, Alert, Container } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 import { toast } from "react-toastify";
 
@@ -19,6 +20,7 @@ const RegisterScreen = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [register, { isLoading, error }] = useRegisterMutation();
+  const [showPassword, setShowPassword] = useState(false);
 
   const submitHandler = async (e) => {
     e.preventDefault();
@@ -45,7 +47,9 @@ const RegisterScreen = () => {
     }
   };
 
-  // console.log("isLoading", isLoading);
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
 
   return (
     <>
@@ -71,7 +75,7 @@ const RegisterScreen = () => {
             />
           </Form.Group>
 
-          <Form.Group controlId="email">
+          <Form.Group controlId="email" >
             <Form.Label>Email</Form.Label>
             <Form.Control
               type="email"
@@ -82,15 +86,24 @@ const RegisterScreen = () => {
             />
           </Form.Group>
 
-          <Form.Group controlId="password">
+          <Form.Group controlId="password" className="mb-3 position-relative">
             <Form.Label>Password</Form.Label>
             <Form.Control
-              type="password"
+              type={showPassword ? "text" : "password"}
               placeholder="Password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
             />
+            <button
+              type="button"
+              className="position-absolute"
+              style={{ right: "10px", top: "35px", background: "none", border: "none", cursor: "pointer" }}
+              onClick={togglePasswordVisibility}
+            >
+              {showPassword ? <FaEyeSlash /> : <FaEye />} {/* Toggle icon based on state */}
+            </button>
+
           </Form.Group>
 
           <Form.Group controlId="role">
