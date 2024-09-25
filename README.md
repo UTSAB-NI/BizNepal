@@ -37,7 +37,7 @@ npm or Yarn
 <h3>Steps</h3>
 
 1. Clone the repository:
-  git clone https://github.com/yourusername/biznepal-client.git
+  git clone https://github.com/UTSAB-NI/BizNepal.git
   cd biznepal-client
 
 2. Install the dependencies:
