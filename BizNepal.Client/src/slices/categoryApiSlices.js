@@ -1,11 +1,11 @@
 import { apiSlice } from "./apiSlices";
-import { CATEGORIES_URL, SEARCH_URL } from "../constant";
+import { SEARCHBY_CATEGORIES_URL, SEARCH_URL } from "../constant";
 
 const categoryApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     searchByCategory: builder.query({
       query: (category) => ({
-        url: `${CATEGORIES_URL}`,
+        url: `${SEARCHBY_CATEGORIES_URL}`,
         method: "GET",
         params: {
           category: category,
@@ -20,7 +20,7 @@ const categoryApiSlice = apiSlice.injectEndpoints({
       query: (keyword) => ({
         url: `${SEARCH_URL}`,
         method: "GET",
-        params:{keyword},
+        params: { keyword },
       }),
     }),
   }),
