@@ -2,6 +2,7 @@ import React from "react";
 import Sidenavbar from "./Sidenavbar"; // The sidebar component
 import { Outlet,Navigate } from "react-router-dom"; // To render child routes
 import { useSelector } from "react-redux";
+import AllUser from "../screen/Admin/AllUser";
 const AdminLayout = () => {
 
   const {userInfo} = useSelector(state => state.auth);
