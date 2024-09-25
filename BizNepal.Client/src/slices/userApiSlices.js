@@ -1,5 +1,5 @@
 import { apiSlice } from "./apiSlices";
-import { AUth_URL, BUSINESS_URL, USERS_URL } from "../constant";
+import { AUth_URL, BUSINESS_URL, USERS_URL, CATEGORIES_URL } from "../constant";
 
 const userApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -64,6 +64,36 @@ const userApiSlice = apiSlice.injectEndpoints({
         body: data,
       }),
     }),
+
+    getAllCategories: builder.query({
+      query: () => ({
+        url: CATEGORIES_URL,
+        method: "GET",
+      }),
+    }),
+
+    deleteCategory: builder.mutation({
+      query: (categoryId) => ({
+        url: `${CATEGORIES_URL}/${categoryId}`,
+        method: "DELETE",
+      }),
+    }),
+
+    addCategorybyadmin: builder.mutation({
+      query: (data) => ({
+        url: CATEGORIES_URL,
+        method: "POST",
+        body: data,
+      }),
+    }),
+
+    editCategorybyadmin: builder.mutation({
+      query: ({ categoryId, ...data }) => ({
+        url: `${CATEGORIES_URL}/${categoryId}`,
+        method: "PUT", // Use PUT or PATCH based on your API design
+        body: data,
+      }),
+    }),
   }),
 });
 
@@ -75,5 +105,9 @@ export const {
   useGetAlluserQuery,
   useDeleteUserbyIdMutation,
   useAddUserbyadminMutation,
-  useEditUserbyadminMutation, // Export the edit user hook
+  useEditUserbyadminMutation,
+  useGetAllCategoriesQuery, // Export the edit user hook
+  useDeleteCategoryMutation,
+  useAddCategorybyadminMutation,
+  useEditCategorybyadminMutation,
 } = userApiSlice;
