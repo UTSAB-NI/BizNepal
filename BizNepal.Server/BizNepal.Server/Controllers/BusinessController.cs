@@ -186,8 +186,25 @@ namespace BizNepal.Server.Controllers
 
         //}
 
+        [HttpGet("suggestions")]
+        public IActionResult GetSuggestions([FromQuery] string query)
+        {
+            if (string.IsNullOrEmpty(query))
+            {
+                return BadRequest("Query cannot be empty.");
+            }
 
-            [HttpDelete]
+            var suggestions = _context.Businesses // or any entity you're searching
+                .Where(b => b.BusinessName.Contains(query)) // Change to match your requirements
+                .Select(b => b.BusinessName)                // Returning names for simplicity
+                .Take(10)                           // Limit suggestions for performance
+                .ToList();
+
+            return Ok(suggestions);
+        }
+
+
+        [HttpDelete]
         public async Task<IActionResult> Delete([FromQuery] Guid id)
         {
             var business = await _context.Businesses.FindAsync(id);

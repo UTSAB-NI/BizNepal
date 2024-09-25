@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
@@ -6,7 +6,6 @@ const SearchWithSuggestions = () => {
   const [query, setQuery] = useState("");
   const [suggestions, setSuggestions] = useState([]);
   const navigate = useNavigate();
-  const inputRef = useRef(null); // Reference for the input field
 
   // Fetch suggestions from API
   useEffect(() => {
@@ -23,7 +22,7 @@ const SearchWithSuggestions = () => {
       };
       fetchSuggestions();
     } else {
-      setSuggestions([]); // Reset suggestions when query is short
+      setSuggestions([]);
     }
   }, [query]);
 
@@ -34,15 +33,13 @@ const SearchWithSuggestions = () => {
 
   // Handle selecting a suggestion
   const handleSelectSuggestion = (suggestion) => {
-    setQuery(suggestion); // Update query with selected suggestion
-    setSuggestions([]); // Immediately clear the suggestions
-    inputRef.current.blur(); // Remove focus from the input field to trigger re-render
+    setQuery(suggestion); // Update query to the selected suggestion
+    setSuggestions([]); // Clear suggestions after selection
   };
 
   // Trigger the search
   const handleSearch = () => {
     if (query.trim()) {
-      setSuggestions([]); // Ensure the suggestion list is cleared
       navigate(`/search/${query}`);
     }
   };
@@ -50,7 +47,6 @@ const SearchWithSuggestions = () => {
   return (
     <div>
       <input
-        ref={inputRef} // Attach the ref to the input field
         type="text"
         value={query}
         onChange={handleChange}
@@ -69,7 +65,7 @@ const SearchWithSuggestions = () => {
           ))}
         </ul>
       )}
-      <button onClick={handleSearch}>Search</button>
+      <button onClick={handleSearch}>Search</button> {/* Search button */}
     </div>
   );
 };
