@@ -4,6 +4,7 @@ using BizNepal.Server.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BizNepal.Server.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240925150540_added review ,rating column")]
+    partial class addedreviewratingcolumn
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -156,32 +159,32 @@ namespace BizNepal.Server.Migrations
                     b.HasData(
                         new
                         {
-                            CategoryId = new Guid("10ff88ae-8850-4f0f-988d-d772cf9d6900"),
+                            CategoryId = new Guid("9f6967c8-2a1f-47d3-9cf1-605b3f67a57c"),
                             CategoryName = "Resturant"
                         },
                         new
                         {
-                            CategoryId = new Guid("db787fbd-2e9c-4469-af99-ff30248cfe18"),
+                            CategoryId = new Guid("a48ffc4b-9115-4275-84d6-f19fa1359128"),
                             CategoryName = "Cafe"
                         },
                         new
                         {
-                            CategoryId = new Guid("a787c5ac-90fc-440d-a38a-717cc6baf29e"),
+                            CategoryId = new Guid("e38fbc1b-1291-4de6-bea7-4f2d74fc3dd5"),
                             CategoryName = "Hospital"
                         },
                         new
                         {
-                            CategoryId = new Guid("e04972a5-1358-47ca-9fd1-2f01de5d1b5a"),
+                            CategoryId = new Guid("5eb3aa59-05c5-409e-9c63-35bbe91cefc2"),
                             CategoryName = "Hotels"
                         },
                         new
                         {
-                            CategoryId = new Guid("de57da2f-e1ef-4ead-ab1b-62eefb4c8fd0"),
+                            CategoryId = new Guid("80116b69-1612-482a-9318-6b685efaa4f0"),
                             CategoryName = "Gym"
                         },
                         new
                         {
-                            CategoryId = new Guid("72e94afa-9272-4cef-b653-fa4ed520ebfd"),
+                            CategoryId = new Guid("c7acb506-f0a1-453d-b4a4-431b5450dc5c"),
                             CategoryName = "Shopping"
                         });
                 });

@@ -15,6 +15,10 @@ namespace BizNepal.Server.Models
 
         public string PhoneNumber { get; set; } 
 
+        public string? Address { get; set; }
+
+        public decimal? OverallRating { get; set; }
+
         public string UserId { get; set; }
         [ForeignKey("UserId")]
         public ApplicationUser ApplicationUser { get; set; }
@@ -26,5 +30,9 @@ namespace BizNepal.Server.Models
         public Category Category { get; set; }
 
         public ICollection<Review>? Reviews { get; set; }
+
+       
+
+
     }
 }

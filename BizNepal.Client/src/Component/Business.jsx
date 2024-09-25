@@ -1,25 +1,20 @@
 import React from "react";
-import { Card, Container } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Card, Button } from "react-bootstrap";
 
 const Business = ({ business }) => {
-  console.log(business); // For debugging purposes
-
   return (
-    <Container>
-      <Card className="my-3 p-3 rounded">
-        <Link to={`/business/${business.businessId}`}>
-          <Card.Img src={business.image} variant="top" />
-        </Link>
-        <Card.Body>
-          <Link to={`/business/${business.businessId}`}>
-            <Card.Title as="div">
-              <strong>{business.businessName}</strong>
-            </Card.Title>
-          </Link>
-        </Card.Body>
-      </Card>
-    </Container>
+    <Card className="business-card">
+      <Card.Img variant="top" src={business.imageUrl || "/default-img.png"} />
+      <Card.Body>
+        <Card.Title>{business.businessName}</Card.Title>
+        <Card.Text>{business.description}</Card.Text>
+        <Card.Text>{business.category.categoryName}</Card.Text>
+
+        <Button variant="primary" href={`/business/${business.businessId}`}>
+          View Details
+        </Button>
+      </Card.Body>
+    </Card>
   );
 };
 

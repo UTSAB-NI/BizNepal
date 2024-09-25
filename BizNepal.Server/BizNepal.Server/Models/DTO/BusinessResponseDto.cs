@@ -9,6 +9,8 @@
             public string Website { get; set; }
             public string PhoneNumber { get; set; }
             public Location Location { get; set; }
+            public Category Category { get; set; }
+
             public string UserId { get; set; }
             public List<Review> Reviews { get; set; }
         
