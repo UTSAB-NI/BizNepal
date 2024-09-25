@@ -19,12 +19,33 @@ namespace BizNepal.Server.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ApplicationUser>>> GetUsers()
+        public async Task<ActionResult<IEnumerable<object>>> GetUsers()
         {
+            // Fetch all users from the database
             var users = await _userManager.Users.ToListAsync();
-            return Ok(users);
 
+            // Create a list to hold user details along with their roles
+            var userList = new List<object>();
+
+            foreach (var user in users)
+            {
+                // Get the roles for each user
+                var roles = await _userManager.GetRolesAsync(user);
+
+                // Create an anonymous object containing user information and roles
+                userList.Add(new
+                {
+                    user.Id,
+                    user.UserName,
+                    user.Email,
+                    Roles = roles // This will be a list of roles
+                });
+            }
+
+            // Return the list of users with their roles
+            return Ok(userList);
         }
+
 
         [HttpGet("{id}")]
         public async Task<ActionResult<ApplicationUser>> GetUser(Guid id)
