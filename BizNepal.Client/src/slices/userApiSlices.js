@@ -65,6 +65,7 @@ const userApiSlice = apiSlice.injectEndpoints({
       }),
     }),
 
+    //category api
     getAllCategories: builder.query({
       query: () => ({
         url: CATEGORIES_URL,
