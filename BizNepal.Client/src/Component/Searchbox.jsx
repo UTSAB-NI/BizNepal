@@ -1,39 +1,73 @@
-import React from "react";
-import { useState } from "react";
-import { Form, Button } from "react-bootstrap";
-import { useParams, useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
-const Searchbox = () => {
+const SearchWithSuggestions = () => {
+  const [query, setQuery] = useState("");
+  const [suggestions, setSuggestions] = useState([]);
   const navigate = useNavigate();
-  const { keyword: urlkeyword } = useParams();
 
-  const [keyword, setKeyword] = useState(urlkeyword || "");
-
-  const submitHandler = (e) => {
-    e.preventDefault();
-    if (keyword.trim()) {
-      setKeyword("");
-      navigate(`/search/${keyword}`);
+  // Fetch suggestions from API
+  useEffect(() => {
+    if (query.length > 1) {
+      const fetchSuggestions = async () => {
+        try {
+          const response = await axios.get(
+            `https://localhost:5000/api/Business/suggestions?query=${query}`
+          );
+          setSuggestions(response.data);
+        } catch (error) {
+          console.error("Error fetching suggestions", error);
+        }
+      };
+      fetchSuggestions();
     } else {
-      navigate("/");
+      setSuggestions([]);
+    }
+  }, [query]);
+
+  // Update query on input change
+  const handleChange = (e) => {
+    setQuery(e.target.value);
+  };
+
+  // Handle selecting a suggestion
+  const handleSelectSuggestion = (suggestion) => {
+    setQuery(suggestion); // Update query to the selected suggestion
+    setSuggestions([]); // Clear suggestions after selection
+  };
+
+  // Trigger the search
+  const handleSearch = () => {
+    if (query.trim()) {
+      navigate(`/search/${query}`);
     }
   };
 
   return (
-    <Form onSubmit={submitHandler} className="d-flex">
-      <Form.Control
+    <div>
+      <input
         type="text"
-        name="q"
-        onChange={(e) => setKeyword(e.target.value)}
-        value={keyword}
-        placeholder="Search...."
-        className="me-2"
-      ></Form.Control>
-      <Button type="submit" variant="outline-success" className="p-2">
-        Search
-      </Button>
-    </Form>
+        value={query}
+        onChange={handleChange}
+        placeholder="Search for a business..."
+      />
+      {suggestions.length > 0 && (
+        <ul>
+          {suggestions.map((suggestion, index) => (
+            <li
+              key={index}
+              onClick={() => handleSelectSuggestion(suggestion)}
+              style={{ cursor: "pointer" }}
+            >
+              {suggestion}
+            </li>
+          ))}
+        </ul>
+      )}
+      <button onClick={handleSearch}>Search</button> {/* Search button */}
+    </div>
   );
 };
 
-export default Searchbox;
+export default SearchWithSuggestions;
