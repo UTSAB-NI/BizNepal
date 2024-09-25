@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { Form, Button, ListGroup } from "react-bootstrap";
 
 const SearchWithSuggestions = () => {
   const [query, setQuery] = useState("");
@@ -45,27 +46,34 @@ const SearchWithSuggestions = () => {
   };
 
   return (
-    <div>
-      <input
+    <div className="search-container">
+      <Form.Control
         type="text"
         value={query}
         onChange={handleChange}
         placeholder="Search for a business..."
+        className=""
       />
+
+      {/* Suggestions list */}
       {suggestions.length > 0 && (
-        <ul>
+        <ListGroup className="mb-3">
           {suggestions.map((suggestion, index) => (
-            <li
+            <ListGroup.Item
               key={index}
               onClick={() => handleSelectSuggestion(suggestion)}
               style={{ cursor: "pointer" }}
             >
               {suggestion}
-            </li>
+            </ListGroup.Item>
           ))}
-        </ul>
+        </ListGroup>
       )}
-      <button onClick={handleSearch}>Search</button> {/* Search button */}
+
+      {/* Search button */}
+      <Button variant="primary" onClick={handleSearch}>
+        Search
+      </Button>
     </div>
   );
 };
