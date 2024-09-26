@@ -23,21 +23,3 @@ body {
   background-color: var(--background-color);
   color: var(--text-color);
 }
-
-
-ul {
-  list-style-type: none;
-  padding: 0;
-  border: 1px solid #ccc;
-  max-height: 150px;
-  overflow-y: auto;
-}
-
-li {
-  padding: 10px;
-  border-bottom: 1px solid #ddd;
-}
-
-li:hover {
-  background-color: #f0f0f0;
-}
