@@ -13,8 +13,8 @@ import { LinkContainer } from "react-router-bootstrap";
 import { Logout } from "../slices/authSlices";
 import TokenDecode from "./TokenDecode";
 import "../Customcss/header.css";
-import Searchbox from "./Searchbox";
 
+import Searchbox from "./Searchbox";
 const Header = ({ toggleTheme, currentTheme }) => {
   const themeIcon = currentTheme === "light" ? "🌙" : "🌞";
 
@@ -29,50 +29,38 @@ const Header = ({ toggleTheme, currentTheme }) => {
     navigate("/");
   };
 
-  const getTime = () => {
-    const date = new Date();
-    const hours = date.getHours();
+  const getTimeIcon = () => {
+    const hours = new Date().getHours();
     if (hours < 12) {
-      return (
-        <div>
-          <small className="mx-3 fs-1">🌅 </small>
-        </div>
-      );
+      return "🌅";
     } else if (hours < 18) {
-      return (
-        <div>
-          <small className="mx-3 fs-1">🌞</small>
-        </div>
-      );
+      return "🌞";
     } else {
-      return (
-        <div>
-          <small className="mx-3 fs-1">🌙</small>
-        </div>
-      );
+      return "🌙";
     }
   };
 
   return (
-    <Navbar expand="lg" className="bg-body-tertiary">
-      <Container fluid>
-        {getTime()}
-        <Navbar.Brand as={Link} to="/">
+    <Navbar expand="lg" className="bg-body-tertiary py-3 shadow-sm">
+      <Container fluid className="align-items-center">
+        <Navbar.Brand as={Link} to="/" className="d-flex align-items-center">
           <Image src="/images/biznepallogo.png" style={{ width: "150px" }} />
         </Navbar.Brand>
-        <Navbar.Toggle
-          aria-controls="basic-navbar-nav"
-          className="toggle-btn"
-        />
+
+        <Navbar.Toggle aria-controls="basic-navbar-nav" className="toggle-btn" />
         <Navbar.Collapse id="basic-navbar-nav">
-          <Nav className="me-auto">
-            <Nav.Link as={Link} to="/">
+          <Nav className="me-auto align-items-center">
+            <Nav.Link as={Link} to="/" className="px-3">
               Home
             </Nav.Link>
-            <Searchbox />
+            
+            {/* Integrated SearchWithSuggestions Component */}
+            <div className="searchbox-wrapper d-flex align-items-center">
+              <Searchbox />
+            </div>
           </Nav>
 
-          <Nav>
+          <Nav className="align-items-center">
             {userInfo ? (
               <>
                 <NavDropdown title={<TokenDecode />} id="username">
@@ -85,7 +73,7 @@ const Header = ({ toggleTheme, currentTheme }) => {
                 </NavDropdown>
 
                 <Nav.Link as={Link} to="/businesslist">
-                  <Button variant="primary" className="btn-business">
+                  <Button variant="primary" className="btn-business mx-2">
                     + List Your Business
                   </Button>
                 </Nav.Link>
@@ -93,14 +81,14 @@ const Header = ({ toggleTheme, currentTheme }) => {
             ) : (
               <>
                 <Nav.Link as={Link} to="/login">
-                  <Button variant="primary" className="btn-login">
+                  <Button variant="outline-primary" className="mx-2 btn-login">
                     Login
                   </Button>
                 </Nav.Link>
 
                 <Nav.Link as={Link} to="/register">
-                  <Button variant="primary" className="btn-register">
-                    SignUp
+                  <Button variant="outline-primary" className="mx-2 btn-register">
+                    Sign Up
                   </Button>
                 </Nav.Link>
               </>
@@ -108,15 +96,16 @@ const Header = ({ toggleTheme, currentTheme }) => {
 
             {userInfo && userInfo.role === "Admin" && (
               <Button
-                variant="primary"
-                className="btn-business"
+                variant="danger"
+                className="mx-2"
                 onClick={() => navigate("/admin")}
               >
                 Admin
               </Button>
             )}
+
             <Button
-              variant="outline-primary"
+              variant="outline-secondary"
               className="btn-theme mx-2"
               onClick={toggleTheme}
             >
@@ -124,6 +113,8 @@ const Header = ({ toggleTheme, currentTheme }) => {
             </Button>
           </Nav>
         </Navbar.Collapse>
+
+        <div className="time-icon ms-3 d-none d-lg-block">{getTimeIcon()}</div>
       </Container>
     </Navbar>
   );

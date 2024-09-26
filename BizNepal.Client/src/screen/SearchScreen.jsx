@@ -12,6 +12,7 @@ const SearchScreen = () => {
 
   // Fetch business based on keyword
   const response = useSerachBusinessQuery(keyword, { skip: !keyword });
+  
   const { data, error, isLoading, isError } = response;
 
   return (

@@ -1,3 +1,13 @@
+.navbar{
+  /* border: 2px solid red; */
+}
+.navbar-brand{
+/* border: 2px solid red; */
+}
+.navbar-nav{
+  /* border: 2px solid red; */
+  /* width: 100%; */
+}
 .btn-login {
   background: linear-gradient(45deg, #060871 0%, #606bdf 100%);
   color: white;
@@ -30,4 +40,28 @@
 
 .btn-theme:hover {
   background-color: #ddd; /* Light grey background on hover */
+}
+
+/* Style for search box wrapper in header */
+.searchbox-wrapper {
+  flex-grow: 1; /* Ensures search box grows to take available space */
+  max-width: 400px; /* Adjust this value according to your design */
+  margin-left: 20px;
+}
+
+.searchbox-wrapper .search-container {
+  width: 100%;
+}
+
+/* Ensure suggestions dropdown looks good in the header */
+.search-container .list-group-item {
+  cursor: pointer;
+}
+
+/* Adjust suggestions to not overlap with navbar */
+.list-group {
+  position: absolute;
+  z-index: 1000; /* Ensure it appears above other elements */
+  width: 100%;
+  max-width: 400px; /* Adjust if needed */
 }
