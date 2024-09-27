@@ -11,7 +11,7 @@ const AdminLayout = () => {
   return userInfo && userInfo.role === "Admin" ? (
     <div style={styles.container}>
       <div style={styles.sidebar}>
-        <Sidenavbar /> {/* Side Navigation Bar */}
+        <Sidenavbar />  {/* Side Navigation Bar */}
       </div>
       <div style={styles.mainContent}>
         <Outlet /> {/* Render the main content here */}

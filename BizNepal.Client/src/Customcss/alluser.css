@@ -1,4 +1,4 @@
-/* General table styling */
+
 table.dataTable {
     width: 100%;
     border-collapse: collapse;
@@ -22,7 +22,7 @@ table.dataTable {
     background-color: #f1f1f1;
   }
   
-  /* Button styling */
+
   button.btn {
     padding: 8px 12px;
     border-radius: 4px;

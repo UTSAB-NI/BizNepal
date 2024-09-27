@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { Form, Button, ListGroup } from "react-bootstrap";
+import { MDBIcon } from "mdb-react-ui-kit";
+import "../Customcss/searchbox.css";
 
-const SearchWithSuggestions = () => {
+const Searchbox = () => {
   const [query, setQuery] = useState("");
   const [suggestions, setSuggestions] = useState([]);
   const navigate = useNavigate();
@@ -32,42 +35,51 @@ const SearchWithSuggestions = () => {
   };
 
   // Handle selecting a suggestion
-  const handleSelectSuggestion = (suggestion) => {
-    setQuery(suggestion); // Update query to the selected suggestion
-    setSuggestions([]); // Clear suggestions after selection
-  };
+  // const handleSelectSuggestion = (suggestion) => {
+  //   setQuery(suggestion); // Update query to the selected suggestion
+  //   setSuggestions([]); // Clear suggestions after selection
+  // };
 
   // Trigger the search
-  const handleSearch = () => {
+  const handleSearch = (suggestion) => {
+    setQuery(suggestion); // Update query to the selected suggestion
+    setSuggestions([]); // Clear suggestions after selection
     if (query.trim()) {
       navigate(`/search/${query}`);
     }
   };
 
   return (
-    <div>
-      <input
+    <Form className="search-box" onSubmit={handleSearch}>
+      <Form.Control
         type="text"
         value={query}
         onChange={handleChange}
         placeholder="Search for a business..."
+        className=""
       />
+
+      {/* Suggestions list */}
       {suggestions.length > 0 && (
-        <ul>
+        <ListGroup className="mb-3">
           {suggestions.map((suggestion, index) => (
-            <li
+            <ListGroup.Item
               key={index}
-              onClick={() => handleSelectSuggestion(suggestion)}
+              onClick={() => handleSearch(suggestion)}
               style={{ cursor: "pointer" }}
             >
               {suggestion}
-            </li>
+            </ListGroup.Item>
           ))}
-        </ul>
+        </ListGroup>
       )}
-      <button onClick={handleSearch}>Search</button> {/* Search button */}
-    </div>
+
+      {/* Search button */}
+      <Button variant="warning" onClick={handleSearch} className="mx-2 btn-sm ">
+        <MDBIcon icon="search" className="ms-2" className="text-center" />
+      </Button>
+    </Form>
   );
 };
 
-export default SearchWithSuggestions;
+export default Searchbox;

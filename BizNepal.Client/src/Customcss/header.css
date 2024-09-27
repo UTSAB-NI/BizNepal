@@ -1,33 +1,67 @@
+.navbar{
+  /* border: 2px solid red; */
+}
+.navbar-brand{
+/* border: 2px solid red; */
+}
+.navbar-nav{
+  /* border: 2px solid red; */
+  /* width: 100%; */
+}
 .btn-login {
   background: linear-gradient(45deg, #060871 0%, #606bdf 100%);
-    color: white;
-    border: none;
-    border-radius: 5px;
+  color: white;
+  border: none;
+  border-radius: 5px;
 }
-.btn-business{
-    background: linear-gradient(45deg, #da3d08 0%, #e73b2b 100%);
-        color: white;
-        border: none;
-        border-radius: 5px;
+.btn-business {
+  background: linear-gradient(45deg, #da3d08 0%, #e73b2b 100%);
+  color: white;
+  border: none;
+  border-radius: 5px;
 }
-.toggle-btn{
-    background: linear-gradient(45deg, #95730b 0%, #e2ac0a 100%);
-    color: white;
-    border: none;
-    border-radius: 5px;
+.toggle-btn {
+  background: linear-gradient(45deg, #95730b 0%, #e2ac0a 100%);
+  color: white;
+  border: none;
+  border-radius: 5px;
 }
 
 .btn-theme {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 40px; /* Adjust as needed */
-    height: 40px; /* Adjust as needed */
-    border-radius: 50%;
-    padding: 0;
-    font-size: 1.2rem; /* Adjust as needed */
-  }
-  
-  .btn-theme:hover {
-    background-color: #ddd; /* Light grey background on hover */
-  }
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px; /* Adjust as needed */
+  height: 40px; /* Adjust as needed */
+  border-radius: 50%;
+  padding: 0;
+  font-size: 1.2rem; /* Adjust as needed */
+}
+
+.btn-theme:hover {
+  background-color: #ddd; /* Light grey background on hover */
+}
+
+/* Style for search box wrapper in header */
+.searchbox-wrapper {
+  flex-grow: 1; /* Ensures search box grows to take available space */
+  max-width: 400px; /* Adjust this value according to your design */
+  margin-left: 20px;
+}
+
+.searchbox-wrapper .search-container {
+  width: 100%;
+}
+
+/* Ensure suggestions dropdown looks good in the header */
+.search-container .list-group-item {
+  cursor: pointer;
+}
+
+/* Adjust suggestions to not overlap with navbar */
+.list-group {
+  position: absolute;
+  z-index: 1000; /* Ensure it appears above other elements */
+  width: 100%;
+  max-width: 400px; /* Adjust if needed */
+}

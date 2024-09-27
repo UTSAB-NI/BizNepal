@@ -1,0 +1,19 @@
+.search-box {
+  display: flex;
+
+  /* border: 2px solid red; */
+}
+
+.list-group {
+  margin-top: 3rem;
+  max-width: 300px;
+  overflow-y: auto;
+  position: absolute;
+  width: 100%;
+  z-index: 1000;
+  
+}
+
+.list-group-item:hover {
+  background-color: #f8f9fa;
+}
