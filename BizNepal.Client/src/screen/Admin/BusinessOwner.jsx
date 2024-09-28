@@ -7,7 +7,7 @@ import {
   useEditUserbyadminMutation,
 } from "../../slices/userApiSlices";
 
-import { Button, Modal, Alert } from "react-bootstrap";
+import { Button, Modal, Alert } from "react-bootstrap"; 
 
 import DataTable from "datatables.net-react";
 import DT from "datatables.net-bs5";

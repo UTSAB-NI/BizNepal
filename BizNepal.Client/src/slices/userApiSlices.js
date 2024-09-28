@@ -27,6 +27,13 @@ const userApiSlice = apiSlice.injectEndpoints({
       }),
     }),
 
+    getbusiness:builder.query({
+      query:() =>({
+        url:BUSINESS_URL,
+        method:"GET"
+      }),
+    }),
+
     logout: builder.mutation({
       query: () => ({
         url: `${AUth_URL}/logout`,
@@ -103,6 +110,7 @@ export const {
   useRegisterMutation,
   useLogoutMutation,
   useListbusinessMutation,
+  useGetbusinessQuery,
   useGetAlluserQuery,
   useDeleteUserbyIdMutation,
   useAddUserbyadminMutation,
