@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace BizNepal.Server.Models
 {
@@ -7,6 +8,7 @@ namespace BizNepal.Server.Models
     {
         [Key]
         public Guid BusinessId { get; set; }
+
         public string BusinessName { get; set; }
 
         public string Description { get; set; }
@@ -29,9 +31,16 @@ namespace BizNepal.Server.Models
         public Guid CategoryId { get; set; }
         public Category Category { get; set; }
 
+        [JsonIgnore]
+        public ICollection<BusinessImage>? BusinessImages { get; set; }= new List<BusinessImage>();
+
         public ICollection<Review>? Reviews { get; set; }
 
-       
+        public DateTime CreatedAt { get; set; }
+
+        public DateTime? UpdatedAt { get; set; }
+
+
 
 
     }

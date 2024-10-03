@@ -4,6 +4,7 @@ using BizNepal.Server.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BizNepal.Server.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241003055352_add BusinessImage table and add Image column in business table")]
+    partial class addBusinessImagetableandaddImagecolumninbusinesstable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -106,9 +109,6 @@ namespace BizNepal.Server.Migrations
                     b.Property<Guid>("CategoryId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -122,9 +122,6 @@ namespace BizNepal.Server.Migrations
                     b.Property<string>("PhoneNumber")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("datetime2");
 
                     b.Property<string>("UserId")
                         .IsRequired()
@@ -182,32 +179,32 @@ namespace BizNepal.Server.Migrations
                     b.HasData(
                         new
                         {
-                            CategoryId = new Guid("f3b62084-7775-494b-9ad1-310fd8ebe91f"),
+                            CategoryId = new Guid("db317759-edb2-4317-9440-21aed4a8d32a"),
                             CategoryName = "Resturant"
                         },
                         new
                         {
-                            CategoryId = new Guid("2d01d23b-5da2-49d1-905d-a33253bf6f3e"),
+                            CategoryId = new Guid("55f7ef49-ce4a-4062-8abe-c554c6f85327"),
                             CategoryName = "Cafe"
                         },
                         new
                         {
-                            CategoryId = new Guid("a4d5144d-f0b2-4efd-a175-68ccf48f4212"),
+                            CategoryId = new Guid("0a0095ea-f2bc-4f28-80c8-34acb975da39"),
                             CategoryName = "Hospital"
                         },
                         new
                         {
-                            CategoryId = new Guid("1db132a3-4ad9-41f7-aaf8-c9ab2387c4a1"),
+                            CategoryId = new Guid("31428fa7-e77b-449a-b4c4-b5709a7df8d9"),
                             CategoryName = "Hotels"
                         },
                         new
                         {
-                            CategoryId = new Guid("feaea762-d399-47e3-86a6-519c45ec92b3"),
+                            CategoryId = new Guid("f9bcf36a-dd82-4a02-a44b-b08a951c753b"),
                             CategoryName = "Gym"
                         },
                         new
                         {
-                            CategoryId = new Guid("8566a3dc-1f09-4078-bb73-d0f6e5cc25ab"),
+                            CategoryId = new Guid("e308c01c-f4ab-4316-8211-37e9ded10964"),
                             CategoryName = "Shopping"
                         });
                 });
@@ -448,11 +445,13 @@ namespace BizNepal.Server.Migrations
 
             modelBuilder.Entity("BizNepal.Server.Models.BusinessImage", b =>
                 {
-                    b.HasOne("BizNepal.Server.Models.Business", null)
+                    b.HasOne("BizNepal.Server.Models.Business", "Business")
                         .WithMany("BusinessImages")
                         .HasForeignKey("BusinessId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Business");
                 });
 
             modelBuilder.Entity("BizNepal.Server.Models.Review", b =>

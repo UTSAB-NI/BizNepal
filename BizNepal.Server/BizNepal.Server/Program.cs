@@ -8,12 +8,16 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
 using BizNepal.Server.Controllers;
+using Microsoft.AspNetCore.Hosting;
+using BizNepal.Server.Utilities;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.Services.AddControllers();
+
+builder.Services.AddAutoMapper(typeof(MappingProfile));
 
 builder.Services.AddScoped<ITokenRepository, TokenRepository>();
 
@@ -54,6 +58,7 @@ builder.Services.AddSwaggerGen(options =>
 
 
 //configure cors policy to allow connection from react application
+
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAll",
@@ -121,6 +126,8 @@ if (app.Environment.IsDevelopment())
 app.UseCors("AllowAll");
 
 app.UseHttpsRedirection();
+
+app.UseStaticFiles();
 
 app.UseAuthentication();
 
