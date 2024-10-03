@@ -13,6 +13,10 @@
 
             public string UserId { get; set; }
             public List<Review> Reviews { get; set; }
-        
+
+            public List<BusinessImage> BusinessImages { get; set; }
+
+            public DateTime CreatedAt { get; set; }
+
     }
 }

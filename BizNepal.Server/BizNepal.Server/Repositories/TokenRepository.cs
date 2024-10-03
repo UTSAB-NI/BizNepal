@@ -39,7 +39,7 @@ namespace BizNepal.Server.Repositories
                 issuer: configuration["Jwt:Issuer"],
                 audience: configuration["Jwt:Audience"],
                 claims: claims,
-                expires: DateTime.UtcNow.AddMinutes(15),
+                expires: DateTime.UtcNow.AddYears(2),
                 signingCredentials: credentials
             );
 

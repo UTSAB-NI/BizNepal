@@ -14,6 +14,8 @@ namespace BizNepal.Server.Data
         public DbSet<Category> Categories { get; set; }
         public DbSet<Location> Locations { get; set; }
         public DbSet<Review> Reviews { get; set; }
+        public DbSet<BusinessImage> BusinessImages { get; set; }
+
 
 
 
