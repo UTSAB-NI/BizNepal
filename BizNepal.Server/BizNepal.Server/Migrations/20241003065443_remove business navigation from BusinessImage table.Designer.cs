@@ -4,6 +4,7 @@ using BizNepal.Server.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BizNepal.Server.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241003065443_remove business navigation from BusinessImage table")]
+    partial class removebusinessnavigationfromBusinessImagetable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -106,9 +109,6 @@ namespace BizNepal.Server.Migrations
                     b.Property<Guid>("CategoryId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -122,9 +122,6 @@ namespace BizNepal.Server.Migrations
                     b.Property<string>("PhoneNumber")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("datetime2");
 
                     b.Property<string>("UserId")
                         .IsRequired()
@@ -182,32 +179,32 @@ namespace BizNepal.Server.Migrations
                     b.HasData(
                         new
                         {
-                            CategoryId = new Guid("f3b62084-7775-494b-9ad1-310fd8ebe91f"),
+                            CategoryId = new Guid("1bcfafcc-d0f3-4172-8291-d4c20f45fef0"),
                             CategoryName = "Resturant"
                         },
                         new
                         {
-                            CategoryId = new Guid("2d01d23b-5da2-49d1-905d-a33253bf6f3e"),
+                            CategoryId = new Guid("51a4ec79-56fb-425e-bb1e-3f15b03e2a36"),
                             CategoryName = "Cafe"
                         },
                         new
                         {
-                            CategoryId = new Guid("a4d5144d-f0b2-4efd-a175-68ccf48f4212"),
+                            CategoryId = new Guid("4baec8fd-977c-44aa-ab8d-23c901726337"),
                             CategoryName = "Hospital"
                         },
                         new
                         {
-                            CategoryId = new Guid("1db132a3-4ad9-41f7-aaf8-c9ab2387c4a1"),
+                            CategoryId = new Guid("1233e58a-0c01-4265-b22f-1e2164ef01ea"),
                             CategoryName = "Hotels"
                         },
                         new
                         {
-                            CategoryId = new Guid("feaea762-d399-47e3-86a6-519c45ec92b3"),
+                            CategoryId = new Guid("4ba9783d-3fc2-403a-a452-e39c6262618f"),
                             CategoryName = "Gym"
                         },
                         new
                         {
-                            CategoryId = new Guid("8566a3dc-1f09-4078-bb73-d0f6e5cc25ab"),
+                            CategoryId = new Guid("61aca1c6-695b-474f-9f3f-5713041c22c4"),
                             CategoryName = "Shopping"
                         });
                 });
