@@ -19,12 +19,55 @@ namespace BizNepal.Server.Controllers
             
         }
 
-        [HttpGet("test")]
+    
 
-        public IActionResult Index()
+        [HttpGet]
+        public async Task<IActionResult> GetAll()
         {
-            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            return Ok(userId);
+            var businesses = await _context.Businesses.Include(b => b.Location).Include(b=>b.Category).Include(c => c.Reviews).ToListAsync();
+
+            var businessDto = businesses.Select(b => new BusinessResponseDto
+            {
+                BusinessId = b.BusinessId,
+                BusinessName = b.BusinessName,
+                Description = b.Description,
+                Website = b.Website,
+                PhoneNumber = b.PhoneNumber,
+                UserId = b.UserId,
+                Location = new Location
+                {
+                    LocationId = b.Location.LocationId,
+                    Latitude = b.Location.Latitude,
+                    Longitude = b.Location.Longitude
+                },
+
+                Category = new Category
+                {
+                    CategoryId = b.CategoryId,
+                    CategoryName = b.Category.CategoryName
+                },
+
+                Reviews = b.Reviews.Select(r => new Review
+                {
+                    ReviewId = r.ReviewId,
+                    Comment = r.Comment,
+                    BusinessId = r.BusinessId,
+                    UserId = r.UserId,
+                    // Any other properties from Review can be included here
+                }).ToList()
+            }).ToList();
+
+
+
+            return Ok(businessDto);
+        }
+
+        [HttpGet("id")]
+        public async Task<IActionResult> GetById(Guid businessId)
+        {
+
+            var business = _context.Businesses.Include(b => b.Location).First(m => m.BusinessId == businessId);
+            return Ok(business);
 
         }
 
@@ -80,63 +123,51 @@ namespace BizNepal.Server.Controllers
             return Ok(business);
         }
 
-
-        //[HttpPost]
-        //public Task<IActionResult> Update(BusinessRequestDto businessDto)
-        //{
-
-        //    if (businessDto == null)
-        //    {
-        //        return BadRequest();
-        //    }
-            
-        //}
-
-
-
-        [HttpGet]
-        public async Task<IActionResult> GetAll()
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update(Guid id,BusinessUpdateDto updateDto)
         {
-            var businesses = await _context.Businesses.Include(b => b.Location).Include(c => c.Reviews).ToListAsync();
+            // Ensure the user is authenticated
 
-            var businessDto = businesses.Select(b => new BusinessResponseDto
+            var claims = User.Claims.ToList();
+
+
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            if (string.IsNullOrEmpty(userId))
             {
-                BusinessId = b.BusinessId,
-                BusinessName = b.BusinessName,
-                Description = b.Description,
-                Website = b.Website,
-                PhoneNumber = b.PhoneNumber,
-                UserId = b.UserId,
-                Location = new Location
-                {
-                    LocationId = b.Location.LocationId,
-                    Latitude = b.Location.Latitude,
-                    Longitude = b.Location.Longitude
-                },
-                Reviews = b.Reviews.Select(r => new Review
-                {
-                    ReviewId = r.ReviewId,
-                    Comment = r.Comment,
-                    BusinessId = r.BusinessId,
-                    UserId = r.UserId,
-                    // Any other properties from Review can be included here
-                }).ToList()
-            }).ToList();
+                return Unauthorized();
+            }
+
+            var business = await _context.Businesses.FindAsync(id);
+
+            if(business == null)
+            {
+                return NotFound();
+            }
+
+            var location = await _context.Locations.FirstAsync(x => x.LocationId == business.LocationId);
+
+            var category = await _context.Categories
+              .FirstOrDefaultAsync(c => c.CategoryId == business.CategoryId);
 
 
 
-            return Ok(businessDto);
-        }
+            business.BusinessName = updateDto.BusinessName;
+            business.Description = updateDto.Description;
+            business.Website = updateDto.Website;
+            business.PhoneNumber = updateDto.PhoneNumber;
+            location.Latitude = updateDto.Latitude;
+            location.Longitude = updateDto.Longitude;
+            category.CategoryName = updateDto.CategoryName;
 
 
 
-        [HttpGet("id")]
-        public async Task<IActionResult> GetById(Guid businessId)
-        {
 
-            var business = _context.Businesses.Include(b => b.Location).First(m => m.BusinessId == businessId);
+            _context.Businesses.Update(business);
+            await _context.SaveChangesAsync();
+
+
             return Ok(business);
-
         }
 
 
