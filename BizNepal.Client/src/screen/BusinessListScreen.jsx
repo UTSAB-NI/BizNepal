@@ -28,19 +28,23 @@ const BusinessListScreen = () => {
   const [categoryName, setCategoryName] = useState("");
   const [Feedback, setFeedback] = useState("");
   const [FeedbackType, setFeedbackType] = useState("");
+  const [images, setImages] = useState([]);
 
   //getting location from redux
   const { location } = useSelector((state) => state.currentlocation);
-  const {userInfo} = useSelector((state) => state.auth);
+  const { userInfo } = useSelector((state) => state.auth);
 
-  console.log("Token",userInfo?.jwtToken);
+  // console.log("Token", userInfo?.jwtToken);
 
   const dispatch = useDispatch();
 
-  const [listbusiness, { error: businesslisterror, isLoading:businessLoading }] =
-    useListbusinessMutation(); // Fetching listbusiness mutation
+  const [
+    listbusiness,
+    { error: businesslisterror, isLoading: businessLoading },
+  ] = useListbusinessMutation(); // Fetching listbusiness mutation
 
-  const fetchLocation = () => { // Fetching current location
+  const fetchLocation = () => {
+    // Fetching current location
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
@@ -60,34 +64,36 @@ const BusinessListScreen = () => {
     }
   };
 
-  const submitHandler = async (e) => { // Submitting business data
-    e.preventDefault();
-    try {
-      const businessData = {
-        businessName,
-        description,
-        website,
-        phoneNumber,
-        latitude: location?.lat.toString(),
-        longitude: location?.lng.toString(),
-        categoryName,
-      };
-      console.log(businessData);
+  const handleImageChange = (e) => {
+    setImages(e.target.files); // Store the selected images
+  };
 
-      if (!businessData.latitude || !businessData.longitude) {
-        setFeedback("Please select location from map");
-        setFeedbackType("danger");
-        setBusinessname("");
-        setDescription("");
-        setWebsite("");
-        setPhone("");
-        setCategoryName("");
-        return;
-      }
-      if (businessData) {
-        await listbusiness(businessData).unwrap();
+  const submitHandler = async (e) => {
+    e.preventDefault();
+
+    const formData = new FormData();
+    formData.append("businessName", businessName);
+    formData.append("description", description);
+    formData.append("website", website);
+    formData.append("phoneNumber", phoneNumber);
+    formData.append("latitude", location?.lat.toString());
+    formData.append("longitude", location?.lng.toString());
+    formData.append("categoryName", categoryName);
+
+    // Append images
+    Array.from(images).forEach((image) => {
+      formData.append("Images", image);
+    });
+
+    try {
+      const response = await listbusiness(formData).unwrap();
+
+      if (response.message) {
         setFeedback("Business Added Successfully");
         setFeedbackType("success");
+      } else {
+        setFeedback("Unexpected response from server");
+        setFeedbackType("warning");
       }
     } catch (error) {
       setFeedback(error?.data?.message || "Failed to add business");
@@ -95,7 +101,45 @@ const BusinessListScreen = () => {
     }
   };
 
-  const handleMapClick = ({ lat, lng }) => { // Handling map click
+  // const submitHandler = async (e) => {
+  //   // Submitting business data
+  //   e.preventDefault();
+  //   try {
+  //     const businessData = {
+  //       businessName,
+  //       description,
+  //       website,
+  //       phoneNumber,
+  //       latitude: location?.lat.toString(),
+  //       longitude: location?.lng.toString(),
+  //       categoryName,
+  //       images,
+  //     };
+  //     console.log(businessData);
+
+  //     if (!businessData.latitude || !businessData.longitude) {
+  //       setFeedback("Please select location from map");
+  //       setFeedbackType("danger");
+  //       setBusinessname("");
+  //       setDescription("");
+  //       setWebsite("");
+  //       setPhone("");
+  //       setCategoryName("");
+  //       return;
+  //     }
+  //     if (businessData) {
+  //       await listbusiness(businessData).unwrap();
+  //       setFeedback("Business Added Successfully");
+  //       setFeedbackType("success");
+  //     }
+  //   } catch (error) {
+  //     setFeedback(error?.data?.message || "Failed to add business");
+  //     setFeedbackType("danger");
+  //   }
+  // };
+
+  const handleMapClick = ({ lat, lng }) => {
+    // Handling map click
     SetMyLocation({ lat, lng });
     dispatch(setLocation({ lat, lng }));
   };
@@ -200,13 +244,25 @@ const BusinessListScreen = () => {
                       required
                     />
                   </Form.Group>
+
+                  {/* Image Upload */}
+                  <Form.Group controlId="images">
+                    <Form.Label>Upload Business Images</Form.Label>
+                    <Form.Control
+                      type="file"
+                      multiple
+                      onChange={handleImageChange}
+                    />
+                  </Form.Group>
                 </Col>
               </Row>
 
               <Button type="submit" variant="primary" className="my-3">
-                {
-                  businessLoading ? <i className="fas fa-spinner fa-spin"></i> : "Add Business"
-                }
+                {businessLoading ? (
+                  <i className="fas fa-spinner fa-spin"></i>
+                ) : (
+                  "Add Business"
+                )}
               </Button>
             </Form>
           </Col>
