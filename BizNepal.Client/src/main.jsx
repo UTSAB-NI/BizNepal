@@ -35,34 +35,38 @@ import GeneralUser from "./screen/Admin/GeneralUser.jsx";
 import ManageBusiness from "./screen/Admin/ManageBusiness.jsx";
 import ManageCategory from "./screen/Admin/ManageCategory.jsx";
 import AllUser from "./screen/Admin/AllUser.jsx";
+import AdminDashboard from "./screen/Admin/AdminDashboard.jsx";
 
 // import { Provider } from "react-redux";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
-    <Route path="/" element={<App />}>
-      <Route path="/" element={<HomeScreen />} />
-      <Route path="/search/:keyword" element={<SearchScreen />} />
-      <Route path="/login" element={<LoginScreen />} />
+    <>
+      <Route path="/" element={<App />}>
+        <Route path="/" element={<HomeScreen />} />
+        <Route path="/search/:keyword" element={<SearchScreen />} />
+        <Route path="/login" element={<LoginScreen />} />
 
-      <Route path="/register" element={<RegisterScreen />} />
-      <Route path="/category/:category" element={<GetCategory />} />
+        <Route path="/register" element={<RegisterScreen />} />
+        <Route path="/category/:category" element={<GetCategory />} />
 
-      {/* //protected route */}
-      <Route path="/" element={<ProtectedRoute />}>
-        <Route path="/profile" element={<UserprofileScreen />} />
-        <Route path="/businesslist" element={<BusinessListScreen />} />
+        {/* //protected route */}
+        <Route path="/" element={<ProtectedRoute />}>
+          <Route path="/profile" element={<UserprofileScreen />} />
+          <Route path="/businesslist" element={<BusinessListScreen />} />
+        </Route>
       </Route>
 
       {/* //admin route */}
-      <Route path="/admin" element={<AdimRoute />}>
+      <Route element={<AdimRoute />}>
+        <Route path="/admin" element={<AdminDashboard />} />
         <Route path="/admin/generaluser" element={<GeneralUser />} />
-        <Route path="businessowner" element={<BusinessOwner />} />
-        <Route path="business" element={<ManageBusiness />} />
-        <Route path="category" element={<ManageCategory />} />
-        <Route path="alluser" element={<AllUser />} />
+        <Route path="/admin/businessowner" element={<BusinessOwner />} />
+        <Route path="/admin/business" element={<ManageBusiness />} />
+        <Route path="/admin/category" element={<ManageCategory />} />
+        <Route path="/admin/alluser" element={<AllUser />} />
       </Route>
-    </Route>
+    </>
   )
 );
 
