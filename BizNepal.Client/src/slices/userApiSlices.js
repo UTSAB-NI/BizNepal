@@ -27,10 +27,17 @@ const userApiSlice = apiSlice.injectEndpoints({
       }),
     }),
 
-    getbusiness:builder.query({
-      query:() =>({
-        url:BUSINESS_URL,
-        method:"GET"
+    getbusiness: builder.query({
+      query: () => ({
+        url: BUSINESS_URL,
+        method: "GET",
+      }),
+    }),
+
+    deletebusiness: builder.mutation({
+      query: (businessId) => ({
+        url: `${BUSINESS_URL}/${businessId}`,
+        method: "DELETE",
       }),
     }),
 
@@ -111,6 +118,7 @@ export const {
   useLogoutMutation,
   useListbusinessMutation,
   useGetbusinessQuery,
+  useDeletebusinessMutation,
   useGetAlluserQuery,
   useDeleteUserbyIdMutation,
   useAddUserbyadminMutation,

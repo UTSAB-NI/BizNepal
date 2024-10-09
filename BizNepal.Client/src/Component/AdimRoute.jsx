@@ -13,6 +13,7 @@ const AdminLayout = () => {
       <div style={styles.sidebar}>
         <Sidenavbar />  {/* Side Navigation Bar */}
       </div>
+      
       <div style={styles.mainContent}>
         <Outlet /> {/* Render the main content here */}
       </div>
