@@ -42,7 +42,7 @@ namespace BizNepal.Server.Controllers
 
         #region Get Business by Id
 
-        [HttpGet("id", Order = 3)]
+        [HttpGet("{businessId}", Order = 3)]
         public async Task<IActionResult> GetById(Guid businessId)
         {
 
