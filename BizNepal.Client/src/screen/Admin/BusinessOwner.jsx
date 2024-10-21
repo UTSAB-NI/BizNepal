@@ -123,11 +123,17 @@ const BusinessOwner = () => {
       },
     },
   ];
+  useEffect(() =>{
+        if(error){
+          setFeedback("Failed to fetch Business Owner")
+          setFeedbackType("danger")
+        }
+  },[error])
 
   return (
     <div>
       {isLoading && <Loader />}
-      {error && <div>{error}</div>}
+      
       {
         <Alert
           variant={feedbackType}

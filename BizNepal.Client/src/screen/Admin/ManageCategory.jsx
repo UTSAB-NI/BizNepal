@@ -150,11 +150,15 @@ const ManageCategory = () => {
     },
   ];
 
+  useEffect(() => {
+    if (error) {
+      setFeedback("Failed to fetch Category");
+      setFeedbackType("danger");
+    }
+  }, [error]);
   return (
     <div>
       {isLoading && <Loader />}
-      {error && <div>Something went wrong</div>}
-      {deleteLoading && <div>Deleting Category...</div>}
       {feedback && (
         <Alert
           variant={feedbackType}

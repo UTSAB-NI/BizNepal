@@ -124,10 +124,18 @@ const GeneralUser = () => {
     },
   ];
 
+  useEffect(() => {
+    if (error) {
+      setFeedback("Failed to fetch General User" || error.message);
+      setFeedbackType("danger");
+    }
+  }, [error]);
+
   return (
     <div>
       {isLoading && <Loader />}
-      {error && <div>{error}</div>}
+      {/* {error && <div>{JSON.stringify(error)}</div>} */}
+
       {
         <Alert
           variant={feedbackType}
