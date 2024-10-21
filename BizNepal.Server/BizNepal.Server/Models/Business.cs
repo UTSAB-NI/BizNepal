@@ -34,6 +34,7 @@ namespace BizNepal.Server.Models
         [JsonIgnore]
         public ICollection<BusinessImage>? BusinessImages { get; set; }= new List<BusinessImage>();
 
+        [JsonIgnore]
         public ICollection<Review>? Reviews { get; set; }
 
         public DateTime CreatedAt { get; set; }
