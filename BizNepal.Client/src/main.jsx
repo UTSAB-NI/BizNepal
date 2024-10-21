@@ -25,6 +25,7 @@ import RegisterScreen from "./screen/RegisterScreen.jsx";
 import GetCategory from "./screen/GetCategory.jsx";
 import SearchScreen from "./screen/SearchScreen.jsx";
 import UserprofileScreen from "./screen/UserprofileScreen.jsx";
+import GetBusinessByIdScreen from "./screen/GetBusinessByIdScreen.jsx";
 
 import ProtectedRoute from "./Component/ProtectedRoute.jsx";
 import BusinessListScreen from "./screen/BusinessListScreen.jsx";
@@ -49,6 +50,7 @@ const router = createBrowserRouter(
 
         <Route path="/register" element={<RegisterScreen />} />
         <Route path="/category/:category" element={<GetCategory />} />
+        <Route path= "/business/:id" element={<GetBusinessByIdScreen/>}/>
 
         {/* //protected route */}
         <Route path="/" element={<ProtectedRoute />}>

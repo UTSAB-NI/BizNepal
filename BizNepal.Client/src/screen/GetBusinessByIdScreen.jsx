@@ -1,13 +1,33 @@
-import React from 'react'
-import { useParams } from 'react-router-dom'
-const GetBusinessByIdScreen = () => {
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import { useGetbusinessByIdQuery } from "../slices/userApiSlices";
 
+import Loader from "../Component/Loader";
+
+const GetBusinessByIdScreen = () => {
+  const [Feedback, setFeedback] = useState(false);
   const businessid = useParams();
+  const { data, isLoading, iserror } = useGetbusinessByIdQuery(businessid.id);
+
+  useEffect(() => {
+    if (iserror) {
+      setFeedback(data?.message);
+    }
+  }, [iserror]);
+
+  console.log(data);
   return (
     <div>
-       this is <span className='fs-2'>Get Business </span>screen by id = {businessid.id}
-    </div>
-  )
-}
+      {isLoading && <Loader />}
+      {Feedback && <div>{Feedback}</div>}
 
-export default GetBusinessByIdScreen
+      {data && (
+        <div>
+          <div>{data.businessName}</div>
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default GetBusinessByIdScreen;
