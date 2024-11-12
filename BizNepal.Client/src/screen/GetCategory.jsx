@@ -3,8 +3,10 @@ import { useParams, Link } from "react-router-dom";
 import { MDBContainer, MDBRow, MDBCol, MDBCard } from "mdb-react-ui-kit";
 import { Alert, Button } from "react-bootstrap";
 import Loader from "../Component/Loader";
+
 import { useSearchByCategoryQuery } from "../slices/categoryApiSlices";
 import Business from "../Component/Business";
+import CategoryCard from "../Component/CategoryCard";
 
 const GetCategory = () => {
   const { category } = useParams(); // Get category from route params

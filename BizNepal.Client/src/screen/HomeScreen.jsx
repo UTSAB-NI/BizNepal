@@ -1,14 +1,13 @@
 // Code to display the HomeScreen
-import Coverpage from "../Component/Coverpage.jsx";
-import Section from "../Component/Section.jsx";
-import Category from "../Component/Category.jsx";
+import PromoBanner from "../Component/PromoBanner.jsx";
+import InfoBar from "../Component/InfoBar.jsx";
+import CategoryList from "../Component/CategoryList.jsx";
 const HomeScreen = () => {
   return (
     <div>
-      <Coverpage />
-      <Section />
-      <Category />
-      
+      <PromoBanner />
+      <InfoBar />
+      <CategoryList />
     </div>
   );
 };

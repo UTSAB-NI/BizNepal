@@ -11,18 +11,24 @@ import {
   MDBCol,
 } from "mdb-react-ui-kit";
 import Carasoule from "./Carasoule";
-import "../Customcss/coverpage.css";
+import "../Customcss/PromoBanner.css";
 
-const Coverpage = () => {
+const PromoBanner = () => {
   return (
     <>
       <MDBContainer>
         <MDBRow>
           <MDBCol md={8} className="left-cover-page">
-            <Carasoule/>
+            <Carasoule />
           </MDBCol>
           <MDBCol md={4} className="right-cover-page">
-            <MDBRow style={{display:"flex",justifyContent:"center",alignItems:"center"}}>
+            <MDBRow
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
               <MDBCol md={6} className="box">
                 <img src="/images/1.png" className="img"></img>
               </MDBCol>
@@ -43,4 +49,4 @@ const Coverpage = () => {
   );
 };
 
-export default Coverpage;
+export default PromoBanner;

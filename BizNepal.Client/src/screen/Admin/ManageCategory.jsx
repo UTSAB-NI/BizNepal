@@ -20,10 +20,11 @@ const ManageCategory = () => {
   const [showAddCategory, setShowAddCategory] = useState(false);
   const [showEditCategory, setShowEditCategory] = useState(false);
   const [categoryName, setCategoryName] = useState("");
+  const [categoryImage, setCategoryImage] = useState(null); // State for the selected image file
 
   const [selectedCategoryId, setSelectedCategoryId] = useState(null);
 
-  // Fetch users using RTK Query
+  // Fetch categories using RTK Query
   const { data, error, isLoading, refetch } = useGetAllCategoriesQuery();
   console.log(data);
 
@@ -31,11 +32,11 @@ const ManageCategory = () => {
   const [deleteCategory, { isLoading: deleteLoading }] =
     useDeleteCategoryMutation();
 
-  // Add user mutation
+  // Add category mutation
   const [addCategory, { isLoading: addUserLoading }] =
     useAddCategorybyadminMutation();
 
-  // Edit user mutation
+  // Edit category mutation
   const [editCategory, { isLoading: editUserLoading }] =
     useEditCategorybyadminMutation();
 
@@ -79,56 +80,71 @@ const ManageCategory = () => {
     }
   }, [data, deleteCategory]);
 
-  //add category
+  // Add category with image
   const handleSaveCategory = async () => {
-    if (!categoryName) {
-      setFeedback("Please fill all required fields");
+    if (!categoryName || !categoryImage) {
+      setFeedback("Please fill all required fields and select an image");
       setFeedbackType("danger");
       return;
     }
 
+    const formData = new FormData();
+    formData.append("categoryName", categoryName);
+    formData.append("categoryImage", categoryImage); // Attach the selected image
+
     try {
-      await addCategory({ categoryName });
-      setFeedback("User added successfully!");
+      await addCategory(formData); // Assuming mutation can handle FormData
+      setFeedback("Category added successfully!");
       setFeedbackType("success");
       setShowAddCategory(false);
       refetch();
       resetForm();
     } catch (error) {
       console.error("Failed to add category:", error);
-      setFeedback("Failed to add user");
+      setFeedback("Failed to add category");
       setFeedbackType("danger");
     }
   };
 
-  //edit user
+  // Edit category with image
   const handleEditCategory = async () => {
-    // Check if all required fields are filled
     if (!categoryName) {
       setFeedback("Please fill all required fields");
       setFeedbackType("danger");
       return;
     }
 
+    const formData = new FormData();
+    formData.append("categoryId", selectedCategoryId);
+    formData.append("categoryName", categoryName);
+    if (categoryImage) {
+      formData.append("categoryImage", categoryImage); // Attach the new image if it's provided
+    }
+
     try {
-      // Call the edit user mutation
-      await editCategory({ categoryId: selectedCategoryId, categoryName });
+      await editCategory(formData); // Assuming mutation can handle FormData
       setFeedback("Category updated successfully!");
       setFeedbackType("success");
       setShowEditCategory(false);
       refetch();
     } catch (error) {
-      console.error("Failed to update caetgory:", error);
-      setFeedback("Failed to update user");
+      console.error("Failed to update category:", error);
+      setFeedback("Failed to update category");
       setFeedbackType("danger");
     }
   };
 
   const resetForm = () => {
-    setCategoryName(""); // Reset password visibility
+    setCategoryName("");
+    setCategoryImage(null); // Reset image
   };
 
-  //when edit is clicked set old data
+  // Handle file input change
+  const handleImageChange = (e) => {
+    setCategoryImage(e.target.files[0]); // Store the selected file
+  };
+
+  // When edit is clicked, set old data
   const handleEditClick = (category) => {
     setSelectedCategoryId(category.categoryId);
     setCategoryName(category.categoryName);
@@ -156,6 +172,7 @@ const ManageCategory = () => {
       setFeedbackType("danger");
     }
   }, [error]);
+
   return (
     <div>
       {isLoading && <Loader />}
@@ -174,7 +191,6 @@ const ManageCategory = () => {
             <Button
               variant="btn btn-success"
               onClick={() => {
-                // Reset form data
                 setShowAddCategory(true);
               }}
               className="my-3"
@@ -205,7 +221,9 @@ const ManageCategory = () => {
             centered
           >
             <Modal.Header closeButton>
-              <Modal.Title className="text-primary">Add New User</Modal.Title>
+              <Modal.Title className="text-primary">
+                Add New Category
+              </Modal.Title>
             </Modal.Header>
             <Modal.Body>
               <form>
@@ -220,6 +238,18 @@ const ManageCategory = () => {
                     placeholder="Enter categoryName"
                     value={categoryName}
                     onChange={(e) => setCategoryName(e.target.value)}
+                    required
+                  />
+                </div>
+                <div className="mb-3">
+                  <label htmlFor="categoryImage" className="form-label">
+                    Category Image <span className="text-danger">*</span>
+                  </label>
+                  <input
+                    type="file"
+                    className="form-control"
+                    id="categoryImage"
+                    onChange={handleImageChange}
                     required
                   />
                 </div>
@@ -244,7 +274,7 @@ const ManageCategory = () => {
             centered
           >
             <Modal.Header closeButton>
-              <Modal.Title className="text-primary">Edit User</Modal.Title>
+              <Modal.Title className="text-primary">Edit Category</Modal.Title>
             </Modal.Header>
             <Modal.Body>
               <form>
@@ -256,10 +286,20 @@ const ManageCategory = () => {
                     type="text"
                     className="form-control"
                     id="categoryName"
-                    placeholder="Enter category Name"
                     value={categoryName}
                     onChange={(e) => setCategoryName(e.target.value)}
                     required
+                  />
+                </div>
+                <div className="mb-3">
+                  <label htmlFor="categoryImage" className="form-label">
+                    Category Image
+                  </label>
+                  <input
+                    type="file"
+                    className="form-control"
+                    id="categoryImage"
+                    onChange={handleImageChange}
                   />
                 </div>
               </form>
@@ -272,7 +312,7 @@ const ManageCategory = () => {
                 Cancel
               </Button>
               <Button variant="primary" onClick={handleEditCategory}>
-                {editUserLoading ? "Updating Category..." : "Save Changes"}
+                {editUserLoading ? "Updating Category..." : "Update"}
               </Button>
             </Modal.Footer>
           </Modal>
