@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Form, Button, Alert, Container } from "react-bootstrap";
-import { useDispatch, useSelector } from "react-redux";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 import { toast } from "react-toastify";
@@ -17,7 +16,7 @@ const RegisterScreen = () => {
   const [role, setRole] = useState("");
   const [feedback, setFeedback] = useState("");
 
-  const dispatch = useDispatch();
+ 
   const navigate = useNavigate();
   const [register, { isLoading, error }] = useRegisterMutation();
   const [showPassword, setShowPassword] = useState(false);

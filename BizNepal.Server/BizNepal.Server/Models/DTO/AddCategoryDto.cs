@@ -1,7 +1,12 @@
-﻿namespace BizNepal.Server.Models.DTO
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace BizNepal.Server.Models.DTO;
+
+public class AddCategoryDto
 {
-    public class AddCategoryDto
-    {
-        public string CategoryName { get; set; }
-    }
+    [Required]
+    public string CategoryName { get; set; }
+
+    [Required]
+    public IFormFile IconImage { get; set; }
 }

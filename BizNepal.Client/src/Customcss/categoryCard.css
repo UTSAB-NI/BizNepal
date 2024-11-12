@@ -1,0 +1,16 @@
+.icon-circle {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background-color: #f59e0b;
+    margin: 0 auto; /* Center the circle in the card */
+  }
+  
+  .icon-image {
+    width: 80px; /* Adjust size as needed */
+    height: 80px;
+  }
+  

@@ -1,7 +1,6 @@
-﻿namespace BizNepal.Server.Models.DTO
+﻿namespace BizNepal.Server.Models.DTO;
+
+public class BusinessImagesUploadDto
 {
-    public class BusinessImagesUploadDto
-    {
-        public List<IFormFile> Images { get; set; }
-    }
+    public List<IFormFile> Images { get; set; }
 }
