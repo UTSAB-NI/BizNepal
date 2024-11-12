@@ -3,6 +3,7 @@ import { AUth_URL, BUSINESS_URL, USERS_URL, CATEGORIES_URL } from "../constant";
 
 const userApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
+    
     login: builder.mutation({
       query: (data) => ({
         url: `${AUth_URL}/login`,
