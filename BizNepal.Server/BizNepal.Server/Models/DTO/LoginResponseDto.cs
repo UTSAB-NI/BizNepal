@@ -1,8 +1,7 @@
-﻿namespace BizNepal.Server.Models.DTO
+﻿namespace BizNepal.Server.Models.DTO;
+
+public class LoginResponseDto
 {
-    public class LoginResponseDto
-    {
-        public string JwtToken { get; set; }
-        public string Role { get; set; }
-    }
+    public string JwtToken { get; set; }
+    public string Role { get; set; }
 }

@@ -1,6 +1,6 @@
 ﻿namespace BizNepal.Server.Models.DTO;
 
-public class BusinessUpdateDto
+public class BusinessCreateUpdateDto
 {
     public string BusinessName { get; set; }
     public string Description { get; set; }
@@ -10,7 +10,5 @@ public class BusinessUpdateDto
     public string Longitude { get; set; }
     public string CategoryName { get; set; }
 
-    
-
-
+    public List<IFormFile>? Images { get; set; }
 }

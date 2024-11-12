@@ -1,174 +1,173 @@
-﻿namespace BizNepal.Server.Controllers
+﻿namespace BizNepal.Server.Controllers;
+
+using BizNepal.Server.Models;
+using BizNepal.Server.Models.DTO;
+using BizNepal.Server.Repositories;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using System.Text.RegularExpressions;
+
+/// <summary>
+/// Defines the <see cref="AuthController" />
+/// </summary>
+[Route("api/[controller]")]
+[ApiController]
+public class AuthController : ControllerBase
 {
-    using BizNepal.Server.Models;
-    using BizNepal.Server.Models.DTO;
-    using BizNepal.Server.Repositories;
-    using Microsoft.AspNetCore.Identity;
-    using Microsoft.AspNetCore.Mvc;
-    using System.Text.RegularExpressions;
+    /// <summary>
+    /// Defines the _userManager
+    /// </summary>
+    private readonly UserManager<ApplicationUser> _userManager;
 
     /// <summary>
-    /// Defines the <see cref="AuthController" />
+    /// Defines the _tokenRepository
     /// </summary>
-    [Route("api/[controller]")]
-    [ApiController]
-    public class AuthController : ControllerBase
+    private readonly ITokenRepository _tokenRepository;
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="AuthController"/> class.
+    /// </summary>
+    /// <param name="userManager">The userManager<see cref="UserManager{ApplicationUser}"/></param>
+    /// <param name="tokenRepository">The tokenRepository<see cref="ITokenRepository"/></param>
+    public AuthController(UserManager<ApplicationUser> userManager, ITokenRepository tokenRepository)
     {
-        /// <summary>
-        /// Defines the _userManager
-        /// </summary>
-        private readonly UserManager<ApplicationUser> _userManager;
+        _userManager = userManager;
+        _tokenRepository = tokenRepository;
+    }
 
-        /// <summary>
-        /// Defines the _tokenRepository
-        /// </summary>
-        private readonly ITokenRepository _tokenRepository;
+    //POST: /api/auth/Register
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="AuthController"/> class.
-        /// </summary>
-        /// <param name="userManager">The userManager<see cref="UserManager{ApplicationUser}"/></param>
-        /// <param name="tokenRepository">The tokenRepository<see cref="ITokenRepository"/></param>
-        public AuthController(UserManager<ApplicationUser> userManager, ITokenRepository tokenRepository)
+    /// <summary>
+    /// The Register
+    /// </summary>
+    /// <param name="registerRequestDto">The registerRequestDto<see cref="RegisterRequestDto"/></param>
+    /// <returns>The <see cref="Task{IActionResult}"/></returns>
+    [HttpPost]
+    [Route("Register")]
+    public async Task<IActionResult> Register(RegisterRequestDto registerRequestDto)
+    {
+        if (registerRequestDto == null)
         {
-            _userManager = userManager;
-            _tokenRepository = tokenRepository;
+            return BadRequest("Invalid registration request.");
         }
 
-        //POST: /api/auth/Register
+        var existingUserName = await _userManager.FindByNameAsync(registerRequestDto.UserName);
 
-        /// <summary>
-        /// The Register
-        /// </summary>
-        /// <param name="registerRequestDto">The registerRequestDto<see cref="RegisterRequestDto"/></param>
-        /// <returns>The <see cref="Task{IActionResult}"/></returns>
-        [HttpPost]
-        [Route("Register")]
-        public async Task<IActionResult> Register(RegisterRequestDto registerRequestDto)
+        var existingEmail = await _userManager.FindByEmailAsync(registerRequestDto.Email);
+
+        if (existingUserName != null && existingEmail != null)
         {
-            if (registerRequestDto == null)
+            return BadRequest("Username and email are already taken.");
+        }
+
+        if (existingUserName != null)
+        {
+            return BadRequest("A user with the same username already exists.");
+        }
+
+        if (existingEmail != null)
+        {
+            return BadRequest("A user with the same email already exists.");
+        }
+
+        var identityUser = new ApplicationUser
+        {
+            UserName = registerRequestDto.UserName,
+            Email = registerRequestDto.Email,
+            CreatedAt = DateTime.Now,
+
+        };
+
+        var identityResult = await _userManager.CreateAsync(identityUser, registerRequestDto.Password);
+
+        if (!identityResult.Succeeded)
+        {
+            return BadRequest(identityResult.Errors);
+        }
+
+        if (identityResult.Succeeded)
+        {
+            if (registerRequestDto.Role != null && registerRequestDto.Role.Any())
             {
-                return BadRequest("Invalid registration request.");
-            }
+                identityResult = await _userManager.AddToRoleAsync(identityUser, registerRequestDto.Role);
 
-            var existingUserName = await _userManager.FindByNameAsync(registerRequestDto.UserName);
-
-            var existingEmail = await _userManager.FindByEmailAsync(registerRequestDto.Email);
-
-            if (existingUserName != null && existingEmail != null)
-            {
-                return BadRequest("Username and email are already taken.");
-            }
-
-            if (existingUserName != null)
-            {
-                return BadRequest("A user with the same username already exists.");
-            }
-
-            if (existingEmail != null)
-            {
-                return BadRequest("A user with the same email already exists.");
-            }
-
-            var identityUser = new ApplicationUser
-            {
-                UserName = registerRequestDto.UserName,
-                Email = registerRequestDto.Email,
-                CreatedAt = DateTime.Now,
-
-            };
-
-            var identityResult = await _userManager.CreateAsync(identityUser, registerRequestDto.Password);
-
-            if (!identityResult.Succeeded)
-            {
-                return BadRequest(identityResult.Errors);
-            }
-
-            if (identityResult.Succeeded)
-            {
-                if (registerRequestDto.Role != null && registerRequestDto.Role.Any())
+                if (identityResult.Succeeded)
                 {
-                    identityResult = await _userManager.AddToRoleAsync(identityUser, registerRequestDto.Role);
 
-                    if (identityResult.Succeeded)
+                    return Ok(new
                     {
 
-                        return Ok(new
-                        {
-
-                            message = "Registration Successful! please login",
-                            username = identityUser.UserName
-                        });
-
-                    }
+                        message = "Registration Successful! please login",
+                        username = identityUser.UserName
+                    });
 
                 }
-            }
 
-            return BadRequest("Failed to register user.");
+            }
         }
 
-        //POST: /api/auth/Login
+        return BadRequest("Failed to register user.");
+    }
 
-        /// <summary>
-        /// The Login
-        /// </summary>
-        /// <param name="loginRequestDto">The loginRequestDto<see cref="LoginRequestDto"/></param>
-        /// <returns>The <see cref="Task{IActionResult}"/></returns>
-        [HttpPost]
-        [Route("login")]
-        public async Task<IActionResult> Login(LoginRequestDto loginRequestDto)
+    //POST: /api/auth/Login
+
+    /// <summary>
+    /// The Login
+    /// </summary>
+    /// <param name="loginRequestDto">The loginRequestDto<see cref="LoginRequestDto"/></param>
+    /// <returns>The <see cref="Task{IActionResult}"/></returns>
+    [HttpPost]
+    [Route("login")]
+    public async Task<IActionResult> Login(LoginRequestDto loginRequestDto)
+    {
+        string emailPattern = @"^[^@\s]+@[^@\s]+\.[^@\s]+$";
+        bool isEmail = Regex.IsMatch(loginRequestDto.UserIdentifier, emailPattern);
+
+        ApplicationUser user;
+
+        if (isEmail)
         {
-            string emailPattern = @"^[^@\s]+@[^@\s]+\.[^@\s]+$";
-            bool isEmail = Regex.IsMatch(loginRequestDto.UserIdentifier, emailPattern);
+            user = await _userManager.FindByEmailAsync(loginRequestDto.UserIdentifier);
 
-            ApplicationUser user;
+        }
+        else
+        {
+            user = await _userManager.FindByNameAsync(loginRequestDto.UserIdentifier);
+        }
 
-            if (isEmail)
+        //if (user == null)
+        //{
+        //    return Unauthorized("Invalid login attempt.");
+        //}
+
+        Console.WriteLine("testing");
+
+        if (user != null)
+        {
+            var checkPassword = await _userManager.CheckPasswordAsync(user, loginRequestDto.Password);
+
+            if (checkPassword)
             {
-                user = await _userManager.FindByEmailAsync(loginRequestDto.UserIdentifier);
+                //get roles for user
 
-            }
-            else
-            {
-                user = await _userManager.FindByNameAsync(loginRequestDto.UserIdentifier);
-            }
-
-            //if (user == null)
-            //{
-            //    return Unauthorized("Invalid login attempt.");
-            //}
-
-            Console.WriteLine("testing");
-
-            if (user != null)
-            {
-                var checkPassword = await _userManager.CheckPasswordAsync(user, loginRequestDto.Password);
-
-                if (checkPassword)
+                var roles = await _userManager.GetRolesAsync(user);
+                var role = roles.FirstOrDefault();
+                if (role != null)
                 {
-                    //get roles for user
+                    //Create JWT token
+                    var jwtToken = _tokenRepository.CreateJWTToken(user, role);
 
-                    var roles = await _userManager.GetRolesAsync(user);
-                    var role = roles.FirstOrDefault();
-                    if (role != null)
+                    var response = new LoginResponseDto
                     {
-                        //Create JWT token
-                        var jwtToken = _tokenRepository.CreateJWTToken(user, role);
+                        JwtToken = jwtToken,
+                        Role = role
+                    };
 
-                        var response = new LoginResponseDto
-                        {
-                            JwtToken = jwtToken,
-                            Role = role
-                        };
-
-                        return Ok(response);
-                    }
+                    return Ok(response);
                 }
             }
-
-            return BadRequest("Username or Password incorrect");
         }
+
+        return BadRequest("Username or Password incorrect");
     }
 }
