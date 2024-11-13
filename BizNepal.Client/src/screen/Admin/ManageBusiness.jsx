@@ -5,6 +5,7 @@ import {
   useGetbusinessQuery,
   useDeletebusinessMutation,
   useEditBusinessMutation,
+  useGetAllCategoriesQuery,
 } from "../../slices/userApiSlices";
 import DataTable from "datatables.net-react";
 import DT from "datatables.net-bs5";
@@ -34,6 +35,8 @@ const ManageBusiness = () => {
   // Edit business
   const [editBusiness, { isLoading: isEditing }] = useEditBusinessMutation();
 
+  // Fetch all categories
+  const { data: categories } = useGetAllCategoriesQuery();
   useEffect(() => {
     if (isDeleteError) {
       setFeedback("Failed to delete business");
@@ -205,13 +208,26 @@ const ManageBusiness = () => {
             </div>
             <div className="mb-3">
               <label className="form-label">Category</label>
-              <input
+              {/* <input
                 type="text"
                 className="form-control"
                 value={category}
                 onChange={(e) => setCategory(e.target.value)}
                 required
-              />
+              /> */}
+
+              <select
+                className="form-select"
+                value={category}
+                onChange={(e) => setCategory(e.target.value)}
+              >
+                {categories &&
+                  categories.map((category, index) => (
+                    <option key={index} value={category.categoryName}>
+                      {category.categoryName}
+                    </option>
+                  ))}
+              </select>
             </div>
             <div className="mb-3">
               <label className="form-label">Phone Number</label>
