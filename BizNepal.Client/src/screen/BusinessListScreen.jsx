@@ -1,11 +1,13 @@
 // Desc: BusinessListScreen component to add business details
 import React, { useState, useEffect, useCallback } from "react";
+import { useNavigate } from "react-router-dom";
 import { Container, Form, Button, Row, Col, Alert } from "react-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
 import { setLocation } from "../slices/getlocationSclies";
 import GoogleMapReact from "google-map-react";
 
 import { useListbusinessMutation } from "../slices/userApiSlices";
+import { useGetAllCategoriesQuery } from "../slices/userApiSlices";
 
 import "../Customcss/BusinessList.css";
 
@@ -33,16 +35,20 @@ const BusinessListScreen = () => {
   //getting location from redux
   const { location } = useSelector((state) => state.currentlocation);
   const { userInfo } = useSelector((state) => state.auth);
-
-  // console.log("Token", userInfo?.jwtToken);
-
+  
   const dispatch = useDispatch();
 
+  //navigation
+  const navigate = useNavigate();
+
+  // Fetching listbusiness mutation
   const [
     listbusiness,
     { error: businesslisterror, isLoading: businessLoading },
   ] = useListbusinessMutation(); // Fetching listbusiness mutation
 
+  //getting all categories
+  const { data: categories, isLoading, isError } = useGetAllCategoriesQuery();
   const fetchLocation = () => {
     // Fetching current location
     if (navigator.geolocation) {
@@ -92,12 +98,16 @@ const BusinessListScreen = () => {
       formData.append("Images", image);
     });
 
+    console.log("Form Data", formData);
+
     try {
       const response = await listbusiness(formData).unwrap();
+      console.log("Response", response);
 
       if (response.message) {
         setFeedback("Business Added Successfully");
         setFeedbackType("success");
+        navigate("/");
       } else {
         setFeedback("Unexpected response from server");
         setFeedbackType("warning");
@@ -241,7 +251,7 @@ const BusinessListScreen = () => {
                     />
                   </Form.Group>
 
-                  <Form.Group controlId="categoryName">
+                  {/* <Form.Group controlId="categoryName">
                     <Form.Label>Category Name </Form.Label>
                     <Form.Control
                       type="text"
@@ -250,6 +260,28 @@ const BusinessListScreen = () => {
                       placeholder="Enter Category Name"
                       required
                     />
+                  </Form.Group> */}
+
+                  <Form.Group controlId="categoryName">
+                    <Form.Label>Category Name</Form.Label>
+                    <Form.Control
+                      as="select"
+                      value={categoryName}
+                      onChange={(e) => setCategoryName(e.target.value)}
+                      required
+                    >
+                      {
+                        // Display categories from the API
+                        categories?.map((category) => (
+                          <option
+                            key={category.id}
+                            value={category.categoryName}
+                          >
+                            {category.categoryName}
+                          </option>
+                        ))
+                      }
+                    </Form.Control>
                   </Form.Group>
 
                   {/* Image Upload */}

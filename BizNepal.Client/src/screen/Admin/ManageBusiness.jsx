@@ -59,7 +59,6 @@ const ManageBusiness = () => {
               setFeedbackType("success");
               refetch();
             } catch (error) {
-              console.error("Failed to delete business:", error);
               setFeedback("Failed to delete business");
               setFeedbackType("danger");
             }
