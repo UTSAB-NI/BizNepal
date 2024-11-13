@@ -3,7 +3,6 @@ import { AUth_URL, BUSINESS_URL, USERS_URL, CATEGORIES_URL } from "../constant";
 
 const userApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    
     login: builder.mutation({
       query: (data) => ({
         url: `${AUth_URL}/login`,
@@ -42,10 +41,18 @@ const userApiSlice = apiSlice.injectEndpoints({
       }),
     }),
 
-    deletebusiness: builder.mutation({
+    Deletebusiness: builder.mutation({
       query: (businessId) => ({
         url: `${BUSINESS_URL}/${businessId}`,
         method: "DELETE",
+      }),
+    }),
+
+    editBusiness: builder.mutation({
+      query: (data) => ({
+        url: `${BUSINESS_URL}/${data.businessId}`,
+        method: "PUT", // Use PUT or PATCH based on your API design
+        body: data,
       }),
     }),
 
@@ -128,6 +135,7 @@ export const {
   useGetbusinessQuery,
   useGetbusinessByIdQuery,
   useDeletebusinessMutation,
+  useEditBusinessMutation,
   useGetAlluserQuery,
   useDeleteUserbyIdMutation,
   useAddUserbyadminMutation,
