@@ -53,12 +53,12 @@ const ManageBusiness = () => {
           );
           if (confirmDelete) {
             try {
-              await deletebusiness(businessid);
+              const res = await deletebusiness(businessid);
+              console.log(res);
               setFeedback("Business deleted successfully");
               setFeedbackType("success");
               refetch();
             } catch (error) {
-              console.error("Failed to delete business:", error);
               setFeedback("Failed to delete business");
               setFeedbackType("danger");
             }
