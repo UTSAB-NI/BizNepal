@@ -107,7 +107,7 @@ public class CategoryController : ControllerBase
     // POST: api/Category
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPost]
-    public async Task<ActionResult> AddCategory(AddCategoryDto addCategoryDto)
+    public async Task<ActionResult> AddCategory([FromForm] AddCategoryDto addCategoryDto)
     {
         if (!ModelState.IsValid)
         {

@@ -26,7 +26,7 @@ public class BusinessController : ControllerBase
     #region Get all Businesses
 
     [HttpGet(Order =2)]
-    public async Task<ActionResult<IEnumerable<BusinessResponseDto>>> GetAll(int pageSize = 10,
+    public async Task<ActionResult<IEnumerable<BusinessResponseDto>>> GetAll(int pageSize = 50,
                                        string? searchTerm = null,
                                        string? category = null,
                                        int pageNumber = 1,
@@ -75,7 +75,7 @@ public class BusinessController : ControllerBase
 
         // Execute the query to count total business
         var businessCount = await businesses.CountAsync();
-
+        
         var totalPages = (int)Math.Ceiling(businessCount / (double)pageSize);
 
         var paginatedBook = await businesses.Skip((pageNumber - 1) * pageSize)
@@ -117,11 +117,11 @@ public class BusinessController : ControllerBase
     }
 
     #endregion
-
+    
     #region Create Business
 
     [HttpPost("Create", Order = 4)]
-    public async Task<IActionResult> Create(BusinessCreateUpdateDto input)
+    public async Task<IActionResult> Create([FromForm] BusinessCreateUpdateDto input)
     {
         // Ensure the user is authenticated
         var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -232,8 +232,8 @@ public class BusinessController : ControllerBase
     #region Update Business
 
     [HttpPut("{id}", Order = 5)]
-    public async Task<IActionResult> Update(Guid id,BusinessCreateUpdateDto input)
-    {
+    public async Task<IActionResult> Update(Guid id,[FromBody] BusinessCreateUpdateDto input)
+  {
 
         var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
@@ -275,8 +275,8 @@ public class BusinessController : ControllerBase
 
     #region Delete Business
 
-    [HttpDelete(Order = 6)]
-    public async Task<IActionResult> Delete([FromQuery] Guid id)
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> Delete(Guid id)
     {
         var business = await _context.Businesses.FindAsync(id);
 
