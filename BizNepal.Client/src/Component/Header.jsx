@@ -29,17 +29,6 @@ const Header = ({ toggleTheme, currentTheme }) => {
     navigate("/");
   };
 
-  const getTimeIcon = () => {
-    const hours = new Date().getHours();
-    if (hours < 12) {
-      return "🌅";
-    } else if (hours < 18) {
-      return "🌞";
-    } else {
-      return "🌙";
-    }
-  };
-
   return (
     <Navbar expand="lg" className="bg-body-tertiary py-3 shadow-sm">
       <Container fluid className="align-items-center">
@@ -47,13 +36,16 @@ const Header = ({ toggleTheme, currentTheme }) => {
           <Image src="/images/biznepallogo.png" style={{ width: "150px" }} />
         </Navbar.Brand>
 
-        <Navbar.Toggle aria-controls="basic-navbar-nav" className="toggle-btn" />
+        <Navbar.Toggle
+          aria-controls="basic-navbar-nav"
+          className="toggle-btn"
+        />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto align-items-center">
             <Nav.Link as={Link} to="/" className="px-3">
               Home
             </Nav.Link>
-            
+
             {/* Integrated SearchWithSuggestions Component */}
             <div className="searchbox-wrapper d-flex align-items-center">
               <Searchbox />
@@ -87,7 +79,10 @@ const Header = ({ toggleTheme, currentTheme }) => {
                 </Nav.Link>
 
                 <Nav.Link as={Link} to="/register">
-                  <Button variant="outline-primary" className="mx-2 btn-register">
+                  <Button
+                    variant="outline-primary"
+                    className="mx-2 btn-register"
+                  >
                     Sign Up
                   </Button>
                 </Nav.Link>
@@ -113,8 +108,6 @@ const Header = ({ toggleTheme, currentTheme }) => {
             </Button>
           </Nav>
         </Navbar.Collapse>
-
-        <div className="time-icon ms-3 d-none d-lg-block">{getTimeIcon()}</div>
       </Container>
     </Navbar>
   );

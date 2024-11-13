@@ -75,7 +75,14 @@ const BusinessListScreen = () => {
     formData.append("businessName", businessName);
     formData.append("description", description);
     formData.append("website", website);
-    formData.append("phoneNumber", phoneNumber);
+    if (phoneNumber.length !== 10) {
+      setFeedback("Phone number should be 10 digits");
+      setFeedbackType("danger");
+      return; // Stop form submission if the phone number is invalid
+    } else {
+      formData.append("phoneNumber", phoneNumber);
+    }
+
     formData.append("latitude", location?.lat.toString());
     formData.append("longitude", location?.lng.toString());
     formData.append("categoryName", categoryName);
