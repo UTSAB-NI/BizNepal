@@ -18,7 +18,7 @@ const ManageBusiness = () => {
   const [feedback, setFeedback] = useState("");
   const [feedbackType, setFeedbackType] = useState("");
 
-  const { data, isLoading, isError } = useGetbusinessQuery();
+  const { data, isLoading, isError, refetch } = useGetbusinessQuery();
   const [deletebusiness, { isLoading: isDeleting, isError: isDeleteError }] =
     useDeletebusinessMutation();
   console.log(data);
