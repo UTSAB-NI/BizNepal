@@ -20,7 +20,7 @@ const ManageCategory = () => {
   const [showAddCategory, setShowAddCategory] = useState(false);
   const [showEditCategory, setShowEditCategory] = useState(false);
   const [categoryName, setCategoryName] = useState("");
-  const [categoryImage, setCategoryImage] = useState(null); // State for the selected image file
+  const [iconImage, setIconImage] = useState(null); // State for the selected image file
 
   const [selectedCategoryId, setSelectedCategoryId] = useState(null);
 
@@ -82,7 +82,7 @@ const ManageCategory = () => {
 
   // Add category with image
   const handleSaveCategory = async () => {
-    if (!categoryName || !categoryImage) {
+    if (!categoryName || !iconImage) {
       setFeedback("Please fill all required fields and select an image");
       setFeedbackType("danger");
       return;
@@ -90,7 +90,7 @@ const ManageCategory = () => {
 
     const formData = new FormData();
     formData.append("categoryName", categoryName);
-    formData.append("categoryImage", categoryImage); // Attach the selected image
+    formData.append("iconImage", iconImage); // Attach the selected image
 
     try {
       await addCategory(formData); // Assuming mutation can handle FormData
@@ -117,8 +117,9 @@ const ManageCategory = () => {
     const formData = new FormData();
     formData.append("categoryId", selectedCategoryId);
     formData.append("categoryName", categoryName);
-    if (categoryImage) {
-      formData.append("categoryImage", categoryImage); // Attach the new image if it's provided
+
+    if (iconImage) {
+      formData.append("iconImage", iconImage); // Attach the new image if it's provided
     }
 
     try {
@@ -136,12 +137,12 @@ const ManageCategory = () => {
 
   const resetForm = () => {
     setCategoryName("");
-    setCategoryImage(null); // Reset image
+    setIconImage(null); // Reset image
   };
 
   // Handle file input change
   const handleImageChange = (e) => {
-    setCategoryImage(e.target.files[0]); // Store the selected file
+    setIconImage(e.target.files[0]); // Store the selected file
   };
 
   // When edit is clicked, set old data

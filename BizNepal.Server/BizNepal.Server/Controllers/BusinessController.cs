@@ -232,7 +232,7 @@ public class BusinessController : ControllerBase
     #region Update Business
 
     [HttpPut("{id}", Order = 5)]
-    public async Task<IActionResult> Update(Guid id,[FromBody] BusinessCreateUpdateDto input)
+    public async Task<IActionResult> Update(Guid id,[FromBody] BusinessUpdateDto input)
   {
 
         var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -249,7 +249,7 @@ public class BusinessController : ControllerBase
             return NotFound();
         }
 
-        var location = await _context.Locations.FirstAsync(x => x.LocationId == business.LocationId);
+        
 
         var category = await _context.Categories
           .FirstOrDefaultAsync(c => c.CategoryId == business.CategoryId);
@@ -260,8 +260,7 @@ public class BusinessController : ControllerBase
         business.PhoneNumber = input.PhoneNumber;
         business.UpdatedAt=DateTime.Now;
 
-        location.Latitude = input.Latitude;
-        location.Longitude = input.Longitude;
+       
 
         category.CategoryName = input.CategoryName;
 
@@ -283,12 +282,13 @@ public class BusinessController : ControllerBase
         if (business == null)
         {
             return NotFound("Business not found");
+
         }
 
         _context.Businesses.Remove(business);
         await _context.SaveChangesAsync();
 
-        return Ok("Deleted Successfully");
+        return Ok(new {message="Book Deleted successfully"});
 
     }
 

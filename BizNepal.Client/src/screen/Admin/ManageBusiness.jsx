@@ -53,7 +53,8 @@ const ManageBusiness = () => {
           );
           if (confirmDelete) {
             try {
-              await deletebusiness(businessid);
+              const res = await deletebusiness(businessid);
+              console.log(res);
               setFeedback("Business deleted successfully");
               setFeedbackType("success");
               refetch();
@@ -85,9 +86,8 @@ const ManageBusiness = () => {
     setBusinessId(business.businessId);
     setBusinessName(business.businessName);
     setDescription(business.description);
-    setCategory(business.category);
+    setCategory(business.category.categoryName);
     setPhoneNumber(business.phoneNumber);
-    setLocation(business.location.locationId);
     setWebsite(business.website);
     setShowEdit(true);
   };
@@ -99,9 +99,8 @@ const ManageBusiness = () => {
         businessId: editbusinessId,
         businessName,
         description,
-        category,
+        categoryName: category,
         phoneNumber,
-        location,
         website,
       });
 
@@ -224,7 +223,7 @@ const ManageBusiness = () => {
                 onChange={(e) => setPhoneNumber(e.target.value)}
               />
             </div>
-            <div className="mb-3">
+            {/* <div className="mb-3">
               <label className="form-label">Location ID</label>
               <input
                 type="text"
@@ -232,7 +231,7 @@ const ManageBusiness = () => {
                 value={location}
                 onChange={(e) => setLocation(e.target.value)}
               />
-            </div>
+            </div> */}
             <div className="mb-3">
               <label className="form-label">Website</label>
               <input
