@@ -28,7 +28,7 @@ const ManageBusiness = () => {
   const { data, isLoading, isError, refetch } = useGetbusinessQuery();
   // console.log(data);
   // Delete business
-  const [Deletebusiness, { isLoading: isDeleting, isError: isDeleteError }] =
+  const [deletebusiness, { isLoading: isDeleting, isError: isDeleteError }] =
     useDeletebusinessMutation();
 
   // Edit business
@@ -53,7 +53,7 @@ const ManageBusiness = () => {
           );
           if (confirmDelete) {
             try {
-              await Deletebusiness(businessid);
+              await deletebusiness(businessid);
               setFeedback("Business deleted successfully");
               setFeedbackType("success");
               refetch();
@@ -78,7 +78,7 @@ const ManageBusiness = () => {
         table.removeEventListener("click", handleClick);
       };
     }
-  }, [data, Deletebusiness]);
+  }, [data, deletebusiness]);
 
   // Open edit modal and set initial data
   const handleEditClick = (business) => {

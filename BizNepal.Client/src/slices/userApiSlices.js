@@ -41,7 +41,7 @@ const userApiSlice = apiSlice.injectEndpoints({
       }),
     }),
 
-    Deletebusiness: builder.mutation({
+    deletebusiness: builder.mutation({
       query: (businessId) => ({
         url: `${BUSINESS_URL}/${businessId}`,
         method: "DELETE",
