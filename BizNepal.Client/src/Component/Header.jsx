@@ -65,7 +65,7 @@ const Header = ({ toggleTheme, currentTheme }) => {
                 </NavDropdown>
 
                 <Nav.Link as={Link} to="/businesslist">
-                  <Button variant="primary" className="btn-business mx-2">
+                  <Button variant="danger" className="btn-business mx-2">
                     + List Your Business
                   </Button>
                 </Nav.Link>

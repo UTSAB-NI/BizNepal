@@ -27,7 +27,7 @@ const ManageBusiness = () => {
 
   // Fetch business data
   const { data, isLoading, isError, refetch } = useGetbusinessQuery();
-  // console.log(data);
+  console.log("Business Data", data);
   // Delete business
   const [deletebusiness, { isLoading: isDeleting, isError: isDeleteError }] =
     useDeletebusinessMutation();
@@ -223,7 +223,7 @@ const ManageBusiness = () => {
               >
                 {categories &&
                   categories.map((category, index) => (
-                    <option key={index} value={category.categoryName}>
+                    <option key={index} value={category.categoryId}>
                       {category.categoryName}
                     </option>
                   ))}
