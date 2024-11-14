@@ -35,7 +35,7 @@ const BusinessListScreen = () => {
   //getting location from redux
   const { location } = useSelector((state) => state.currentlocation);
   const { userInfo } = useSelector((state) => state.auth);
-  
+
   const dispatch = useDispatch();
 
   //navigation
@@ -272,14 +272,13 @@ const BusinessListScreen = () => {
                     >
                       {
                         // Display categories from the API
-                        categories?.map((category) => (
-                          <option
-                            key={category.id}
-                            value={category.categoryName}
-                          >
-                            {category.categoryName}
-                          </option>
-                        ))
+
+                        categories &&
+                          categories.map((category, index) => (
+                            <option key={index} value={category.categoryName}>
+                              {category.categoryName}
+                            </option>
+                          ))
                       }
                     </Form.Control>
                   </Form.Group>

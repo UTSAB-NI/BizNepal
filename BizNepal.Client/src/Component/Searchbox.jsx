@@ -75,7 +75,7 @@ const Searchbox = () => {
       )}
 
       {/* Search button */}
-      <Button variant="warning" onClick={handleSearch} className="mx-2 btn-sm ">
+      <Button variant="danger" onClick={handleSearch} className="mx-2 btn-sm ">
         <MDBIcon icon="search" className="ms-2" className="text-center" />
       </Button>
     </Form>
