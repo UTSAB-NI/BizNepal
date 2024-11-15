@@ -15,20 +15,23 @@ const BusinessCategoryPieChart = () => {
         label: "Businesses by Category",
         data: [], // Number of businesses in each category
         backgroundColor: [
-          "#FF5733", "#33FF57", "#3357FF", "#FF33F6", "#F6A833", "#33F6FF", "#F633FF",
-          "#57FF33", "#5733FF", "#F63333",
+          "#FF5733",
+          "#33FF57",
+          "#3357FF",
+          "#FF33F6",
+          "#F6A833",
+          "#33F6FF",
+          "#F633FF",
+          "#57FF33",
+          "#5733FF",
+          "#F63333",
         ], // Different colors for each category
       },
     ],
   });
 
   useEffect(() => {
-    if (isLoading) return;
-
-    if (isError) {
-      console.log("Failed to fetch businesses");
-      return;
-    }
+    if(!isLoading || !isError || !businesses) return;
 
     // Group businesses by category
     const categoryCount = {};
@@ -72,7 +75,7 @@ const BusinessCategoryPieChart = () => {
               tooltip: {
                 callbacks: {
                   label: (context) => {
-                    const label = context.label || '';
+                    const label = context.label || "";
                     const value = context.raw;
                     return `${label}: ${value} businesses`;
                   },

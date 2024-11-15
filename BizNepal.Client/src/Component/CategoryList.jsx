@@ -10,18 +10,19 @@ import { useEffect } from "react";
 
 // import { useSearchByCategoryQuery } from "../slices/categoryApiSlices";
 // Fetch users using RTK Query
+import Categorydata from "../data/Category.js"
 
 const CategoryList = () => {
-  const { data, error, isLoading, refetch } = useGetAllCategoriesQuery();
+  // const { data:Categorydata, error, isLoading, refetch } = useGetAllCategoriesQuery();
 
-  useEffect(() => {
-    refetch();
-  }, []);
+  // useEffect(() => {
+  //   refetch();
+  // }, []);
 
-  if (isLoading) return <p>Loading categories...</p>;
-  if (error) return <p>Error loading categories</p>;
+  // if (isLoading) return <p>Loading categories...</p>;
+  // if (error) return <p>Error loading categories</p>;
 
-  console.log(data);
+  // console.log(data);
 
   return (
     <div>
@@ -31,7 +32,7 @@ const CategoryList = () => {
       >
         <h2 className="text-dark">Our Top Category</h2>
         <MDBRow className="my-2">
-          {data.map((c, index) => (
+          {Categorydata.map((c, index) => (
             <MDBCol key={c.id} xs={6} sm={4} md={3} lg={2} className="mb-4">
               <Link to={`/category/${c.categoryName}`}>
                 <CategoryCard
