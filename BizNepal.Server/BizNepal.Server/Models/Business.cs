@@ -4,7 +4,7 @@ using System.Text.Json.Serialization;
 
 namespace BizNepal.Server.Models;
 
-public class Business
+public class Business : AuditModel
 {
     [Key]
     public Guid BusinessId { get; set; }
@@ -36,12 +36,6 @@ public class Business
 
     [JsonIgnore]
     public ICollection<Review>? Reviews { get; set; }
-
-    public DateTime CreatedAt { get; set; }
-
-    public DateTime? UpdatedAt { get; set; }
-
-
 
 
 }

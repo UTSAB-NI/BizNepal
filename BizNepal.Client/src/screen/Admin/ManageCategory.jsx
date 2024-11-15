@@ -26,7 +26,6 @@ const ManageCategory = () => {
 
   // Fetch categories using RTK Query
   const { data, error, isLoading, refetch } = useGetAllCategoriesQuery();
-  console.log(data);
 
   // // Delete mutation
   const [deleteCategory, { isLoading: deleteLoading }] =
@@ -115,19 +114,20 @@ const ManageCategory = () => {
     }
 
     const formData = new FormData();
-    formData.append("categoryId", selectedCategoryId);
+
     formData.append("categoryName", categoryName);
 
     if (iconImage) {
       formData.append("iconImage", iconImage); // Attach the new image if it's provided
     }
-
+    console.log(formData);
     try {
-      await editCategory(formData); // Assuming mutation can handle FormData
+      await editCategory({ categoryId: selectedCategoryId, data: formData }); // Assuming mutation can handle FormData
       setFeedback("Category updated successfully!");
       setFeedbackType("success");
       setShowEditCategory(false);
       refetch();
+      resetForm();
     } catch (error) {
       console.error("Failed to update category:", error);
       setFeedback("Failed to update category");
@@ -149,6 +149,7 @@ const ManageCategory = () => {
   const handleEditClick = (category) => {
     setSelectedCategoryId(category.categoryId);
     setCategoryName(category.categoryName);
+    setIconImage(null);
     setShowEditCategory(true);
   };
 
@@ -192,6 +193,7 @@ const ManageCategory = () => {
             <Button
               variant="btn btn-success"
               onClick={() => {
+                resetForm();
                 setShowAddCategory(true);
               }}
               className="my-3"

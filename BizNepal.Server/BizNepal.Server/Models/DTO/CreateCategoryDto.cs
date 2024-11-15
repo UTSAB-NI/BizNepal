@@ -2,7 +2,7 @@
 
 namespace BizNepal.Server.Models.DTO;
 
-public class AddCategoryDto
+public class CreateCategoryDto
 {
     [Required]
     public string CategoryName { get; set; }

@@ -10,8 +10,12 @@ public class BusinessImage
 
     [Required]
     public string ImageUrl { get; set; }
-
+    
+    [Required]
     public Guid BusinessId { get; set; }
 
-    
+    // Navigation property
+    public Business Business { get; set; }
+
+
 }

@@ -118,7 +118,7 @@ const userApiSlice = apiSlice.injectEndpoints({
     }),
 
     editCategorybyadmin: builder.mutation({
-      query: ({ categoryId, ...data }) => ({
+      query: ({ categoryId, data }) => ({
         url: `${CATEGORIES_URL}/${categoryId}`,
         method: "PUT", // Use PUT or PATCH based on your API design
         body: data,
