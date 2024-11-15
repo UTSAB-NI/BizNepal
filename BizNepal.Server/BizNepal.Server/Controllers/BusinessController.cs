@@ -121,22 +121,35 @@ public class BusinessController : ControllerBase
     #region Create Business
 
     [HttpPost("Create", Order = 4)]
-    public async Task<IActionResult> Create([FromForm] BusinessCreateUpdateDto input)
+    public async Task<IActionResult> Create([FromForm] CreateBusinessDto input)
     {
+
         // Ensure the user is authenticated
         var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        var email = User.FindFirst(ClaimTypes.Email)?.Value;
 
         if (string.IsNullOrEmpty(userId))
         {
             return Unauthorized("Please login first");
         }
 
-        var category = await _context.Categories
-            .FirstOrDefaultAsync(c => c.CategoryName == input.CategoryName);
-
-        if (category == null)
+        if (!ModelState.IsValid)
         {
-            return BadRequest($"Category '{input.CategoryName}' does not exist.");
+            return BadRequest(ModelState);
+        }
+
+        bool categoryExists = await _context.Categories.AnyAsync(c => c.CategoryId == input.CategoryId);
+
+        if (!categoryExists)
+        {
+            return BadRequest(new { message = "Category doesnt exists" });
+        }
+
+        bool businessExists = await _context.Businesses.AnyAsync(c => c.BusinessName.ToLower() == input.BusinessName.ToLower());
+
+        if (businessExists)
+        {
+            return BadRequest(new { message = "Business Name already exist" });
         }
 
         // Use a transaction scope to ensure atomicity
@@ -158,12 +171,13 @@ public class BusinessController : ControllerBase
             {
                 BusinessName = input.BusinessName,
                 Description = input.Description,
-                Website = input.Website,
+                Website = input.Website!,
                 PhoneNumber = input.PhoneNumber,
                 UserId = userId,
                 LocationId = location.LocationId,
-                CategoryId = category.CategoryId,
+                CategoryId = input.CategoryId,
                 CreatedAt = DateTime.Now,
+                CreatedBy = email!
             };
 
             _context.Businesses.Add(business);
@@ -184,7 +198,7 @@ public class BusinessController : ControllerBase
                         var uniqueId = Guid.NewGuid().ToString(); // Unique identifier
                         var extension = Path.GetExtension(image.FileName).ToLower();
                         var fileName = $"{businessName}-{timestamp}-{uniqueId}{extension}";
-                        var filePath = Path.Combine("wwwroot/businessImages", fileName);
+                        var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "businessImages", fileName);
 
                         using (var stream = new FileStream(filePath, FileMode.Create))
                         {
@@ -232,7 +246,7 @@ public class BusinessController : ControllerBase
     #region Update Business
 
     [HttpPut("{id}", Order = 5)]
-    public async Task<IActionResult> Update(Guid id,[FromBody] BusinessUpdateDto input)
+    public async Task<IActionResult> Update(Guid id,[FromBody] UpdateBusinessDto input)
   {
 
         var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -249,20 +263,15 @@ public class BusinessController : ControllerBase
             return NotFound();
         }
 
-        
-
-        var category = await _context.Categories
-          .FirstOrDefaultAsync(c => c.CategoryId == business.CategoryId);
 
         business.BusinessName = input.BusinessName;
         business.Description = input.Description;
         business.Website = input.Website;
         business.PhoneNumber = input.PhoneNumber;
         business.UpdatedAt=DateTime.Now;
+        business.CategoryId=input.CategoryId;
 
-       
 
-        category.CategoryName = input.CategoryName;
 
         await _context.SaveChangesAsync();
 
@@ -277,19 +286,57 @@ public class BusinessController : ControllerBase
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(Guid id)
     {
-        var business = await _context.Businesses.FindAsync(id);
+        using var transaction = await _context.Database.BeginTransactionAsync();
 
-        if (business == null)
+        try
         {
-            return NotFound("Business not found");
+            var business = await _context.Businesses
+                .Include(b => b.BusinessImages)
+                .Include(b => b.Location)
+                .FirstOrDefaultAsync(b => b.BusinessId == id);
 
+            if (business == null)
+            {
+                return NotFound("Business not found");
+            }
+
+            // Delete image files from wwwroot
+            if (business.BusinessImages != null && business.BusinessImages.Count > 0)
+            {
+                foreach (var image in business.BusinessImages)
+                {
+                    var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", image.ImageUrl.TrimStart('/'));
+                    if (System.IO.File.Exists(filePath))
+                    {
+                        System.IO.File.Delete(filePath);
+                    }
+                }
+            }
+
+            // Get the location ID before removing the business
+            var locationId = business.LocationId;
+
+            // Remove the business and its images
+            _context.Businesses.Remove(business);
+            await _context.SaveChangesAsync();
+
+            // Explicitly remove the location if it still exists
+            var location = await _context.Locations.FindAsync(locationId);
+            if (location != null)
+            {
+                _context.Locations.Remove(location);
+                await _context.SaveChangesAsync();
+            }
+
+            await transaction.CommitAsync();
+
+            return Ok(new { message = "Business, location, and associated images deleted successfully" });
         }
-
-        _context.Businesses.Remove(business);
-        await _context.SaveChangesAsync();
-
-        return Ok(new {message="Book Deleted successfully"});
-
+        catch (Exception ex)
+        {
+            await transaction.RollbackAsync();
+            return StatusCode(500, $"Internal server error: {ex.Message}");
+        }
     }
 
     #endregion

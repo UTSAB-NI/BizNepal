@@ -28,6 +28,8 @@ const BusinessListScreen = () => {
   const [website, setWebsite] = useState("");
   const [phoneNumber, setPhone] = useState("");
   const [categoryName, setCategoryName] = useState("");
+  const [categoryId, setCategoryId] = useState(""); // Store categoryId
+
   const [Feedback, setFeedback] = useState("");
   const [FeedbackType, setFeedbackType] = useState("");
   const [images, setImages] = useState([]);
@@ -35,7 +37,7 @@ const BusinessListScreen = () => {
   //getting location from redux
   const { location } = useSelector((state) => state.currentlocation);
   const { userInfo } = useSelector((state) => state.auth);
-  
+
   const dispatch = useDispatch();
 
   //navigation
@@ -91,7 +93,7 @@ const BusinessListScreen = () => {
 
     formData.append("latitude", location?.lat.toString());
     formData.append("longitude", location?.lng.toString());
-    formData.append("categoryName", categoryName);
+    formData.append("categoryId", categoryId);
 
     // Append images
     Array.from(images).forEach((image) => {
@@ -99,6 +101,7 @@ const BusinessListScreen = () => {
     });
 
     console.log("Form Data", formData);
+    console.log(categoryId);
 
     try {
       const response = await listbusiness(formData).unwrap();
@@ -117,43 +120,6 @@ const BusinessListScreen = () => {
       setFeedbackType("danger");
     }
   };
-
-  // const submitHandler = async (e) => {
-  //   // Submitting business data
-  //   e.preventDefault();
-  //   try {
-  //     const businessData = {
-  //       businessName,
-  //       description,
-  //       website,
-  //       phoneNumber,
-  //       latitude: location?.lat.toString(),
-  //       longitude: location?.lng.toString(),
-  //       categoryName,
-  //       images,
-  //     };
-  //     console.log(businessData);
-
-  //     if (!businessData.latitude || !businessData.longitude) {
-  //       setFeedback("Please select location from map");
-  //       setFeedbackType("danger");
-  //       setBusinessname("");
-  //       setDescription("");
-  //       setWebsite("");
-  //       setPhone("");
-  //       setCategoryName("");
-  //       return;
-  //     }
-  //     if (businessData) {
-  //       await listbusiness(businessData).unwrap();
-  //       setFeedback("Business Added Successfully");
-  //       setFeedbackType("success");
-  //     }
-  //   } catch (error) {
-  //     setFeedback(error?.data?.message || "Failed to add business");
-  //     setFeedbackType("danger");
-  //   }
-  // };
 
   const handleMapClick = ({ lat, lng }) => {
     // Handling map click
@@ -251,30 +217,27 @@ const BusinessListScreen = () => {
                     />
                   </Form.Group>
 
-                  {/* <Form.Group controlId="categoryName">
-                    <Form.Label>Category Name </Form.Label>
-                    <Form.Control
-                      type="text"
-                      value={categoryName}
-                      onChange={(e) => setCategoryName(e.target.value)}
-                      placeholder="Enter Category Name"
-                      required
-                    />
-                  </Form.Group> */}
+                
 
                   <Form.Group controlId="categoryName">
                     <Form.Label>Category Name</Form.Label>
                     <Form.Control
                       as="select"
                       value={categoryName}
-                      onChange={(e) => setCategoryName(e.target.value)}
+                      onChange={(e) => {
+                        const selectedCategory = categories.find(
+                          (category) => category.categoryName === e.target.value
+                        );
+                        setCategoryName(selectedCategory.categoryName); // Store the category name for UI display
+                        setCategoryId(selectedCategory.categoryId); // Store the categoryId to be sent in the request
+                      }}
                       required
                     >
                       {
                         // Display categories from the API
                         categories?.map((category) => (
                           <option
-                            key={category.id}
+                            key={category.categoryId}
                             value={category.categoryName}
                           >
                             {category.categoryName}

@@ -20,9 +20,10 @@ const ManageBusiness = () => {
   const [editbusinessId, setBusinessId] = useState(null);
   const [businessName, setBusinessName] = useState("");
   const [description, setDescription] = useState("");
-  const [category, setCategory] = useState("");
+  const [categoryName, setCategoryName] = useState("");
+  const [categoryId, setCategoryId] = useState(""); // Store categoryId
   const [phoneNumber, setPhoneNumber] = useState("");
-  const [location, setLocation] = useState("");
+
   const [website, setWebsite] = useState("");
 
   // Fetch business data
@@ -88,7 +89,8 @@ const ManageBusiness = () => {
     setBusinessId(business.businessId);
     setBusinessName(business.businessName);
     setDescription(business.description);
-    setCategory(business.category.categoryName);
+    setCategoryName(business.category.categoryName);
+    setCategoryId(business.category.categoryId);
     setPhoneNumber(business.phoneNumber);
     setWebsite(business.website);
     setShowEdit(true);
@@ -101,7 +103,7 @@ const ManageBusiness = () => {
         businessId: editbusinessId,
         businessName,
         description,
-        categoryName: category,
+        categoryId: categoryId,
         phoneNumber,
         website,
       });
@@ -208,22 +210,25 @@ const ManageBusiness = () => {
             </div>
             <div className="mb-3">
               <label className="form-label">Category</label>
-              {/* <input
-                type="text"
-                className="form-control"
-                value={category}
-                onChange={(e) => setCategory(e.target.value)}
-                required
-              /> */}
 
               <select
                 className="form-select"
-                value={category}
-                onChange={(e) => setCategory(e.target.value)}
+                value={categoryName}
+                onChange={(e) => {
+                  const selectedCategory = categories.find(
+                    (category) => category.categoryName === e.target.value
+                  );
+                  setCategoryName(selectedCategory.categoryName); // Store the category name for UI display
+                  setCategoryId(selectedCategory.categoryId); // Store the categoryId to be sent in the request
+                }}
+                required
               >
                 {categories &&
                   categories.map((category, index) => (
-                    <option key={index} value={category.categoryName}>
+                    <option
+                      key={category.categoryId}
+                      value={category.categoryName}
+                    >
                       {category.categoryName}
                     </option>
                   ))}

@@ -2,7 +2,7 @@
 
 namespace BizNepal.Server.Models;
 
-public class Category
+public class Category :AuditModel
 {
     [Key]
     public Guid CategoryId { get; set; }

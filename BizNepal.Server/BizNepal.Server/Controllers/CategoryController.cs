@@ -9,6 +9,7 @@ using BizNepal.Server.Data;
 using BizNepal.Server.Models;
 using BizNepal.Server.Models.DTO;
 using AutoMapper;
+using System.Security.Claims;
 
 namespace BizNepal.Server.Controllers;
 
@@ -27,14 +28,16 @@ public class CategoryController : ControllerBase
         _webHostEnvironment = webHostEnvironment;
     }
 
-    // GET: api/Category
+    #region Get All Category
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Category>>> GetCategories()
     {
         return await _context.Categories.ToListAsync();
     }
 
-    // GET: api/Category/5
+    #endregion
+
+    #region Get by Id
     [HttpGet("{id}")]
     public async Task<ActionResult<Category>> GetCategory(Guid id)
     {
@@ -48,17 +51,78 @@ public class CategoryController : ControllerBase
         return category;
     }
 
-    // PUT: api/Category/5
-    // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+    #endregion
+
+    #region Create Category
+    [HttpPost]
+    public async Task<ActionResult> AddCategory([FromForm] CreateCategoryDto addCategoryDto)
+    {
+        // Ensure the user is authenticated
+        var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+        if (string.IsNullOrEmpty(userId))
+        {
+            return Unauthorized("Please login first");
+        }
+
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+
+        bool categoryExists = await _context.Categories.AnyAsync(c => c.CategoryName.ToLower() == addCategoryDto.CategoryName.ToLower());
+
+        if (categoryExists)
+        {
+            return BadRequest(new { message = "Category already exists" });
+        }
+
+
+        var category = _mapper.Map<Category>(addCategoryDto);
+        category.CreatedAt = DateTime.UtcNow;
+        category.CreatedBy = userId;
+
+        //handle book conver page upload
+        if (addCategoryDto.IconImage != null && addCategoryDto.IconImage.Length > 0)
+        {
+            var uploadFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/icons/category");
+            Directory.CreateDirectory(uploadFolder);
+
+            string categoryName = addCategoryDto.CategoryName.Replace(" ", "");
+
+            var uniqueFileName = Guid.NewGuid().ToString() + "_" + categoryName + Path.GetExtension(addCategoryDto.IconImage.FileName);
+            var filePath = Path.Combine(uploadFolder, uniqueFileName);
+
+            using (var fileStream = new FileStream(filePath, FileMode.Create))
+            {
+                await addCategoryDto.IconImage.CopyToAsync(fileStream);
+            }
+
+            category.IconPath = $"/icons/category/{uniqueFileName}";
+
+        }
+
+
+        _context.Categories.Add(category);
+        await _context.SaveChangesAsync();
+
+        return Ok("Created Category successfully");
+    }
+
+    #endregion
+
+    #region Update Category
     [HttpPut("{id}")]
     public async Task<IActionResult> PutCategory(Guid id, [FromForm] UpdateCategoryDto updateCategoryDto)
     {
         // Find the existing category
         var category = await _context.Categories.FindAsync(id);
+
         if (category == null)
         {
             return NotFound(); // Return 404 if the category doesn't exist
         }
+
 
         // Update the existing category properties
         if (!string.IsNullOrEmpty(updateCategoryDto.CategoryName))
@@ -104,45 +168,9 @@ public class CategoryController : ControllerBase
         return Ok("Updated Category successfully");
     }
 
-    // POST: api/Category
-    // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-    [HttpPost]
-    public async Task<ActionResult> AddCategory([FromForm] AddCategoryDto addCategoryDto)
-    {
-        if (!ModelState.IsValid)
-        {
-            return BadRequest(ModelState);
-        }
+    #endregion
 
-        var category = _mapper.Map<Category>(addCategoryDto);
-
-        //handle book conver page upload
-        if (addCategoryDto.IconImage != null && addCategoryDto.IconImage.Length > 0)
-        {
-            var uploadFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/icons/category");
-            Directory.CreateDirectory(uploadFolder);
-
-            string categoryName = addCategoryDto.CategoryName.Replace(" ", "");
-
-            var uniqueFileName = Guid.NewGuid().ToString() + "_" + categoryName + Path.GetExtension(addCategoryDto.IconImage.FileName);
-            var filePath = Path.Combine(uploadFolder, uniqueFileName);
-
-            using (var fileStream = new FileStream(filePath, FileMode.Create))
-            {
-                await addCategoryDto.IconImage.CopyToAsync(fileStream);
-            }
-
-            category.IconPath = $"/icons/category/{uniqueFileName}";
-
-        }
-
-
-        _context.Categories.Add(category);
-        await _context.SaveChangesAsync();
-
-        return Ok("Created Category successfully");
-    }
-
+    #region Delete Category
     // DELETE: api/Category/5
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteCategory(Guid id)
@@ -158,6 +186,8 @@ public class CategoryController : ControllerBase
 
         return Ok("Deleted");
     }
+
+    #endregion
 
     private bool CategoryExists(Guid id)
     {

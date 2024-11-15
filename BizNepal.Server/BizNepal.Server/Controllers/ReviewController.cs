@@ -22,10 +22,7 @@ public class ReviewController : ControllerBase
     [HttpPost("Create")]
     public async Task<IActionResult> Create([FromQuery] Guid BusinessId, AddReviewDto addReviewDto)
     {
-        var claims = User.Claims.ToList();
-
-
-       
+        var currentUserEmail= User.FindFirst(ClaimTypes.Email)?.Value;
         var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         if (string.IsNullOrEmpty(userId))
         {
@@ -36,8 +33,10 @@ public class ReviewController : ControllerBase
         {
             BusinessId = BusinessId,
             UserId = userId,
-            //Rating = reviewDto.Rating,
+            Rating = addReviewDto.Rating,
             Comment = addReviewDto.Comment,
+            CreatedAt = DateTime.UtcNow,
+            CreatedBy = currentUserEmail!
             //ReviewDate = DateTime.UtcNow
         };
 

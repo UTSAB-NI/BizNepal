@@ -6,8 +6,9 @@ public class Location
 {
     [Key]
     public Guid LocationId { get; set; }
+    [Required]
     public string Latitude { get; set; }
+    [Required]
     public string Longitude { get; set; }
-
 
 }

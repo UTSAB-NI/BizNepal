@@ -57,61 +57,27 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
 
         modelBuilder.Entity<IdentityRole>().HasData(roles);
 
-        //seed category table
 
-        var categories = new List<Category>
-        {
-            new Category
-            {
-                CategoryId = Guid.NewGuid(),
-                CategoryName="Resturant"
-            },
-            new Category
-            {
-                CategoryId = Guid.NewGuid(),
-                CategoryName="Cafe"
-            },
-            new Category
-            {
-                CategoryId = Guid.NewGuid(),
-                CategoryName="Hospital"
-            },
-            new Category
-            {
-                CategoryId = Guid.NewGuid(),
-                CategoryName="Hotels"
-            },
-            new Category
-            {
-                CategoryId = Guid.NewGuid(),
-                CategoryName="Gym"
-            },
-            new Category
-            {
-                CategoryId = Guid.NewGuid(),
-                CategoryName="Shopping"
-            },
+        // Cascade delete BusinessImages when business is deleted
+        modelBuilder.Entity<BusinessImage>()
+            .HasOne(bi => bi.Business)
+            .WithMany(b => b.BusinessImages)
+            .HasForeignKey(bi => bi.BusinessId)
+            .OnDelete(DeleteBehavior.Cascade);
 
-        };
-        modelBuilder.Entity<Category>().HasData(categories);
-
-
-
-        modelBuilder.Entity<Review>()
-        .HasKey(r => r.ReviewId);
-
+        // Configure delete behavior for Reviews when business is deleted
         modelBuilder.Entity<Review>()
             .HasOne(r => r.Business)
             .WithMany(b => b.Reviews)
             .HasForeignKey(r => r.BusinessId)
-            .OnDelete(DeleteBehavior.Restrict); 
+            .OnDelete(DeleteBehavior.Cascade);
 
-
-        modelBuilder.Entity<Review>()
-        .HasOne(r => r.ApplicationUser)
-        .WithMany(u => u.Reviews)
-        .HasForeignKey(r => r.UserId)
-        .OnDelete(DeleteBehavior.Cascade);
+        // Configure delete behavior for Business when ApplicationUser (User) is deleted
+        modelBuilder.Entity<Business>()
+            .HasOne(b => b.ApplicationUser)
+            .WithMany(u => u.Businesses)
+            .HasForeignKey(b => b.UserId)
+            .OnDelete(DeleteBehavior.Cascade);    // Cascade delete for Business when User is deleted
 
 
 
