@@ -218,8 +218,6 @@ const BusinessListScreen = () => {
                     />
                   </Form.Group>
 
-                
-
                   <Form.Group controlId="categoryName">
                     <Form.Label>Category Name</Form.Label>
                     <Form.Control
