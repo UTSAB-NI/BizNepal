@@ -10,17 +10,22 @@ import { useEffect } from "react";
 
 // import { useSearchByCategoryQuery } from "../slices/categoryApiSlices";
 // Fetch users using RTK Query
-import Categorydata from "../data/Category.js"
+// import Categorydata from "../data/Category.js"
 
 const CategoryList = () => {
-  // const { data:Categorydata, error, isLoading, refetch } = useGetAllCategoriesQuery();
+  const {
+    data: Categorydata,
+    error,
+    isLoading,
+    refetch,
+  } = useGetAllCategoriesQuery();
 
-  // useEffect(() => {
-  //   refetch();
-  // }, []);
+  useEffect(() => {
+    refetch();
+  }, []);
 
-  // if (isLoading) return <p>Loading categories...</p>;
-  // if (error) return <p>Error loading categories</p>;
+  if (isLoading) return <p>Loading categories...</p>;
+  if (error) return <p>Error loading categories</p>;
 
   // console.log(data);
 

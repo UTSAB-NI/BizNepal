@@ -22,13 +22,7 @@ const BusinessBarGraph = () => {
   });
 
   useEffect(() => {
-    if (isLoading) return;
-
-    if (isError) {
-      console.log("Failed to fetch businesses");
-      return;
-    }
-
+   if(!businesses || isLoading || isError) return;
     // Process the business data to count businesses by year
     const businessCountByYear = {};
 

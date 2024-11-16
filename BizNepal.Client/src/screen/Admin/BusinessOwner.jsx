@@ -7,7 +7,7 @@ import {
   useEditUserbyadminMutation,
 } from "../../slices/userApiSlices";
 
-import { Button, Modal, Alert } from "react-bootstrap"; 
+import { Button, Modal, Alert } from "react-bootstrap";
 
 import DataTable from "datatables.net-react";
 import DT from "datatables.net-bs5";
@@ -26,7 +26,12 @@ const BusinessOwner = () => {
   const [selectedUserId, setSelectedUserId] = useState(null);
   const [showPassword, setShowPassword] = useState(false);
 
-  const { data, error, isLoading, refetch } = useGetAlluserQuery();
+  const {
+    data,
+    isError: alluseError,
+    isLoading,
+    refetch,
+  } = useGetAlluserQuery();
 
   const [deleteUser, { isLoading: deleteloading }] =
     useDeleteUserbyIdMutation();
@@ -35,8 +40,9 @@ const BusinessOwner = () => {
     useEditUserbyadminMutation();
 
   //getting all business owner
-  const BusinessOwner= data?.filter((user) => user.roles[0] === "BusinessOwner");
-
+  const BusinessOwner = data?.filter(
+    (user) => user.roles[0] === "BusinessOwner"
+  );
 
   useEffect(() => {
     const table = document.querySelector("table");
@@ -123,17 +129,17 @@ const BusinessOwner = () => {
       },
     },
   ];
-  useEffect(() =>{
-        if(error){
-          setFeedback("Failed to fetch Business Owner")
-          setFeedbackType("danger")
-        }
-  },[error])
+  useEffect(() => {
+    if (alluseError) {
+      setFeedback("Failed to fetch Business Owner");
+      setFeedbackType("danger");
+    }
+  }, [alluseError]);
 
   return (
     <div>
       {isLoading && <Loader />}
-      
+
       {
         <Alert
           variant={feedbackType}

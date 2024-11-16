@@ -10,6 +10,7 @@ import CategoryCard from "../Component/CategoryCard";
 
 const GetCategory = () => {
   const { category } = useParams(); // Get category from route params
+
   const { data, error, isLoading } = useSearchByCategoryQuery(category); // Fetch category data
 
   const [categoryData, setCategoryData] = useState([]);
@@ -58,13 +59,11 @@ const GetCategory = () => {
                           alignItems: "center",
                         }}
                       >
-                        <Link to={`/category/${c.category}`}>
-                          <img
-                            src={c.image}
-                            alt={c.name}
-                            className="img-fluid rounded-circle"
-                          />
-                        </Link>
+                        <img
+                          src={c.image}
+                          alt={c.name}
+                          className="img-fluid rounded-circle"
+                        />
                       </MDBCard>
                       <p className="text-danger text-center my-2">
                         {c.businessName}

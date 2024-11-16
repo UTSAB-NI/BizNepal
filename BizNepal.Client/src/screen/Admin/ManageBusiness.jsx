@@ -27,8 +27,13 @@ const ManageBusiness = () => {
   const [website, setWebsite] = useState("");
 
   // Fetch business data
-  const { data, isLoading, isError, refetch } = useGetbusinessQuery();
-  console.log("Business Data", data);
+  const {
+    data: allbusinessData,
+    isLoading,
+    isError: businessError,
+    refetch,
+  } = useGetbusinessQuery();
+  // console.log("Business Data", allbusinessData);
   // Delete business
   const [deletebusiness, { isLoading: isDeleting, isError: isDeleteError }] =
     useDeletebusinessMutation();
@@ -38,12 +43,17 @@ const ManageBusiness = () => {
 
   // Fetch all categories
   const { data: categories } = useGetAllCategoriesQuery();
+
   useEffect(() => {
+    if (businessError) {
+      setFeedback("No business found");
+      setFeedbackType("danger");
+    }
     if (isDeleteError) {
       setFeedback("Failed to delete business");
       setFeedbackType("danger");
     }
-  }, [isDeleteError]);
+  }, [isDeleteError, businessError]);
 
   useEffect(() => {
     const table = document.querySelector("table");
@@ -82,7 +92,7 @@ const ManageBusiness = () => {
         table.removeEventListener("click", handleClick);
       };
     }
-  }, [data, deletebusiness]);
+  }, [allbusinessData, deletebusiness]);
 
   // Open edit modal and set initial data
   const handleEditClick = (business) => {
@@ -157,7 +167,6 @@ const ManageBusiness = () => {
   return (
     <>
       {isLoading && <Loader />}
-      {isError && <Alert variant="danger">Failed to fetch businesses</Alert>}
 
       {feedback && (
         <Alert
@@ -169,9 +178,9 @@ const ManageBusiness = () => {
         </Alert>
       )}
 
-      {data && (
+      {allbusinessData && (
         <DataTable
-          data={data}
+          data={allbusinessData}
           columns={columns}
           options={{
             paging: true,
@@ -229,8 +238,6 @@ const ManageBusiness = () => {
                       key={category.categoryId}
                       value={category.categoryName}
                     >
-
-                   
                       {category.categoryName}
                     </option>
                   ))}

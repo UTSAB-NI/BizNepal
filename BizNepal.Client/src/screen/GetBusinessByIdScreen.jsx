@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Alert } from "react-bootstrap";
 import { useParams } from "react-router-dom";
 import { useGetbusinessByIdQuery } from "../slices/userApiSlices";
 
@@ -7,23 +8,32 @@ import Loader from "../Component/Loader";
 const GetBusinessByIdScreen = () => {
   const [Feedback, setFeedback] = useState(false);
   const businessid = useParams();
-  const { data, isLoading, iserror } = useGetbusinessByIdQuery(businessid.id);
+  console.log(businessid.id);
+  const {
+    data: businessdatabyid,
+    isLoading,
+    iserror,
+  } = useGetbusinessByIdQuery(businessid.id);
 
   useEffect(() => {
     if (iserror) {
-      setFeedback(data?.message);
+      setFeedback(data?.message || "An error occurred. Please try again later");
     }
   }, [iserror]);
 
-  console.log(data);
+  // console.log(businessdatabyid);
   return (
     <div>
       {isLoading && <Loader />}
-      {Feedback && <div>{Feedback}</div>}
+      {Feedback && (
+        <Alert variant="danger" onClose={() => setFeedback("")} dismissible>
+          {Feedback}
+        </Alert>
+      )}
 
-      {data && (
+      {businessdatabyid && (
         <div>
-          <div>{data.businessName}</div>
+          <div>{businessdatabyid.businessName}</div>
         </div>
       )}
     </div>
