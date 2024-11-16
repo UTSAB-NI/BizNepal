@@ -51,6 +51,7 @@ const BusinessListScreen = () => {
 
   //getting all categories
   const { data: categories, isLoading, isError } = useGetAllCategoriesQuery();
+
   const fetchLocation = () => {
     // Fetching current location
     if (navigator.geolocation) {

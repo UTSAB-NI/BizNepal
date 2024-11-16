@@ -8,9 +8,8 @@ import {
 import "../../Customcss/Admindashboard.css"; // Custom CSS for improved styling
 
 import BarGraph from "../../Component/Admin/BarGraph";
-import LineGraph from "../../Component/Admin/LineGraph";
-import Piechart from "../../Component/Admin/Piechart";
-
+import LineChartComponent from "../../Component/Admin/LineGraph";
+import PieChartComponent from "../../Component/Admin/Piechart";
 const AdminDashboard = () => {
   const {
     data: users,
@@ -91,14 +90,14 @@ const AdminDashboard = () => {
 
             {/* // LineGraph component */}
             <div className="col-md-6">
-              <LineGraph />
+              <LineChartComponent data={business} />
             </div>
           </div>
 
           {/* // Piechart component */}
           <div className="row">
             <div className="col-md-6">
-              <Piechart />
+              <PieChartComponent data={business} />
             </div>
           </div>
         </div>
