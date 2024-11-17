@@ -1,6 +1,6 @@
 import React from "react";
 import "../Customcss/categoryCard.css"; // Custom CSS for styling
-import { LuImageMinus } from "react-icons/lu";
+
 
 const API_BASE_URL = "https://localhost:5000";
 const CategoryCard = ({ iconPath, categoryName }) => {

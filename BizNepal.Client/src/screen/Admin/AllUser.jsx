@@ -56,7 +56,7 @@ const AllUser = () => {
             try {
               await deleteUser(userId);
               setFeedback("User deleted successfully");
-              setFeedbackType("success");
+              setFeedbackType("danger");
               refetch();
             } catch (error) {
               console.error("Failed to delete user:", error);
@@ -88,6 +88,12 @@ const AllUser = () => {
       return;
     }
 
+    if (/\s/.test(username)) {
+      setFeedback("Username should not contain spaces");
+      setFeedbackType("danger");
+      return;
+    }
+
     try {
       await addUserbyadmin({ username, email, password, role });
       setFeedback("User added successfully!");
@@ -107,6 +113,12 @@ const AllUser = () => {
     // Check if all required fields are filled
     if (!username || !email || !role) {
       setFeedback("Please fill all required fields");
+      setFeedbackType("danger");
+      return;
+    }
+
+    if (/\s/.test(username)) {
+      setFeedback("Username should not contain spaces");
       setFeedbackType("danger");
       return;
     }

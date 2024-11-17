@@ -28,6 +28,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
         var BusinessOwner = "e2ae5491-a104-4f69-af2e-28f021b9b762";
         var Admin = "f5af7f50-f4e6-412a-a82b-bcba7bd63abd";
         var GeneralUser = "0ddc3a39-2a47-4bcd-8ecf-1d68ec35eee5";
+        var SuperAdmin = "5c656565-d97d-4ec1-902e-fdb635fb43dc";
 
         var roles = new List<IdentityRole>
         {
@@ -58,6 +59,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
         modelBuilder.Entity<IdentityRole>().HasData(roles);
 
 
+
         // Cascade delete BusinessImages when business is deleted
         modelBuilder.Entity<BusinessImage>()
             .HasOne(bi => bi.Business)
@@ -71,14 +73,6 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
             .WithMany(b => b.Reviews)
             .HasForeignKey(r => r.BusinessId)
             .OnDelete(DeleteBehavior.Cascade);
-
-        // Configure delete behavior for Business when ApplicationUser (User) is deleted
-        modelBuilder.Entity<Business>()
-            .HasOne(b => b.ApplicationUser)
-            .WithMany(u => u.Businesses)
-            .HasForeignKey(b => b.UserId)
-            .OnDelete(DeleteBehavior.Cascade);    // Cascade delete for Business when User is deleted
-
 
 
     }

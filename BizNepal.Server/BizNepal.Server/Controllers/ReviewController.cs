@@ -11,8 +11,6 @@ namespace BizNepal.Server.Controllers;
 [ApiController]
 public class ReviewController : ControllerBase
 {
-
-
     private readonly ApplicationDbContext _context;
     public ReviewController(ApplicationDbContext context)
     {

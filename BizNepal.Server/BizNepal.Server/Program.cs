@@ -8,6 +8,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
 using BizNepal.Server.Utilities;
+using BizNepal.Server.Helper;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -53,7 +54,6 @@ builder.Services.AddSwaggerGen(options =>
     });
 
 });
-
 
 //configure cors policy to allow connection from react application
 
@@ -121,6 +121,14 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+using (var scope = app.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+    await DatabaseHelper.EnsureUncategorizedCategoryExists(dbContext);
+}
+
+await DatabaseHelper.SeedSuperAdmin(app.Services);
+
 app.UseCors("AllowAll");
 
 app.UseHttpsRedirection();
@@ -132,7 +140,5 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
-
-
 
 app.Run();

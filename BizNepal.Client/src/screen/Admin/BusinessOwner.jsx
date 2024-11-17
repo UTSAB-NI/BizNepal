@@ -100,6 +100,12 @@ const BusinessOwner = () => {
       return;
     }
 
+    if (/\s/.test(username)) {
+      setFeedback("Username should not contain spaces");
+      setFeedbackType("danger");
+      return;
+    }
+
     try {
       // Call the edit user mutation
       await editUserbyadmin({ id: selectedUserId, username, email, role });
