@@ -12,15 +12,15 @@ import {
 // Registering necessary Chart.js components
 ChartJS.register(CategoryScale, LinearScale, LineElement, PointElement);
 
-const LineChartComponent = ({ data }) => {
+const LineChartComponent = ({ data,labels,grapheader }) => {
   const chartData = {
-    labels: [],
+    labels: labels,
     datasets: [
       {
+        label: grapheader,
         data: data,
         fill: false,
-        borderColor: "rgba(75, 192, 192, 1)",
-        borderWidth: 1,
+        borderColor: "rgb(75, 192, 192)",
         tension: 0.1,
       },
     ],

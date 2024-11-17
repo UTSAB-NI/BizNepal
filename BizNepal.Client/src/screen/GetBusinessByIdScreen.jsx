@@ -1,14 +1,17 @@
 import React, { useEffect, useState } from "react";
-import { Alert } from "react-bootstrap";
+import { Alert, Row, Col } from "react-bootstrap";
 import { useParams } from "react-router-dom";
 import { useGetbusinessByIdQuery } from "../slices/userApiSlices";
 
 import Loader from "../Component/Loader";
+import CreateReview from "../Component/CreateReview";
+import BusinessMap from "../Component/BusinessMap";
+import BusinessReviewGraph from "../Component/BusinessReviewGraph";
 
 const GetBusinessByIdScreen = () => {
   const [Feedback, setFeedback] = useState(false);
   const businessid = useParams();
-  console.log(businessid.id);
+  // console.log(businessid.id);
   const {
     data: businessdatabyid,
     isLoading,
@@ -31,11 +34,20 @@ const GetBusinessByIdScreen = () => {
         </Alert>
       )}
 
-      {businessdatabyid && (
-        <div>
-          <div>{businessdatabyid.businessName}</div>
-        </div>
-      )}
+      <Row>
+        <Col md={6}>
+          {businessdatabyid && (
+            <div>
+              <div>{businessdatabyid.businessName}</div>
+            </div>
+          )}
+          <CreateReview />
+        </Col>
+        <Col md={6}>
+          <BusinessMap />
+          
+        </Col>
+      </Row>
     </div>
   );
 };

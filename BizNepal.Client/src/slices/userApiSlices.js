@@ -1,5 +1,11 @@
 import { apiSlice } from "./apiSlices";
-import { AUth_URL, BUSINESS_URL, USERS_URL, CATEGORIES_URL } from "../constant";
+import {
+  AUth_URL,
+  BUSINESS_URL,
+  USERS_URL,
+  CATEGORIES_URL,
+  REVIEW_URL,
+} from "../constant";
 
 const userApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -124,6 +130,21 @@ const userApiSlice = apiSlice.injectEndpoints({
         body: data,
       }),
     }),
+
+    //review
+    getUserReview: builder.query({
+      query: () => ({
+        url: `${REVIEW_URL}`,
+        method: "GET",
+      }),
+    }),
+    createReview: builder.mutation({
+      query: (data) => ({
+        url: `${REVIEW_URL}/Create`,
+        method: "POST",
+        body: data,
+      }),
+    }),
   }),
 });
 
@@ -144,4 +165,6 @@ export const {
   useDeleteCategoryMutation,
   useAddCategorybyadminMutation,
   useEditCategorybyadminMutation,
+  useCreateReviewMutation,
+  useGetUserReviewQuery
 } = userApiSlice;
