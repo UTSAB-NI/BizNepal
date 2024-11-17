@@ -13,6 +13,7 @@ import {
 import { Alert, Form, Button } from "react-bootstrap";
 import Loader from "../Component/Loader";
 import { useSearchByCategoryQuery } from "../slices/categoryApiSlices";
+import districtofNepal from "../data/Districtofnepal";
 
 const GetCategory = () => {
   const { category } = useParams(); // Get category from route params
@@ -21,13 +22,13 @@ const GetCategory = () => {
     error,
     isLoading,
   } = useSearchByCategoryQuery(category); // Fetch category data
-  console.log(businessByCategory);
 
   const [categoryData, setCategoryData] = useState([]);
   const [feedback, setFeedback] = useState("");
   const [filters, setFilters] = useState({
-    rating: "",
-    location: "",
+    ratings: [], // Multiple ratings can be selected
+    District: "",
+    City: "",
   });
 
   // Update categoryData when data or error changes
@@ -43,16 +44,26 @@ const GetCategory = () => {
   // Apply filters dynamically
   const applyFilters = () => {
     const filteredData = businessByCategory.filter((item) => {
-      const matchesRating = filters.rating
-        ? item.rating === Number(filters.rating)
+      const matchesRating =
+        filters.ratings.length > 0
+          ? filters.ratings.some((rating) =>
+              item.reviews?.some((review) => review.rating === Number(rating))
+            )
+          : true;
+
+      const matchesDistrict = filters.District
+        ? item.address?.district
+            .toLowerCase()
+            .includes(filters.District.toLowerCase())
         : true;
 
-      // const matchesLocation = filters.location
-      //   ? item.location.toLowerCase().includes(filters.location.toLowerCase())
-      //   : true;
+      const matchesCity = filters.City
+        ? item.address?.city
+            .toLowerCase()
+            .includes(filters.City.toLowerCase())
+        : true;
 
-      // return matchesRating  && matchesLocation;
-      return matchesRating;
+      return matchesRating && matchesDistrict && matchesCity;
     });
 
     setCategoryData(filteredData);
@@ -60,15 +71,26 @@ const GetCategory = () => {
 
   // Clear all filters
   const clearFilters = () => {
-    setFilters({ rating: "", location: "" });
+    setFilters({ ratings: [], District: "", City: "" });
     setCategoryData(businessByCategory); // Reset to full data
   };
 
-  const openInGoogleMaps = () => {
-    const lat = parseFloat(businessByCategory?.location?.latitude);
-    const lng = parseFloat(businessByCategory?.location?.longitude);
-    const business_map_url = `https://www.google.com/maps/search/?api=1&query=${lat},${lng}`;
-    window.open(business_map_url, "_blank");
+  const handleRatingChange = (rating) => {
+    setFilters((prevFilters) => {
+      const ratings = [...prevFilters.ratings];
+      if (ratings.includes(rating)) {
+        // Remove if already selected
+        return { ...prevFilters, ratings: ratings.filter((r) => r !== rating) };
+      } else {
+        // Add if not selected
+        return { ...prevFilters, ratings: [...ratings, rating] };
+      }
+    });
+  };
+
+  const openInGoogleMaps = (latitude, longitude) => {
+    const businessMapUrl = `https://www.google.com/maps/search/?api=1&query=${latitude},${longitude}`;
+    window.open(businessMapUrl, "_blank");
   };
 
   return (
@@ -82,8 +104,7 @@ const GetCategory = () => {
         <Alert variant="danger" onClose={() => setFeedback("")} dismissible>
           {feedback}
         </Alert>
-      )}{" "}
-      {/* Error Feedback */}
+      )}
       <MDBRow>
         {/* Sidebar Filters */}
         <MDBCol md={3} className="border-end px-4">
@@ -92,33 +113,50 @@ const GetCategory = () => {
           {/* Filter by Rating */}
           <Form.Group className="mb-3">
             <Form.Label>Rating</Form.Label>
+            {[1, 2, 3, 4, 5].map((rating) => (
+              <Form.Check
+                key={rating}
+                type="checkbox"
+                id={`rating-${rating}`}
+                label={`${rating} Stars`}
+                value={rating}
+                checked={filters.ratings.includes(rating)}
+                onChange={() => handleRatingChange(rating)}
+              />
+            ))}
+          </Form.Group>
+
+          {/* Filter by District */}
+          <Form.Group className="mb-3">
+            <Form.Label>District</Form.Label>
             <Form.Select
-              value={filters.rating}
+              value={filters.District}
               onChange={(e) =>
-                setFilters({ ...filters, rating: e.target.value })
+                setFilters({ ...filters, District: e.target.value })
               }
             >
-              <option value="">All Ratings</option>
-              {[1, 2, 3, 4, 5].map((rating) => (
-                <option key={rating} value={rating}>
-                  {rating} Stars
+              <option value="">All Districts</option>
+              {districtofNepal.map((district, index) => (
+                <option key={index} value={district}>
+                  {district}
                 </option>
               ))}
             </Form.Select>
           </Form.Group>
 
-          {/* Filter by Location */}
-          {/* <Form.Group className="mb-3">
-            <Form.Label>Location</Form.Label>
+          {/* Filter by City */}
+          <Form.Group className="mb-3">
+            <Form.Label>City</Form.Label>
             <Form.Control
               type="text"
-              placeholder="Enter city or region"
-              value={filters.location}
+              placeholder="Enter city"
+              value={filters.City}
               onChange={(e) =>
-                setFilters({ ...filters, location: e.target.value })
+                setFilters({ ...filters, City: e.target.value })
               }
             />
-          </Form.Group> */}
+          </Form.Group>
+
           {/* Buttons */}
           <Button variant="primary" className="me-2" onClick={applyFilters}>
             Apply Filters
@@ -148,8 +186,8 @@ const GetCategory = () => {
                     >
                       <MDBCard className="h-100">
                         <MDBCardImage
-                          src={business.image}
-                          alt={business.name}
+                          src={business.businessImages[0]?.url || ""}
+                          alt={business.businessName}
                           className="img-fluid rounded-top"
                           style={{ height: "200px", objectFit: "cover" }}
                         />
@@ -158,33 +196,30 @@ const GetCategory = () => {
                             {business.businessName}
                           </MDBCardTitle>
                           <MDBCardText className="text-warning">
-                            {(business.rating || [1, 2, 3]).map((rating) => (
-                              <span
-                                key={rating}
-                                className={`fs-4 ${
-                                  business.rating >= rating
-                                    ? "text-warning"
-                                    : ""
-                                }`}
-                              >
-                                ★
-                              </span>
-                            ))}
+                            {Array.from({ length: 5 }, (_, i) => i + 1).map(
+                              (star) => (
+                                <span
+                                  key={star}
+                                  className={`fs-4 ${
+                                    business.reviews?.some(
+                                      (review) => review.rating >= star
+                                    )
+                                      ? "text-warning"
+                                      : "text-muted"
+                                  }`}
+                                >
+                                  ★
+                                </span>
+                              )
+                            )}
                             <span className="text-muted">
                               {" "}
-                              {business.rating || 0}
-                            </span>
-                            <span className="text-muted">
-                              {" "}
-                              ({business.review} reviews)
+                              ({business.reviews?.length || 0} reviews)
                             </span>
                           </MDBCardText>
                           <MDBCardText className="text-muted">
                             {business.category.categoryName}
                           </MDBCardText>
-                          {/* <MDBCardText className="text-muted">
-                            {business.location}
-                          </MDBCardText> */}
                           <div className="card-footer bg-white d-flex justify-content-center align-item-center">
                             <a href={business.website}>
                               <Button variant="secondary" className="rounded-0">
@@ -192,7 +227,12 @@ const GetCategory = () => {
                               </Button>
                             </a>
                             <Button
-                              onClick={openInGoogleMaps}
+                              onClick={() =>
+                                openInGoogleMaps(
+                                  business.location.latitude,
+                                  business.location.longitude
+                                )
+                              }
                               className="btn btn-warning mx-3"
                             >
                               Get Direction

@@ -4,8 +4,8 @@ import { useGetbusinessByIdQuery } from "../slices/userApiSlices";
 import { GoogleMap, useJsApiLoader, Marker } from "@react-google-maps/api";
 
 const containerStyle = {
-  width: "100%",
-  height: "400px",
+  width: "400px",
+  height: "200px",
 };
 
 const BusinessMap = () => {
@@ -36,11 +36,6 @@ const BusinessMap = () => {
     setMap(null);
   }, []);
 
-  const openInGoogleMaps = () => {
-    const business_map_url = `https://www.google.com/maps/search/?api=1&query=${lat},${lng}`;
-    window.open(business_map_url, "_blank");
-  };
-
   // Display loading or error states
   if (businessLoading) {
     return <div>Loading business data...</div>;
@@ -66,14 +61,16 @@ const BusinessMap = () => {
           onLoad={onLoad}
           onUnmount={onUnmount}
         >
-          <Marker position={center} icon={{ url: "http://maps.google.com/mapfiles/ms/icons/red-dot.png" }} />
+          <Marker
+            position={center}
+            icon={{
+              url: "http://maps.google.com/mapfiles/ms/icons/red-dot.png",
+            }}
+          />
         </GoogleMap>
       ) : (
         <div>Loading Google Map...</div>
       )}
-      <button onClick={openInGoogleMaps} style={{ marginTop: "10px" }} className="btn btn-primary">
-       Get Direction
-      </button>
     </div>
   );
 };
