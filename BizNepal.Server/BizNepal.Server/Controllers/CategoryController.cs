@@ -176,15 +176,59 @@ public class CategoryController : ControllerBase
     public async Task<IActionResult> DeleteCategory(Guid id)
     {
         var category = await _context.Categories.FindAsync(id);
+
         if (category == null)
         {
-            return NotFound();
+            return NotFound("Category not found");
+        }
+
+        var categoryToAssign = await _context.Categories.FirstAsync(c => c.CategoryName == "Uncategorized");
+
+        if (categoryToAssign == null)
+        {
+            return BadRequest("Default Category not found");
+        }
+
+        var businesses = await _context.Businesses.Where(b=>b.CategoryId==category.CategoryId).ToListAsync();
+
+        if (businesses != null)
+        {
+            foreach (var business in businesses)
+            {
+                 business.CategoryId = categoryToAssign.CategoryId;
+            }
+
         }
 
         _context.Categories.Remove(category);
-        await _context.SaveChangesAsync();
 
-        return Ok("Deleted");
+        // Save changes within a transaction
+        using (var transaction = await _context.Database.BeginTransactionAsync())
+        {
+            try
+            {
+                await _context.SaveChangesAsync();
+                await transaction.CommitAsync();
+            }
+            catch (Exception ex)
+            {
+                await transaction.RollbackAsync();
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+        }
+
+        return Ok(new
+        {
+            Message = "Category deleted successfully.",
+            BusinessesReassigned = businesses.Count
+        });
+
+
+
+
+
+
+
     }
 
     #endregion

@@ -93,6 +93,11 @@ const GeneralUser = () => {
       setFeedbackType("danger");
       return;
     }
+    if (/\s/.test(username)) {
+      setFeedback("Username should not contain spaces");
+      setFeedbackType("danger");
+      return;
+    }
 
     try {
       // Call the edit user mutation

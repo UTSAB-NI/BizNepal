@@ -1,4 +1,5 @@
-﻿using BizNepal.Server.Models;
+﻿using BizNepal.Server.Data;
+using BizNepal.Server.Models;
 using BizNepal.Server.Models.DTO;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -12,10 +13,12 @@ namespace BizNepal.Server.Controllers
     public class UserController : ControllerBase
     {
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly ApplicationDbContext _context;
 
-        public UserController(UserManager<ApplicationUser> userManager)
+        public UserController(UserManager<ApplicationUser> userManager, ApplicationDbContext context)
         {
             _userManager = userManager;
+            _context = context;
         }
 
         [HttpGet]
@@ -38,7 +41,8 @@ namespace BizNepal.Server.Controllers
                     user.Id,
                     user.UserName,
                     user.Email,
-                    Roles = roles // This will be a list of roles
+                    Roles = roles,
+                    user.CreatedAt// This will be a list of roles
                 });
             }
 
@@ -181,13 +185,48 @@ namespace BizNepal.Server.Controllers
                 return NotFound();
             }
 
-            var result = await _userManager.DeleteAsync(user);
-            if (!result.Succeeded)
+
+            var superAdmin = await _userManager.FindByEmailAsync("superadmin@gmail.com");
+
+            if (superAdmin == null)
             {
-                return BadRequest(result.Errors);
+                return BadRequest("SuperAdmin not found");
             }
 
-            return Ok("Deleted Successfully");
+
+            var businesses = await _context.Businesses.Where(b => b.UserId == id).ToListAsync();
+
+            if (businesses != null)
+            {
+                foreach (var business in businesses)
+                {
+                    business.UserId = superAdmin.Id;
+                }
+
+            }
+
+            _context.Remove(user);
+
+            // Save changes within a transaction
+            using (var transaction = await _context.Database.BeginTransactionAsync())
+            {
+                try
+                {
+                    await _context.SaveChangesAsync();
+                    await transaction.CommitAsync();
+                }
+                catch (Exception ex)
+                {
+                    await transaction.RollbackAsync();
+                    return StatusCode(500, $"Internal server error: {ex.Message}");
+                }
+            }
+
+            return Ok(new
+            {
+                Message = "User deleted successfully.",
+                BusinessesReassigned = businesses.Count
+            });
         }
     }
 }

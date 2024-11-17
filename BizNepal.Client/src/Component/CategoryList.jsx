@@ -39,7 +39,6 @@ const CategoryList = () => {
                   iconPath={c.iconPath}
                   categoryName={c.categoryName}
                 />
-
                 <p className="text-danger text-center my-2">{c.categoryName}</p>
               </Link>
             </MDBCol>
