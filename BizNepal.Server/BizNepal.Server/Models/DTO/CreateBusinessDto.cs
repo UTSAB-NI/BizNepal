@@ -22,6 +22,12 @@ public class CreateBusinessDto
     public string Longitude { get; set; }
 
     [Required]
+    public string City { get; set; }
+
+    [Required]
+    public string District { get; set; }
+
+    [Required]
     public Guid CategoryId { get; set; }
 
     public List<IFormFile>? Images { get; set; }

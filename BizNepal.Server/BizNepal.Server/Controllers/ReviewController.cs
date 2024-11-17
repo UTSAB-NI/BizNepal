@@ -27,6 +27,12 @@ public class ReviewController : ControllerBase
             return Unauthorized();
         }
 
+        bool userReviewExists = _context.Reviews.Any(c => c.UserId == userId && c.BusinessId==BusinessId);
+        if (userReviewExists)
+        {
+            return BadRequest("One user can have only one review for a business.");
+        }
+
         var review = new Review
         {
             BusinessId = BusinessId,

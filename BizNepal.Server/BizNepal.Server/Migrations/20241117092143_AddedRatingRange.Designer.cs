@@ -4,6 +4,7 @@ using BizNepal.Server.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BizNepal.Server.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241117092143_AddedRatingRange")]
+    partial class AddedRatingRange
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -38,7 +41,7 @@ namespace BizNepal.Server.Migrations
 
                     b.HasKey("AddressId");
 
-                    b.ToTable("Addresses", (string)null);
+                    b.ToTable("Addresses");
                 });
 
             modelBuilder.Entity("BizNepal.Server.Models.ApplicationUser", b =>
@@ -162,8 +165,7 @@ namespace BizNepal.Server.Migrations
 
                     b.HasKey("BusinessId");
 
-                    b.HasIndex("AddressId")
-                        .IsUnique();
+                    b.HasIndex("AddressId");
 
                     b.HasIndex("CategoryId");
 
@@ -171,7 +173,7 @@ namespace BizNepal.Server.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Businesses", (string)null);
+                    b.ToTable("Businesses");
                 });
 
             modelBuilder.Entity("BizNepal.Server.Models.BusinessImage", b =>
@@ -191,7 +193,7 @@ namespace BizNepal.Server.Migrations
 
                     b.HasIndex("BusinessId");
 
-                    b.ToTable("BusinessImages", (string)null);
+                    b.ToTable("BusinessImages");
                 });
 
             modelBuilder.Entity("BizNepal.Server.Models.Category", b =>
@@ -222,7 +224,7 @@ namespace BizNepal.Server.Migrations
 
                     b.HasKey("CategoryId");
 
-                    b.ToTable("Categories", (string)null);
+                    b.ToTable("Categories");
                 });
 
             modelBuilder.Entity("BizNepal.Server.Models.Location", b =>
@@ -241,7 +243,7 @@ namespace BizNepal.Server.Migrations
 
                     b.HasKey("LocationId");
 
-                    b.ToTable("Locations", (string)null);
+                    b.ToTable("Locations");
                 });
 
             modelBuilder.Entity("BizNepal.Server.Models.Review", b =>
@@ -286,7 +288,7 @@ namespace BizNepal.Server.Migrations
 
                     b.HasIndex("BusinessId");
 
-                    b.ToTable("Reviews", (string)null);
+                    b.ToTable("Reviews");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -448,8 +450,8 @@ namespace BizNepal.Server.Migrations
             modelBuilder.Entity("BizNepal.Server.Models.Business", b =>
                 {
                     b.HasOne("BizNepal.Server.Models.Address", "Address")
-                        .WithOne()
-                        .HasForeignKey("BizNepal.Server.Models.Business", "AddressId")
+                        .WithMany()
+                        .HasForeignKey("AddressId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
