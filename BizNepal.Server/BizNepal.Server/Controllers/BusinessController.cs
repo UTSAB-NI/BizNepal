@@ -40,6 +40,7 @@ public class BusinessController : ControllerBase
                                                   .Include(c => c.Category)
                                                   .Include(c => c.Reviews)
                                                   .Include(c => c.BusinessImages)
+                                                  .Include(b => b.Address)
                                                   .AsQueryable();
 
         // filtering based on category if category is passed to api
@@ -102,6 +103,7 @@ public class BusinessController : ControllerBase
         var business = await _context.Businesses.Include(b => b.Location)
                                           .Include(b => b.Category)
                                           .Include(c => c.Reviews)
+                                          .Include(c=>c.Address)
                                           .Include(c => c.BusinessImages)
                                           .FirstAsync(m => m.BusinessId == businessId);
 
@@ -167,6 +169,15 @@ public class BusinessController : ControllerBase
             _context.Locations.Add(location);
             await _context.SaveChangesAsync();
 
+            var address = new Address
+            {
+                City = input.City,
+                District = input.District,
+            };
+
+            _context.Addresses.Add(address);
+            await _context.SaveChangesAsync();
+
             var business = new Business
             {
                 BusinessName = input.BusinessName,
@@ -176,6 +187,7 @@ public class BusinessController : ControllerBase
                 UserId = userId,
                 LocationId = location.LocationId,
                 CategoryId = input.CategoryId,
+                AddressId = address.AddressId,
                 CreatedAt = DateTime.Now,
                 CreatedBy = email!
             };
@@ -328,6 +340,19 @@ public class BusinessController : ControllerBase
                 await _context.SaveChangesAsync();
             }
 
+            // Get the location ID before removing the business
+            var addressId = business.AddressId;
+
+            
+
+            // Explicitly remove the location if it still exists
+            var address = await _context.Addresses.FindAsync(addressId);
+            if (address != null)
+            {
+                _context.Addresses.Remove(address);
+                await _context.SaveChangesAsync();
+            }
+
             await transaction.CommitAsync();
 
             return Ok(new { message = "Business, location, and associated images deleted successfully" });
@@ -341,7 +366,7 @@ public class BusinessController : ControllerBase
 
     #endregion
 
-    #region List Business by Category
+    #region  Business by Category
 
     [HttpGet("searchByCategory")]
     public async Task<IActionResult> GetBusinessByCategory([FromQuery] string category)
@@ -349,6 +374,8 @@ public class BusinessController : ControllerBase
         var businesses = await _context.Businesses.Include(b => b.Category)
                                                 .Include(b => b.Location)
                                                 .Include(b => b.BusinessImages)
+                                                .Include(b=>b.Reviews)
+                                                .Include(b => b.Address)
                                                 .Where(b => b.Category.CategoryName == category)
                                                 .ToListAsync();
         if (businesses == null)
@@ -378,6 +405,8 @@ public class BusinessController : ControllerBase
             .Include(b => b.Category)
             .Include(b => b.Location)
             .Include(b => b.BusinessImages)
+            .Include(b => b.Reviews)
+            .Include(b => b.Address)
             .Where(b => b.BusinessName.Contains(keyword))
             .ToListAsync();
 
@@ -508,7 +537,6 @@ public class BusinessController : ControllerBase
     }
 
     #endregion
-
 
 
 

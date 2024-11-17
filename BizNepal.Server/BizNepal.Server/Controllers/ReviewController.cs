@@ -4,6 +4,7 @@ using BizNepal.Server.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
+using Microsoft.EntityFrameworkCore;
 
 namespace BizNepal.Server.Controllers;
 
@@ -27,6 +28,12 @@ public class ReviewController : ControllerBase
             return Unauthorized();
         }
 
+        bool userReviewExists = _context.Reviews.Any(c => c.UserId == userId && c.BusinessId==BusinessId);
+        if (userReviewExists)
+        {
+            return BadRequest("One user can have only one review for a business.");
+        }
+
         var review = new Review
         {
             BusinessId = BusinessId,
@@ -41,6 +48,8 @@ public class ReviewController : ControllerBase
         _context.Reviews.Add(review);
         await _context.SaveChangesAsync();
 
+        await UpdateBusinessRating(BusinessId);
+
         return Ok(review);
     }
 
@@ -50,4 +59,25 @@ public class ReviewController : ControllerBase
         var reviews= _context.Reviews.ToList();
         return Ok(reviews);
     }
+
+
+    private async Task UpdateBusinessRating(Guid businessId)
+    {
+        var reviews = await _context.Reviews
+            .Where(r => r.BusinessId == businessId && r.Rating.HasValue)
+            .ToListAsync();
+
+        var business = await _context.Businesses.FindAsync(businessId);
+        if (business != null)
+        {
+            business.OverallRating = reviews.Any()
+                ? Math.Round((decimal)reviews.Average(r => r.Rating!.Value), 1)
+                : 0;
+
+            await _context.SaveChangesAsync();
+        }
+    }
+
+
+
 }

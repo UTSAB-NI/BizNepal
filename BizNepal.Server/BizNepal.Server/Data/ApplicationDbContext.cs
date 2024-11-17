@@ -15,6 +15,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     public DbSet<Location> Locations { get; set; }
     public DbSet<Review> Reviews { get; set; }
     public DbSet<BusinessImage> BusinessImages { get; set; }
+    public DbSet<Address> Addresses { get; set; }
 
 
 
@@ -73,6 +74,19 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
             .WithMany(b => b.Reviews)
             .HasForeignKey(r => r.BusinessId)
             .OnDelete(DeleteBehavior.Cascade);
+
+        modelBuilder.Entity<Business>()
+        .Property(b => b.OverallRating)
+        .HasColumnType("decimal(18,2)");
+
+
+        modelBuilder.Entity<Business>()
+        .HasOne(b => b.Address) // Business has one Address
+        .WithOne()             // Address has no navigation to Business
+        .HasForeignKey<Business>(b => b.AddressId) // Foreign key is AddressId
+        .OnDelete(DeleteBehavior.Cascade); // Cascade on delete
+
+
 
 
     }

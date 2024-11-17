@@ -14,21 +14,11 @@ using System.Text.RegularExpressions;
 [ApiController]
 public class AuthController : ControllerBase
 {
-    /// <summary>
-    /// Defines the _userManager
-    /// </summary>
+    
     private readonly UserManager<ApplicationUser> _userManager;
 
-    /// <summary>
-    /// Defines the _tokenRepository
-    /// </summary>
     private readonly ITokenRepository _tokenRepository;
-
-    /// <summary>
-    /// Initializes a new instance of the <see cref="AuthController"/> class.
-    /// </summary>
-    /// <param name="userManager">The userManager<see cref="UserManager{ApplicationUser}"/></param>
-    /// <param name="tokenRepository">The tokenRepository<see cref="ITokenRepository"/></param>
+    
     public AuthController(UserManager<ApplicationUser> userManager, ITokenRepository tokenRepository)
     {
         _userManager = userManager;
@@ -93,7 +83,6 @@ public class AuthController : ControllerBase
 
                 if (identityResult.Succeeded)
                 {
-
                     return Ok(new
                     {
 
