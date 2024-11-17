@@ -1,5 +1,6 @@
 import React from "react";
 import { Card, Row, Col, Image, Badge, Button } from "react-bootstrap";
+
 import {
   FaStar,
   FaThumbsUp,
@@ -48,7 +49,9 @@ const ReviewCard = ({ reviews }) => {
                 <Row className="align-items-center">
                   <Col xs={8}>
                     <h5 style={{ margin: 0 }}>{review.name}</h5>
-                    <small>{review.created_at}</small>
+                    <small>
+                      {new Date(review.createdAt).toLocaleDateString()}
+                    </small>
                   </Col>
                   <Col xs={4} className="text-end">
                     <Badge bg="success" style={{ fontSize: "0.8rem" }}>
@@ -67,18 +70,26 @@ const ReviewCard = ({ reviews }) => {
                 </Row>
                 <Row>
                   <Col xs={12}>
-                    <strong>{review.reviewpostat}</strong>
+                    <strong>{review.postat || "Business"} </strong>
                     <p style={{ fontSize: "0.9rem", color: "#333" }}>
-                      {review.review}
+                      {review.comment}
                     </p>
                   </Col>
                 </Row>
                 <Row>
                   <Col xs={8}>
-                    <Button variant="outline-secondary" size="sm" className="me-2">
+                    <Button
+                      variant="outline-secondary"
+                      size="sm"
+                      className="me-2"
+                    >
                       <FaThumbsUp />
                     </Button>
-                    <Button variant="outline-secondary" size="sm" className="me-2">
+                    <Button
+                      variant="outline-secondary"
+                      size="sm"
+                      className="me-2"
+                    >
                       <FaThumbsDown />
                     </Button>
                     <Button variant="outline-secondary" size="sm">

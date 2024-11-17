@@ -139,10 +139,13 @@ const userApiSlice = apiSlice.injectEndpoints({
       }),
     }),
     createReview: builder.mutation({
-      query: (data) => ({
+      query: ({ businessId, ...reviewData }) => ({
         url: `${REVIEW_URL}/Create`,
         method: "POST",
-        body: data,
+        params: {
+          BusinessId: businessId,
+        },
+        body: reviewData,
       }),
     }),
   }),
@@ -166,5 +169,5 @@ export const {
   useAddCategorybyadminMutation,
   useEditCategorybyadminMutation,
   useCreateReviewMutation,
-  useGetUserReviewQuery
+  useGetUserReviewQuery,
 } = userApiSlice;

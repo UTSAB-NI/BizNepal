@@ -9,6 +9,8 @@ import GoogleMapReact from "google-map-react";
 import { useListbusinessMutation } from "../slices/userApiSlices";
 import { useGetAllCategoriesQuery } from "../slices/userApiSlices";
 
+import districtofNepal from "../data/Districtofnepal";
+
 import "../Customcss/BusinessList.css";
 
 const MyLocationMarker = ({ text }) => (
@@ -24,6 +26,8 @@ const MyLocationMarker = ({ text }) => (
 const BusinessListScreen = () => {
   const [myLocation, SetMyLocation] = useState({ lat: 27.7172, lng: 85.324 });
   const [businessName, setBusinessname] = useState("");
+  const [city, setCity] = useState("");
+  const [district, setDistrict] = useState("");
   const [description, setDescription] = useState("");
   const [website, setWebsite] = useState("");
   const [phoneNumber, setPhone] = useState("");
@@ -80,44 +84,50 @@ const BusinessListScreen = () => {
   const submitHandler = async (e) => {
     e.preventDefault();
 
+    if (!location?.lat || !location?.lng) {
+      setFeedback("Please set the location on the map.");
+      setFeedbackType("danger");
+      return;
+    }
+
+    if (phoneNumber.length !== 10) {
+      setFeedback("Phone number should be 10 digits.");
+      setFeedbackType("danger");
+      return;
+    }
+
     const formData = new FormData();
     formData.append("businessName", businessName);
     formData.append("description", description);
+    formData.append("city", city);
+    formData.append("district", district);
     formData.append("website", website);
-    if (phoneNumber.length !== 10) {
-      setFeedback("Phone number should be 10 digits");
-      setFeedbackType("danger");
-      return; // Stop form submission if the phone number is invalid
-    } else {
-      formData.append("phoneNumber", phoneNumber);
-    }
-
-    formData.append("latitude", location?.lat.toString());
-    formData.append("longitude", location?.lng.toString());
+    formData.append("phoneNumber", phoneNumber);
+    formData.append("latitude", location.lat.toString());
+    formData.append("longitude", location.lng.toString());
     formData.append("categoryId", categoryId);
 
-    // Append images
     Array.from(images).forEach((image) => {
       formData.append("Images", image);
     });
 
-    console.log("Form Data", formData);
-    console.log(categoryId);
+    // Debugging
+    for (let pair of formData.entries()) {
+      console.log(pair[0] + ": " + pair[1]);
+    }
 
     try {
       const response = await listbusiness(formData).unwrap();
-      console.log("Response", response);
-
-      if (response.message) {
+      if (response?.message) {
         setFeedback("Business Added Successfully");
         setFeedbackType("success");
         navigate("/");
       } else {
-        setFeedback("Unexpected response from server");
+        setFeedback("Unexpected response from server.");
         setFeedbackType("warning");
       }
     } catch (error) {
-      setFeedback(error?.data?.message || "Failed to add business");
+      setFeedback(error?.data?.message || "Failed to add business.");
       setFeedbackType("danger");
     }
   };
@@ -158,6 +168,38 @@ const BusinessListScreen = () => {
                     />
                   </Form.Group>
 
+                  <Form.Group controlId="businessdistrict">
+                    <Form.Label>District</Form.Label>
+                    <Form.Control
+                      as="select"
+                      value={district}
+                      onChange={(e) => setDistrict(e.target.value)}
+                      required
+                    >
+                      <option value="" disabled>
+                        Select a District
+                      </option>
+                      {districtofNepal &&
+                        districtofNepal.map((district, index) => {
+                          return (
+                            <>
+                              <option value={district} key={index}>
+                                {district}
+                              </option>
+                            </>
+                          );
+                        })}
+                    </Form.Control>
+                  </Form.Group>
+                  <Form.Group controlId="businesscity">
+                    <Form.Label>City</Form.Label>
+                    <Form.Control
+                      type="text"
+                      value={city}
+                      placeholder="Enter the city of business "
+                      onChange={(e) => setCity(e.target.value)}
+                    ></Form.Control>
+                  </Form.Group>
                   <Form.Group controlId="description">
                     <Form.Label>Description </Form.Label>
                     <Form.Control
@@ -199,7 +241,7 @@ const BusinessListScreen = () => {
                     <Form.Control
                       type="text"
                       value={location?.lat || ""}
-                      onChange={(e) => setLatitude(e.target.value)}
+                      // onChange={(e) => setLatitude(e.target.value)}
                       placeholder="Enter Latitude"
                       readOnly
                       required
@@ -211,7 +253,7 @@ const BusinessListScreen = () => {
                     <Form.Control
                       type="text"
                       value={location?.lng || ""}
-                      onChange={(e) => setLongitude(e.target.value)}
+                      // onChange={(e) => setLongitude(e.target.value)}
                       placeholder="Enter Longitude"
                       readOnly
                       required
@@ -220,30 +262,42 @@ const BusinessListScreen = () => {
 
                   <Form.Group controlId="categoryName">
                     <Form.Label>Category Name</Form.Label>
-                    <Form.Control
-                      as="select"
-                      value={categoryName}
-                      onChange={(e) => {
-                        const selectedCategory = categories.find(
-                          (category) => category.categoryName === e.target.value
-                        );
-                        setCategoryName(selectedCategory.categoryName); // Store the category name for UI display
-                        setCategoryId(selectedCategory.categoryId); // Store the categoryId to be sent in the request
-                      }}
-                      required
-                    >
-                      {
-                        // Display categories from the API
-                        categories?.map((category) => (
-                          <option
-                            key={category.categoryId}
-                            value={category.categoryName}
-                          >
-                            {category.categoryName}
-                          </option>
-                        ))
-                      }
-                    </Form.Control>
+                    {isLoading ? (
+                      <p>Loading categories...</p>
+                    ) : isError ? (
+                      <p>Failed to load categories.</p>
+                    ) : (
+                      <Form.Control
+                        as="select"
+                        value={categoryName}
+                        onChange={(e) => {
+                          const selectedCategory = categories.find(
+                            (category) =>
+                              category.categoryName === e.target.value
+                          );
+                          if (selectedCategory) {
+                            setCategoryName(selectedCategory.categoryName); // Store the category name for UI display
+                            setCategoryId(selectedCategory.categoryId); // Store the categoryId to be sent in the request
+                          }
+                        }}
+                        required
+                      >
+                        <option value="" disabled>
+                          Select a Category
+                        </option>
+                        {
+                          // Display categories from the API
+                          categories?.map((category) => (
+                            <option
+                              key={category.categoryId}
+                              value={category.categoryName}
+                            >
+                              {category.categoryName}
+                            </option>
+                          ))
+                        }
+                      </Form.Control>
+                    )}
                   </Form.Group>
 
                   {/* Image Upload */}
