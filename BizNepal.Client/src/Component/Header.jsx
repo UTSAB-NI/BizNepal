@@ -93,6 +93,7 @@ const Header = ({ toggleTheme, currentTheme }) => {
               <Button
                 variant="danger"
                 className="mx-2"
+                target="_blank"
                 onClick={() => navigate("/admin")}
               >
                 Admin

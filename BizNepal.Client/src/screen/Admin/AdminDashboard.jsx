@@ -40,9 +40,50 @@ const AdminDashboard = () => {
   }, [users, business, categories]);
 
   const NoOfBusiess = business?.length;
-  console.log(NoOfBusiess);
+  // console.log(NoOfBusiess);
   const NoOfUsers = users?.length;
   const NoOfCategories = categories?.length;
+
+  //this data for line graph
+  //group business by date
+  const businessCountByDate = {};
+
+  business?.forEach((business) => {
+    const date = new Date(business.createdAt).toLocaleDateString();
+    businessCountByDate[date] = (businessCountByDate[date] || 0) + 1;
+  });
+
+  //store the date and count in separate arrays
+  const dates = Object.keys(businessCountByDate).sort();
+  const counts = dates.map((date) => businessCountByDate[date]);
+
+  //data for pie chart
+  const businessByCategory = {};
+
+  business?.forEach((business) => {
+    const category = business.category.categoryName;
+    businessByCategory[category] = (businessByCategory[category] || 0) + 1;
+  });
+
+  //Extract Category names and counts
+  const Business_categories = Object.values(businessByCategory);
+  const Business_counts = Object.keys(businessByCategory);
+  // console.log(Business_categories);
+  // console.log(Business_counts);
+
+  //users data for line graph
+  //group users by date
+  const userCountByDate = {};
+
+  users?.forEach((user) =>{
+    const date = new Date(user.createdAt).toLocaleDateString();
+    userCountByDate[date] = (userCountByDate[date] || 0) + 1;
+  });
+
+  //store the date and count in separate arrays
+  const users_dates = Object.keys(userCountByDate).sort();
+  console.log(users_dates);
+  const noof_users = users_dates.map((date) => userCountByDate[date]);
 
   return (
     <div className="admin-dashboard">
@@ -88,16 +129,26 @@ const AdminDashboard = () => {
               <BarGraph />
             </div>
 
-            {/* // LineGraph component */}
+            {/* // LineGraph component for business */}
             <div className="col-md-6">
-              <LineChartComponent data={business} />
+              <h2>Business Created Per day</h2>
+              <LineChartComponent data={counts} labels={dates} grapheader="Business created per day" />
             </div>
           </div>
 
           {/* // Piechart component */}
           <div className="row">
             <div className="col-md-6">
-              <PieChartComponent data={business} />
+              <h2>Businesses by Category</h2>
+              <PieChartComponent
+                data={Business_categories}
+                labels={Business_counts}
+              />
+            </div>
+            {/* // LineGraph component for users */}
+            <div className="col-md-6">
+              <h2>User Created Per day</h2>
+              <LineChartComponent data={noof_users} labels={users_dates} grapheader="User created per day" />
             </div>
           </div>
         </div>

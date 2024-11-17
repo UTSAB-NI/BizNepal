@@ -6,3 +6,4 @@ export const BUSINESS_URL = "/api/Business";
 export const SEARCHBY_CATEGORIES_URL = "/api/Business/searchByCategory";
 export const SEARCH_URL = "/api/Business/search";
 export const CATEGORIES_URL = "/api/Category";
+export const REVIEW_URL = "/api/Review";
