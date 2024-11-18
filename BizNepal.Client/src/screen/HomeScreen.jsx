@@ -4,15 +4,15 @@ import InfoBar from "../Component/InfoBar.jsx";
 import CategoryList from "../Component/CategoryList.jsx";
 import HomeReviewCard from "../Component/HomeReviewCard.jsx";
 import BusinessListingSection from "../Component/HomeBusinessList.jsx";
-import { useGetUserReviewQuery } from "../slices/userApiSlices";
+import { useGetUserReviewQuery,useGetbusinessQuery } from "../slices/userApiSlices";
 import review from "../data/Review.js";
 const HomeScreen = () => {
-
-  const {data: reviewData} = useGetUserReviewQuery();
+  const { data: reviewData } = useGetUserReviewQuery();
+  const { data: businessData } = useGetbusinessQuery();
   return (
     <div>
       <PromoBanner />
-      <InfoBar />
+      <InfoBar reviews={reviewData} business={businessData}/>
       <CategoryList />
       <h1 className="text-center mt-5 ">Reviews</h1>
       <HomeReviewCard reviews={reviewData} />

@@ -1,6 +1,12 @@
-.bg-color{
-    background-color: #bf666698;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
+.info-bar .bg-color {
+    background-color: #fdd6d6; /* Soft pink */
+  }
+  
+  .info-bar .text-dark {
+    color: #3e3e3e; /* Dark text */
+  }
+  
+  .info-bar h1, h3 {
+    margin: 0;
+  }
+  

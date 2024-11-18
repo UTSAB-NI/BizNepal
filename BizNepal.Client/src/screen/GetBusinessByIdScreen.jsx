@@ -98,9 +98,15 @@ const GetBusinessByIdScreen = () => {
               <p>{businessdatabyid.description}</p>
             </Col>
 
-            <Col md={6}>
+            <Col md={6} className="d-flex justify-content-center">
               <ListGroup variant="flush">
-                <ListGroup.Item className="bg-warning" style={{borderTopLeftRadius:"8px" ,borderTopRightRadius:"8px"}} >
+                <ListGroup.Item
+                  className="bg-warning"
+                  style={{
+                    borderTopLeftRadius: "8px",
+                    borderTopRightRadius: "8px",
+                  }}
+                >
                   <h3>{businessdatabyid.businessName}</h3>
                 </ListGroup.Item>
                 <ListGroup.Item>
