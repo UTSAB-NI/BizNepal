@@ -76,6 +76,13 @@ const userApiSlice = apiSlice.injectEndpoints({
       }),
     }),
 
+    getUserById: builder.query({
+      query: (id) => ({
+        url: `${USERS_URL}/${id}`,
+        method: "GET",
+      }),
+    }),
+
     deleteUserbyId: builder.mutation({
       query: (id) => ({
         url: `${USERS_URL}/${id}`,
@@ -161,6 +168,7 @@ export const {
   useDeletebusinessMutation,
   useEditBusinessMutation,
   useGetAlluserQuery,
+  useGetUserByIdQuery,
   useDeleteUserbyIdMutation,
   useAddUserbyadminMutation,
   useEditUserbyadminMutation,

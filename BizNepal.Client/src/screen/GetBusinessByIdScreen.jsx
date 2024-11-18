@@ -28,6 +28,7 @@ const GetBusinessByIdScreen = () => {
     isLoading,
     isError,
   } = useGetbusinessByIdQuery(businessid);
+  console.log(businessdatabyid?.businessImages);
 
   useEffect(() => {
     if (isError) {
@@ -37,9 +38,9 @@ const GetBusinessByIdScreen = () => {
     }
   }, [isError, businessdatabyid]);
 
-  // const imageUrl = `${API_BASE_URL}${businessdatabyid.businessImages}`;
-
-  console.log(businessdatabyid.businessImages);
+  const imageUrl = `${API_BASE_URL}${businessdatabyid?.businessImages[0].imageUrl}`;
+  console.log(imageUrl);
+  // console.log(businessdatabyid.businessImages);
 
   return (
     <Container className="business-container">
@@ -55,7 +56,7 @@ const GetBusinessByIdScreen = () => {
           <Row>
             <Col md={12}>
               <Image
-                src="/images/image.png"
+                src={imageUrl}
                 alt="image"
                 style={{ height: "400px", objectFit: "cover" }}
               />
