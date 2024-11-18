@@ -12,7 +12,7 @@ public class Review : AuditModel
     public int? Rating { get; set; }  // Individual customer rating
 
     public Guid BusinessId { get; set; }
-    [JsonIgnore]
+    
     public Business Business { get; set; }
 
     public string UserId { get; set; }

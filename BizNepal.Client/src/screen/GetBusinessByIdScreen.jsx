@@ -17,7 +17,9 @@ import CreateReview from "../Component/CreateReview";
 import BusinessMap from "../Component/BusinessMap";
 import BusinessReviewGraph from "../Component/BusinessReviewGraph";
 import Carousel from "react-bootstrap/Carousel";
+import { data } from "autoprefixer";
 
+const API_BASE_URL = "https://localhost:5000";
 const GetBusinessByIdScreen = () => {
   const [Feedback, setFeedback] = useState(false);
   const { id: businessid } = useParams();
@@ -34,6 +36,10 @@ const GetBusinessByIdScreen = () => {
       );
     }
   }, [isError, businessdatabyid]);
+
+  // const imageUrl = `${API_BASE_URL}${businessdatabyid.businessImages}`;
+
+  console.log(businessdatabyid.businessImages);
 
   return (
     <Container className="business-container">
