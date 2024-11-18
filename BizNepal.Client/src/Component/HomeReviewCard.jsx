@@ -10,6 +10,7 @@ import {
 } from "react-icons/fa";
 
 const ReviewCard = ({ reviews }) => {
+  console.log(reviews);
   return (
     <div
       className="review-section"
