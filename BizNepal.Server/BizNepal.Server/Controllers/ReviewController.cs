@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc.Diagnostics;
 
 namespace BizNepal.Server.Controllers;
 
@@ -56,7 +57,10 @@ public class ReviewController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> GetAll()
     {
-        var reviews= _context.Reviews.ToList();
+        var reviews= await _context.Reviews
+            .Include(b=>b.Business)
+            .ToListAsync();
+
         return Ok(reviews);
     }
 
