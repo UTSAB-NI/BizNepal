@@ -15,6 +15,7 @@ import Loader from "../Component/Loader";
 import { useSearchByCategoryQuery } from "../slices/categoryApiSlices";
 import districtofNepal from "../data/Districtofnepal";
 
+const API_BASE_URL = "https://localhost:5000";
 const GetCategory = () => {
   const { category } = useParams(); // Get category from route params
   const {
@@ -58,9 +59,7 @@ const GetCategory = () => {
         : true;
 
       const matchesCity = filters.City
-        ? item.address?.city
-            .toLowerCase()
-            .includes(filters.City.toLowerCase())
+        ? item.address?.city.toLowerCase().includes(filters.City.toLowerCase())
         : true;
 
       return matchesRating && matchesDistrict && matchesCity;
@@ -92,6 +91,10 @@ const GetCategory = () => {
     const businessMapUrl = `https://www.google.com/maps/search/?api=1&query=${latitude},${longitude}`;
     window.open(businessMapUrl, "_blank");
   };
+
+  console.log(categoryData);
+
+  // const imageUrl = `${API_BASE_URL}${categoryData?.businessImages[0].imageUrl}`;
 
   return (
     <MDBContainer
@@ -151,9 +154,7 @@ const GetCategory = () => {
               type="text"
               placeholder="Enter city"
               value={filters.City}
-              onChange={(e) =>
-                setFilters({ ...filters, City: e.target.value })
-              }
+              onChange={(e) => setFilters({ ...filters, City: e.target.value })}
             />
           </Form.Group>
 
@@ -186,7 +187,8 @@ const GetCategory = () => {
                     >
                       <MDBCard className="h-100">
                         <MDBCardImage
-                          src={business.businessImages[0]?.url || ""}
+                          // src={business.businessImages[0]?. || ""}
+                          src={`${API_BASE_URL}${business?.businessImages[0].imageUrl}`}
                           alt={business.businessName}
                           className="img-fluid rounded-top"
                           style={{ height: "200px", objectFit: "cover" }}

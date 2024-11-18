@@ -2,6 +2,8 @@ import { MDBContainer, MDBRow, MDBCol } from "mdb-react-ui-kit";
 import "../Customcss/InfoBar.css";
 
 const InfoBar = ({ reviews, business, address }) => {
+  console.log(reviews);
+  console.log(business);
   return (
     <div>
       <MDBContainer fluid className="info-bar">
@@ -19,7 +21,7 @@ const InfoBar = ({ reviews, business, address }) => {
             className="d-flex justify-content-around text-center p-3"
           >
             <div>
-              <h3 className="fs-4">{business.length}</h3>
+              <h3 className="fs-4">{business?.length}</h3>
               <p className="mb-0">Total Listings</p>
             </div>
             <div>
@@ -27,7 +29,7 @@ const InfoBar = ({ reviews, business, address }) => {
               <p className="mb-0">Places of Nepal</p>
             </div>
             <div>
-              <h3 className="fs-4">{reviews.length}</h3>
+              <h3 className="fs-4">{reviews?.length}</h3>
               <p className="mb-0">Happy Faces</p>
             </div>
           </MDBCol>

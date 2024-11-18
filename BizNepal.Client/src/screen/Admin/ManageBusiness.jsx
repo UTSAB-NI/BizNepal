@@ -81,7 +81,7 @@ const ManageBusiness = () => {
 
         if (target.classList.contains("edit-btn")) {
           const businessid = target.getAttribute("data-id");
-          const business = data.find((b) => b.businessId === businessid);
+          const business = allbusinessData.find((b) => b.businessId === businessid);
           console.log(business);
           handleEditClick(business);
         }
