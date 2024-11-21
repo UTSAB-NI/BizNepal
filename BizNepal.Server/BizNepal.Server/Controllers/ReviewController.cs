@@ -1,24 +1,21 @@
 ﻿using BizNepal.Server.Data;
 using BizNepal.Server.Models.DTO;
 using BizNepal.Server.Models;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Mvc.Diagnostics;
+using AutoMapper;
 
 namespace BizNepal.Server.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class ReviewController : ControllerBase
+public class ReviewController(ApplicationDbContext context, IMapper mapper) : ControllerBase
 {
-    private readonly ApplicationDbContext _context;
-    public ReviewController(ApplicationDbContext context)
-    {
-        _context = context;
-    }
+    private readonly ApplicationDbContext _context = context;
+    private readonly IMapper _mapper = mapper;
 
+    #region Create Review
     [HttpPost("Create")]
     public async Task<IActionResult> Create([FromQuery] Guid BusinessId, AddReviewDto addReviewDto)
     {
@@ -29,7 +26,8 @@ public class ReviewController : ControllerBase
             return Unauthorized();
         }
 
-        bool userReviewExists = _context.Reviews.Any(c => c.UserId == userId && c.BusinessId==BusinessId);
+        bool userReviewExists = await _context.Reviews.AnyAsync(c => c.UserId == userId && c.BusinessId==BusinessId);
+
         if (userReviewExists)
         {
             return BadRequest("One user can have only one review for a business.");
@@ -54,6 +52,9 @@ public class ReviewController : ControllerBase
         return Ok(review);
     }
 
+    #endregion
+
+    #region GetAll Reiview
     [HttpGet]
     public async Task<IActionResult> GetAll()
     {
@@ -61,10 +62,14 @@ public class ReviewController : ControllerBase
             .Include(b=>b.Business)
             .ToListAsync();
 
-        return Ok(reviews);
+        var reviewResponse =_mapper.Map<List<ReviewReponseDto>>(reviews);
+
+        return Ok(reviewResponse);
     }
 
+    #endregion
 
+    #region Update BusinessRating
     private async Task UpdateBusinessRating(Guid businessId)
     {
         var reviews = await _context.Reviews
@@ -82,6 +87,6 @@ public class ReviewController : ControllerBase
         }
     }
 
-
+    #endregion
 
 }
