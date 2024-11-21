@@ -53,7 +53,7 @@ const ReviewCard = ({ reviews }) => {
                     <div>Error loading user</div>
                   ) : (
                     <Image
-                      src= "/images/woman.png"
+                      src="/images/woman.png"
                       roundedCircle
                       alt="User Avatar"
                       style={{ width: "50px", height: "50px" }}

@@ -39,5 +39,14 @@ public class MappingProfile : Profile
             .ForMember(dest => dest.ImageId, opt => opt.MapFrom(src => src.ImageId))
             .ForSourceMember(src => src.Business, opt => opt.DoNotValidate())
             .ForSourceMember(src => src.BusinessId, opt => opt.DoNotValidate());
+
+        CreateMap<Review, ReviewReponseDto>()
+             .ForMember(dest => dest.Business, opt => opt.MapFrom(src => src.Business));
+
+        // Explicitly map Business -> BusinessReviewResponseDto
+        CreateMap<Business, BusinessReviewResponseDto>();
+
+
+
     }
 }

@@ -85,11 +85,9 @@ public class AuthController : ControllerBase
                 {
                     return Ok(new
                     {
-
                         message = "Registration Successful! please login",
                         username = identityUser.UserName
                     });
-
                 }
 
             }
