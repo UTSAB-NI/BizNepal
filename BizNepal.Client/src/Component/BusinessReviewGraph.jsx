@@ -20,7 +20,6 @@ const BusinessReviewGraph = ({ reviews }) => {
               <ProgressBar
                 variant={getRatingVariant(review.rating)}
                 now={review.rating * 10}
-                label={`Rating: ${review.rating}`}
               />
             </Col>
           ))}

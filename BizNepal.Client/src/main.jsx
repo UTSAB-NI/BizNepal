@@ -30,7 +30,7 @@ import GetBusinessByIdScreen from "./screen/GetBusinessByIdScreen.jsx";
 import ProtectedRoute from "./Component/ProtectedRoute.jsx";
 import BusinessListScreen from "./screen/BusinessListScreen.jsx";
 
-import AdimRoute from "./Component/AdimRoute.jsx";
+import AdminRoute from "./Component/AdminRoute.jsx";
 import BusinessOwner from "./screen/Admin/BusinessOwner.jsx";
 import GeneralUser from "./screen/Admin/GeneralUser.jsx";
 import ManageBusiness from "./screen/Admin/ManageBusiness.jsx";
@@ -56,13 +56,13 @@ const router = createBrowserRouter(
 
         {/* //protected route */}
         <Route path="/" element={<ProtectedRoute />}>
-          <Route path="/profile" element={<UserprofileScreen />} />
-          <Route path="/businesslist" element={<BusinessListScreen />} />
+          <Route path="profile" element={<UserprofileScreen />} />
+          <Route path="businesslist" element={<BusinessListScreen />} />
         </Route>
       </Route>
 
       {/* //admin route */}
-      <Route element={<AdimRoute />}>
+      <Route element={<AdminRoute />}>
         <Route path="/admin" element={<AdminDashboard />} />
         <Route path="/admin/generaluser" element={<GeneralUser />} />
         <Route path="/admin/businessowner" element={<BusinessOwner />} />
