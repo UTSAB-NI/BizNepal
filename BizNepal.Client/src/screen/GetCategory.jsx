@@ -203,9 +203,7 @@ const GetCategory = () => {
                                 <span
                                   key={star}
                                   className={`fs-4 ${
-                                    business.reviews?.some(
-                                      (review) => review.rating >= star
-                                    )
+                                    business.overallRating >= star
                                       ? "text-warning"
                                       : "text-muted"
                                   }`}
