@@ -64,6 +64,7 @@ const UserprofileScreen = () => {
                         </MDBCol>
                       </MDBRow>
 
+
                       <MDBTypography tag="h6">Information</MDBTypography>
                       <hr className="mt-0 mb-4" />
                       <MDBRow className="pt-1">
