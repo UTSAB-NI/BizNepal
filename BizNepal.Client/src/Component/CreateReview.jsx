@@ -6,6 +6,7 @@ import {
   useCreateReviewMutation,
   useGetUserReviewQuery,
 } from "../slices/userApiSlices";
+import { fitBounds } from "google-map-react";
 
 const StarRating = ({ rating, onClick, size = "fs-4", editable = true }) => {
   return (
@@ -30,7 +31,9 @@ const StarRating = ({ rating, onClick, size = "fs-4", editable = true }) => {
 const CreateReview = ({ businessId }) => {
   const [feedback, setFeedback] = useState("");
   const [feedbackType, setFeedbackType] = useState("");
+
   const { userInfo: user } = useSelector((state) => state.auth);
+  
   const navigate = useNavigate();
 
   // Get user reviews
@@ -72,6 +75,7 @@ const CreateReview = ({ businessId }) => {
     (review) => review.businessId === businessId
   );
 
+  console.log(filteredReviews)
   return (
     <>
       {/* Review Form */}

@@ -1,4 +1,6 @@
 import React from "react";
+import { useSelector } from "react-redux";
+
 import {
   MDBCol,
   MDBContainer,
@@ -11,7 +13,11 @@ import {
   MDBIcon,
 } from "mdb-react-ui-kit";
 
+import { useGetUserByIdQuery } from "../slices/userApiSlices";
+
+
 const UserprofileScreen = () => {
+  const {userId} = useSelector((state) =>state.auth)
   return (
     <div>
       <section className="vh-100" style={{ backgroundColor: "#f4f5f7" }}>

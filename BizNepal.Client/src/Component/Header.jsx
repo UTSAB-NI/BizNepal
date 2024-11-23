@@ -46,6 +46,10 @@ const Header = ({ toggleTheme, currentTheme }) => {
               Home
             </Nav.Link>
 
+            <Nav.Link as = {Link} to="/about" className="px-3">
+              Why biznepal?
+            </Nav.Link>
+
             {/* Integrated SearchWithSuggestions Component */}
             <div className="searchbox-wrapper d-flex align-items-center">
               <Searchbox />
