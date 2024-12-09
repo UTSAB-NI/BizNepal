@@ -16,7 +16,6 @@ const RegisterScreen = () => {
   const [role, setRole] = useState("");
   const [feedback, setFeedback] = useState("");
 
- 
   const navigate = useNavigate();
   const [register, { isLoading, error }] = useRegisterMutation();
   const [showPassword, setShowPassword] = useState(false);
@@ -34,14 +33,10 @@ const RegisterScreen = () => {
 
     try {
       const response = await register(RegistrationDetails).unwrap();
-      
-      
-        toast.success(response.message);
-        navigate("/login");
 
-      
+      toast.success(response.message);
+      navigate("/login");
     } catch (error) {
-    
       setFeedback(error.data);
     }
   };
@@ -74,7 +69,7 @@ const RegisterScreen = () => {
             />
           </Form.Group>
 
-          <Form.Group controlId="email" >
+          <Form.Group controlId="email">
             <Form.Label>Email</Form.Label>
             <Form.Control
               type="email"
@@ -97,12 +92,18 @@ const RegisterScreen = () => {
             <button
               type="button"
               className="position-absolute"
-              style={{ right: "10px", top: "35px", background: "none", border: "none", cursor: "pointer" }}
+              style={{
+                right: "10px",
+                top: "35px",
+                background: "none",
+                border: "none",
+                cursor: "pointer",
+              }}
               onClick={togglePasswordVisibility}
             >
-              {showPassword ? <FaEyeSlash /> : <FaEye />} {/* Toggle icon based on state */}
+              {showPassword ? <FaEyeSlash /> : <FaEye />}{" "}
+              {/* Toggle icon based on state */}
             </button>
-
           </Form.Group>
 
           <Form.Group controlId="role">
