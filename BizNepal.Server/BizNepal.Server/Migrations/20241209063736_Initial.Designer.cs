@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BizNepal.Server.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240903131026_modify business table")]
-    partial class modifybusinesstable
+    [Migration("20241209063736_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,6 +24,25 @@ namespace BizNepal.Server.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("BizNepal.Server.Models.Address", b =>
+                {
+                    b.Property<Guid>("AddressId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("City")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("District")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("AddressId");
+
+                    b.ToTable("Addresses");
+                });
 
             modelBuilder.Entity("BizNepal.Server.Models.ApplicationUser", b =>
                 {
@@ -36,6 +55,9 @@ namespace BizNepal.Server.Migrations
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Email")
                         .HasMaxLength(256)
@@ -96,8 +118,8 @@ namespace BizNepal.Server.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("ApplicationUserId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<Guid>("AddressId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("BusinessName")
                         .IsRequired()
@@ -106,6 +128,13 @@ namespace BizNepal.Server.Migrations
                     b.Property<Guid>("CategoryId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -113,13 +142,22 @@ namespace BizNepal.Server.Migrations
                     b.Property<Guid>("LocationId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<decimal?>("OverallRating")
+                        .HasColumnType("decimal(18,2)");
+
                     b.Property<string>("PhoneNumber")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("UserId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Website")
                         .IsRequired()
@@ -127,13 +165,36 @@ namespace BizNepal.Server.Migrations
 
                     b.HasKey("BusinessId");
 
-                    b.HasIndex("ApplicationUserId");
+                    b.HasIndex("AddressId")
+                        .IsUnique();
 
                     b.HasIndex("CategoryId");
 
                     b.HasIndex("LocationId");
 
+                    b.HasIndex("UserId");
+
                     b.ToTable("Businesses");
+                });
+
+            modelBuilder.Entity("BizNepal.Server.Models.BusinessImage", b =>
+                {
+                    b.Property<Guid>("ImageId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("BusinessId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("ImageUrl")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ImageId");
+
+                    b.HasIndex("BusinessId");
+
+                    b.ToTable("BusinessImages");
                 });
 
             modelBuilder.Entity("BizNepal.Server.Models.Category", b =>
@@ -146,41 +207,25 @@ namespace BizNepal.Server.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("IconPath")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("CategoryId");
 
                     b.ToTable("Categories");
-
-                    b.HasData(
-                        new
-                        {
-                            CategoryId = new Guid("e41fddb0-bea3-48a8-884a-b2420038c7a7"),
-                            CategoryName = "Resturant"
-                        },
-                        new
-                        {
-                            CategoryId = new Guid("5020933d-5fa9-4c60-a125-2523bba36921"),
-                            CategoryName = "Cafe"
-                        },
-                        new
-                        {
-                            CategoryId = new Guid("56aebe1c-02f5-4865-945c-e36a71971936"),
-                            CategoryName = "Hospital"
-                        },
-                        new
-                        {
-                            CategoryId = new Guid("41005000-c22e-4ef8-b8ca-eb79890aaaa8"),
-                            CategoryName = "Hotels"
-                        },
-                        new
-                        {
-                            CategoryId = new Guid("ad1d5ac6-f01b-4996-bb21-1a5d6521e0a8"),
-                            CategoryName = "Gym"
-                        },
-                        new
-                        {
-                            CategoryId = new Guid("8bb1cdce-9aa4-404f-9c74-71a89bf0b0c7"),
-                            CategoryName = "Shopping"
-                        });
                 });
 
             modelBuilder.Entity("BizNepal.Server.Models.Location", b =>
@@ -208,6 +253,9 @@ namespace BizNepal.Server.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("ApplicationUserId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<Guid>("BusinessId")
                         .HasColumnType("uniqueidentifier");
 
@@ -215,15 +263,31 @@ namespace BizNepal.Server.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("Rating")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("UserId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("ReviewId");
 
-                    b.HasIndex("BusinessId");
+                    b.HasIndex("ApplicationUserId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("BusinessId");
 
                     b.ToTable("Reviews");
                 });
@@ -386,9 +450,11 @@ namespace BizNepal.Server.Migrations
 
             modelBuilder.Entity("BizNepal.Server.Models.Business", b =>
                 {
-                    b.HasOne("BizNepal.Server.Models.ApplicationUser", "ApplicationUser")
-                        .WithMany()
-                        .HasForeignKey("ApplicationUserId");
+                    b.HasOne("BizNepal.Server.Models.Address", "Address")
+                        .WithOne()
+                        .HasForeignKey("BizNepal.Server.Models.Business", "AddressId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("BizNepal.Server.Models.Category", "Category")
                         .WithMany()
@@ -402,6 +468,14 @@ namespace BizNepal.Server.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("BizNepal.Server.Models.ApplicationUser", "ApplicationUser")
+                        .WithMany("Businesses")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Address");
+
                     b.Navigation("ApplicationUser");
 
                     b.Navigation("Category");
@@ -409,17 +483,26 @@ namespace BizNepal.Server.Migrations
                     b.Navigation("Location");
                 });
 
+            modelBuilder.Entity("BizNepal.Server.Models.BusinessImage", b =>
+                {
+                    b.HasOne("BizNepal.Server.Models.Business", "Business")
+                        .WithMany("BusinessImages")
+                        .HasForeignKey("BusinessId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Business");
+                });
+
             modelBuilder.Entity("BizNepal.Server.Models.Review", b =>
                 {
+                    b.HasOne("BizNepal.Server.Models.ApplicationUser", "ApplicationUser")
+                        .WithMany("Reviews")
+                        .HasForeignKey("ApplicationUserId");
+
                     b.HasOne("BizNepal.Server.Models.Business", "Business")
                         .WithMany("Reviews")
                         .HasForeignKey("BusinessId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("BizNepal.Server.Models.ApplicationUser", "ApplicationUser")
-                        .WithMany("Reviews")
-                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -481,11 +564,15 @@ namespace BizNepal.Server.Migrations
 
             modelBuilder.Entity("BizNepal.Server.Models.ApplicationUser", b =>
                 {
+                    b.Navigation("Businesses");
+
                     b.Navigation("Reviews");
                 });
 
             modelBuilder.Entity("BizNepal.Server.Models.Business", b =>
                 {
+                    b.Navigation("BusinessImages");
+
                     b.Navigation("Reviews");
                 });
 #pragma warning restore 612, 618

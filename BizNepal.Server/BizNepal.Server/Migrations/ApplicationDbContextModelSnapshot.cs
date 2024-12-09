@@ -38,7 +38,7 @@ namespace BizNepal.Server.Migrations
 
                     b.HasKey("AddressId");
 
-                    b.ToTable("Addresses", (string)null);
+                    b.ToTable("Addresses");
                 });
 
             modelBuilder.Entity("BizNepal.Server.Models.ApplicationUser", b =>
@@ -171,7 +171,7 @@ namespace BizNepal.Server.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Businesses", (string)null);
+                    b.ToTable("Businesses");
                 });
 
             modelBuilder.Entity("BizNepal.Server.Models.BusinessImage", b =>
@@ -191,7 +191,7 @@ namespace BizNepal.Server.Migrations
 
                     b.HasIndex("BusinessId");
 
-                    b.ToTable("BusinessImages", (string)null);
+                    b.ToTable("BusinessImages");
                 });
 
             modelBuilder.Entity("BizNepal.Server.Models.Category", b =>
@@ -222,7 +222,7 @@ namespace BizNepal.Server.Migrations
 
                     b.HasKey("CategoryId");
 
-                    b.ToTable("Categories", (string)null);
+                    b.ToTable("Categories");
                 });
 
             modelBuilder.Entity("BizNepal.Server.Models.Location", b =>
@@ -241,7 +241,7 @@ namespace BizNepal.Server.Migrations
 
                     b.HasKey("LocationId");
 
-                    b.ToTable("Locations", (string)null);
+                    b.ToTable("Locations");
                 });
 
             modelBuilder.Entity("BizNepal.Server.Models.Review", b =>
@@ -286,7 +286,7 @@ namespace BizNepal.Server.Migrations
 
                     b.HasIndex("BusinessId");
 
-                    b.ToTable("Reviews", (string)null);
+                    b.ToTable("Reviews");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
