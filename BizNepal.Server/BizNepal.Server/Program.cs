@@ -70,8 +70,12 @@ builder.Services.AddCors(options =>
 
 
 //auth database
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
-            options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+//builder.Services.AddDbContext<ApplicationDbContext>(options =>
+//            options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.AddDbContext<ApplicationDbContext>(option=>
+option.UseNpgsql(builder.Configuration.GetConnectionString("AWS_CONNECTIONSTRING"))
+);
 
 builder.Services.AddIdentityCore<ApplicationUser>()
 .AddRoles<IdentityRole>()

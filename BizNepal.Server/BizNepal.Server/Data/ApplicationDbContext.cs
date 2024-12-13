@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using BizNepal.Server.Models;
+using BizNepal.Server.Helper;
 
 namespace BizNepal.Server.Data;
 
@@ -24,6 +25,18 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         base.OnModelCreating(modelBuilder);
 
+        foreach (var entityType in modelBuilder.Model.GetEntityTypes())
+        {
+            var properties = entityType.ClrType.GetProperties()
+                .Where(p => p.PropertyType == typeof(DateTime) || p.PropertyType == typeof(DateTime?));
+
+            foreach (var property in properties)
+            {
+                modelBuilder.Entity(entityType.ClrType)
+                    .Property(property.Name)
+                    .HasConversion<DateTimeUtcConverter>();
+            }
+        }
         //seed role table
 
         var BusinessOwner = "e2ae5491-a104-4f69-af2e-28f021b9b762";
