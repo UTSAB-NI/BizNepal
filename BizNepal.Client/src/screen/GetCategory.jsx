@@ -188,7 +188,7 @@ const GetCategory = () => {
                       <MDBCard className="h-100">
                         <MDBCardImage
                           // src={business.businessImages[0]?. || ""}
-                          src={`${API_BASE_URL}${business?.businessImages[0].imageUrl}`}
+                          src={`${API_BASE_URL}${business?.businessImages[0]?.imageUrl}`}
                           alt={business.businessName}
                           className="img-fluid rounded-top"
                           style={{ height: "200px", objectFit: "cover" }}

@@ -9,6 +9,7 @@ using Microsoft.OpenApi.Models;
 using System.Text;
 using BizNepal.Server.Utilities;
 using BizNepal.Server.Helper;
+using BizNepal.Server.DatabaseSeeder;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -132,6 +133,25 @@ using (var scope = app.Services.CreateScope())
 }
 
 await DatabaseHelper.SeedSuperAdmin(app.Services);
+
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    try
+    {
+        var context = services.GetRequiredService<ApplicationDbContext>();
+        await DbSeeder.CategorySeeder(context);
+        await DbSeeder.LocationSeeder(context);
+        await DbSeeder.AddressSeeder(context);
+        await DbSeeder.BusinessSeeder(context);
+        await DbSeeder.ReviewSeeder(context);
+    }
+    catch (Exception ex)
+    {
+        var logger = services.GetRequiredService<ILogger<Program>>();
+        logger.LogError(ex, "An error occurred while seeding the database.");
+    }
+}
 
 app.UseCors("AllowAll");
 
