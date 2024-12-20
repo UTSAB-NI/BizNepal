@@ -5,7 +5,10 @@ using BizNepal.Server.Models.DTO;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Dynamic.Core;
+using System.Net.Http;
 using System.Security.Claims;
+using System.Text;
+using System.Text.Json;
 
 namespace BizNepal.Server.Controllers;
 
@@ -15,12 +18,13 @@ public class BusinessController : ControllerBase
 {
     private readonly ApplicationDbContext _context;
     private readonly IMapper _mapper;
+    private readonly HttpClient _httpClient;
 
-    public BusinessController(ApplicationDbContext context, IMapper mapper)
+    public BusinessController(ApplicationDbContext context, IMapper mapper, HttpClient httpClient)
     {
         _mapper = mapper;
         _context = context;
-        
+        _httpClient = httpClient;
     }
 
     #region Get all Businesses
@@ -537,6 +541,46 @@ public class BusinessController : ControllerBase
 
     #endregion
 
+    [HttpPost("predict")]
+    public async Task<IActionResult> PredictOverallSentiment(Guid businessId)
+    {
+        // FastAPI endpoint URL
+        var url = "http://localhost:8000/predict-sentiment"; // Update the FastAPI endpoint URL if needed
+
+        var reviews = _context.Reviews.Where(c => c.BusinessId == businessId).ToList();
+        var comments = reviews.Select(c => c.Comment).ToList();  // Ensure this is a List<string>
+
+        // Create the ReviewInput object that FastAPI expects
+        var reviewInput = new { reviews = comments };
+        var content = new StringContent(JsonSerializer.Serialize(reviewInput), Encoding.UTF8, "application/json");
+
+        try
+        {
+            // Send the POST request to FastAPI
+            var response = await _httpClient.PostAsync(url, content);
+
+            if (response.IsSuccessStatusCode)
+            {
+                // Deserialize the response JSON to ReviewOutput
+                var responseContent = await response.Content.ReadAsStringAsync();
+                var predictionResponse = JsonSerializer.Deserialize<PredictionResponseDto>(responseContent);
+
+                // Return the response as a View, or you can return it as a JSON response
+                return Ok(predictionResponse); // For example, sending back the response as a JSON result
+            }
+            else
+            {
+                // Handle failed request
+                return StatusCode((int)response.StatusCode, "Error calling FastAPI endpoint");
+            }
+        }
+        catch (Exception ex)
+        {
+            // Handle exception (e.g., network failure)
+            return StatusCode(500, $"Internal server error: {ex.Message}");
+        }
+
+    }
 
 
 }

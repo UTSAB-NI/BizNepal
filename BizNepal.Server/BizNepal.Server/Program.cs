@@ -114,7 +114,7 @@ builder.Services.AddAuthentication(x =>
 );
 
 builder.Services.AddAuthorization();
-
+builder.Services.AddHttpClient();
 
 var app = builder.Build();
 
