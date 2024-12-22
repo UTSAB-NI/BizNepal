@@ -6,9 +6,10 @@ import AllUser from "../screen/Admin/AllUser";
 const AdminLayout = () => {
 
   const {userInfo} = useSelector(state => state.auth);
+  // console.log("userINFO",userInfo);
 
 
-  return userInfo && userInfo.role === "Admin" ? (
+  return userInfo && userInfo.role === "Admin" || "SuperAdmin" ? (
     <div style={styles.container}>
       <div style={styles.sidebar}>
         <Sidenavbar />  {/* Side Navigation Bar */}

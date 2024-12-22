@@ -38,7 +38,7 @@ const GetBusinessByIdScreen = () => {
     }
   }, [isError, businessdatabyid]);
 
-  const imageUrl = `${API_BASE_URL}${businessdatabyid?.businessImages[0].imageUrl}`;
+  const imageUrl = `${API_BASE_URL}${businessdatabyid?.businessImages[0]?.imageUrl}`;
   console.log(imageUrl);
   // console.log(businessdatabyid.businessImages);
 

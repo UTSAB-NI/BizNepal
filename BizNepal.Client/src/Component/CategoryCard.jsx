@@ -1,26 +1,21 @@
 import React from "react";
 import "../Customcss/categoryCard.css"; // Custom CSS for styling
 
-
 const API_BASE_URL = "https://localhost:5000";
 const CategoryCard = ({ iconPath, categoryName }) => {
   //   console.log(iconPath);
 
-  const imageUrl = `${API_BASE_URL}${iconPath}`;
+  // const imageUrl = `${API_BASE_URL}${iconPath}`;
+  const imageUrl = "/images/1.png";
   console.log(imageUrl);
 
   return (
-    <div className="container d-flex justify-content-center mt-5">
-      <div
-        className="card text-center p-4 border-0 shadow-sm"
-        style={{ width: "150px" }} // Increased width
-      >
-        <div className="icon-circle bg-warning mb-3">
-          <img src={imageUrl} alt="Restaurant Icon" className="icon-image" />
-        </div>
-        {/* <h5 className="text-danger" style={{ fontSize: "16px" }}>
-          {category.categoryName}
-        </h5>{" "} */}
+    <div className="category-card">
+      <div className="category-icon-container">
+        <img src={imageUrl} alt="Restaurant Icon" className="category-icon" />
+      </div>
+      <div className="category-title-container">
+        <h1 className=" category-title ">{categoryName}</h1>{" "}
       </div>
     </div>
   );

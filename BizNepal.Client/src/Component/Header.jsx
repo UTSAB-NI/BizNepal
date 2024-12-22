@@ -22,6 +22,7 @@ const Header = ({ toggleTheme, currentTheme }) => {
   const dispatch = useDispatch();
 
   const { userInfo } = useSelector((state) => state.auth);
+  // console.log("userInfo", userInfo.role);
 
   const logouthandler = () => {
     localStorage.removeItem("userInfo");
@@ -46,7 +47,7 @@ const Header = ({ toggleTheme, currentTheme }) => {
               Home
             </Nav.Link>
 
-            <Nav.Link as = {Link} to="/about" className="px-3">
+            <Nav.Link as={Link} to="/about" className="px-3">
               Why biznepal?
             </Nav.Link>
 
@@ -69,7 +70,7 @@ const Header = ({ toggleTheme, currentTheme }) => {
                 </NavDropdown>
 
                 <Nav.Link as={Link} to="/businesslist">
-                  <Button variant="danger" className="btn-business mx-2">
+                  <Button variant="danger" className="btn-business mx-2 nav-btn ">
                     + List Your Business
                   </Button>
                 </Nav.Link>
@@ -77,7 +78,10 @@ const Header = ({ toggleTheme, currentTheme }) => {
             ) : (
               <>
                 <Nav.Link as={Link} to="/login">
-                  <Button variant="outline-primary" className="mx-2 btn-login">
+                  <Button
+                    variant="outline-primary"
+                    className="mx-2 btn-login nav-btn"
+                  >
                     Login
                   </Button>
                 </Nav.Link>
@@ -85,7 +89,7 @@ const Header = ({ toggleTheme, currentTheme }) => {
                 <Nav.Link as={Link} to="/register">
                   <Button
                     variant="outline-primary"
-                    className="mx-2 btn-register"
+                    className="mx-2 btn-register nav-btn "
                   >
                     Sign Up
                   </Button>
@@ -93,20 +97,20 @@ const Header = ({ toggleTheme, currentTheme }) => {
               </>
             )}
 
-            {userInfo && userInfo.role === "Admin" && (
-              <Button
-                variant="danger"
-                className="mx-2"
-                target="_blank"
-                href="/admin"
-              >
-                Admin
-              </Button>
-            )}
+            {userInfo &&
+              (userInfo.role === "Admin" || userInfo.role === "SuperAdmin") && (
+                <Button
+                  className="mx-2 nav-btn btn-admin"
+                  target="_blank"
+                  href="/admin"
+                >
+                  Admin
+                </Button>
+              )}
 
             <Button
               variant="outline-secondary"
-              className="btn-theme mx-2"
+              className="btn-theme mx-2 "
               onClick={toggleTheme}
             >
               {themeIcon}
