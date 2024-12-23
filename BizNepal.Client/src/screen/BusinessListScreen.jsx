@@ -101,7 +101,7 @@ const BusinessListScreen = () => {
     formData.append("description", description);
     formData.append("city", city);
     formData.append("district", district);
-    formData.append("website", website);
+    formData.append("website", website || "None");
     formData.append("phoneNumber", phoneNumber);
     formData.append("latitude", location.lat.toString());
     formData.append("longitude", location.lng.toString());
@@ -111,6 +111,7 @@ const BusinessListScreen = () => {
       formData.append("Images", image);
     });
 
+    console.log("Form Data: " + formData);
     // Debugging
     for (let pair of formData.entries()) {
       console.log(pair[0] + ": " + pair[1]);
@@ -222,7 +223,7 @@ const BusinessListScreen = () => {
                     <Form.Label>Website </Form.Label>
                     <Form.Control
                       type="text"
-                      value={website}
+                      value={website || ""}
                       onChange={(e) => setWebsite(e.target.value)}
                       placeholder="Enter Website"
                     />
@@ -241,7 +242,7 @@ const BusinessListScreen = () => {
                 </Col>
 
                 <Col md="6">
-                  <Form.Group controlId="latitude">
+                  <Form.Group controlId="latitude" style={{ display: "none" }}>
                     <Form.Label>Latitude </Form.Label>
                     <Form.Control
                       type="text"
@@ -253,7 +254,7 @@ const BusinessListScreen = () => {
                     />
                   </Form.Group>
 
-                  <Form.Group controlId="longitude">
+                  <Form.Group controlId="longitude" style={{ display: "none" }}>
                     <Form.Label>Longitude </Form.Label>
                     <Form.Control
                       type="text"
