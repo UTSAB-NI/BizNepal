@@ -28,23 +28,28 @@ const CategoryList = () => {
   if (error) return <p>Error loading categories</p>;
 
   // console.log(data);
+  console.log(Categorydata);
 
   return (
     <div>
       <MDBContainer
-        className="category-container"
-        style={{ marginTop: "6rem" }}
+        className="landingpage-category-container"
+        style={{ marginTop: "100px", marginBottom: "100px" }}
       >
-        <h2 className="text-dark">Our Top Category</h2>
-        <MDBRow className="my-2">
+        <h2 className="text-dark text-center">Browse By Category </h2>
+
+        <p className="text-muted text-center my-5">
+          {" "}
+          Discover local businesses and services across various categories
+        </p>
+        <MDBRow className="">
           {Categorydata.map((c, index) => (
             <MDBCol key={c.id} xs={6} sm={4} md={3} lg={2} className="mb-4">
               <Link to={`/category/${c.categoryName}`}>
                 <CategoryCard
-                  iconPath={c.iconPath}
+                  // iconPath={c.iconPath}
                   categoryName={c.categoryName}
                 />
-                <p className="text-danger text-center my-2">{c.categoryName}</p>
               </Link>
             </MDBCol>
           ))}

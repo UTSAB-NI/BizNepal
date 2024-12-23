@@ -1,0 +1,150 @@
+/* Category Page Styles */
+
+.category-page {
+  /* background-color: #f8f9fa; */
+  /* padding: 20px; */
+}
+
+/* Business Cards */
+.business-section {
+  /* border: 2px solid red; */
+  /* width: 100%; */
+
+}
+.category-page .business-card {
+  width: 100%;
+  max-width: 280px;
+  margin: 15px;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  line-height: 12px;
+}
+
+.category-page .business-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.category-page .business-card img {
+  border-radius: 12px 12px 0 0;
+}
+
+.category-page .business-card .card-footer {
+  background: transparent;
+  border-top: none;
+  padding: 10px;
+}
+
+.category-page .business-card .btn {
+  border-radius: 25px;
+  font-weight: bold;
+  transition: all 0.3s ease;
+}
+
+.category-page .business-card .btn-secondary:hover {
+  background-color: #333;
+  color: #fff;
+}
+
+/* Filter Section */
+.filter-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* border: 2px solid #ddd; */
+  border-radius: 12px;
+  padding: 20px;
+  /* box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); */
+  /* background-color: #ffffff; */
+}
+
+.filter-card {
+  flex: 0 0 300px;
+  width: 100%;
+  max-width: 300px;
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  height: fit-content;
+}
+
+.filter-head {
+  font-weight: 600;
+  font-size: 20px;
+  color: #333;
+  margin-bottom: 15px;
+}
+
+.filter-card label {
+  font-weight: 500;
+  font-size: 16px;
+  color: #555;
+}
+
+.filter-card input,
+.filter-card select {
+  margin-bottom: 10px;
+  padding: 10px;
+  font-size: 14px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  width: 100%;
+}
+
+.filter-card input:focus,
+.filter-card select:focus {
+  border-color: #007bff;
+  outline: none;
+  box-shadow: 0 0 4px rgba(0, 123, 255, 0.2);
+}
+
+.filter-card button {
+  /* width: 100%; */
+  /* padding: 10px; */
+  border-radius: 8px;
+  font-weight: bold;
+}
+
+.filter-card button:hover {
+  background-color: #333;
+  color: #fff;
+  transition: all 0.3s ease;
+}
+
+/* Category Badges */
+.category-badges-section {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.category-badges {
+  font-size: 14px;
+  color: #fff;
+  background-color: #007bff;
+  cursor: pointer;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.category-badges:hover {
+  background-color: #0056b3;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Business Section */
+.business-section-cards {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+}
+
+@media (max-width: 768px) {
+  .filter-section {
+    margin-bottom: 20px;
+  }
+}
