@@ -1,35 +1,61 @@
+/* General Styling */
+.login-container {
+  background-color: #f8f9fa;
+  font-family: "Poppins", sans-serif;
+}
+
+.login-form-section {
+  background-color: #ffffff;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.login-info-section {
+  background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+  border-radius: 10px;
+}
+
 .gradient-custom-2 {
-  /* fallback for old browsers */
-  background: #fccb90;
-
-  /* Chrome 10-25, Safari 5.1-6 */
-  background: -webkit-linear-gradient(
-    to right,
-    #ee7724,
-    #d8363a,
-    #dd3675,
-    #b44593
-  );
-
-  /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-  background: linear-gradient(45deg, #060871 0%, #606bdf 100%);
+  background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+  color: white;
+  border: none;
 }
-.gradient-custom-3 {
-/* border: 2px solid red; */
-/* height: 80vh; */
-display: flex;
-align-items: center;
-  /* background: -webkit-linear-gradient(to right, #f0f0f0, #f0f0f0); */
-  background: linear-gradient(45deg, #da3d08 0%, #e73b2b 100%);
+
+.gradient-custom-2:hover {
+  background: linear-gradient(135deg, #2a5298 0%, #1e3c72 100%);
 }
-@media (min-width: 768px) {
-  .gradient-form {
-    height: 100vh !important;
+
+.password-toggle-btn {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #6c757d;
+}
+
+.password-toggle-btn:hover {
+  color: #2a5298;
+}
+
+.text-primary {
+  color: #2a5298 !important;
+}
+
+.text-muted {
+  color: #6c757d !important;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .login-form-section {
+    padding: 20px;
   }
-}
-@media (min-width: 769px) {
-  .gradient-custom-2 {
-    border-top-right-radius: 0.3rem;
-    border-bottom-right-radius: 0.3rem;
+
+  .login-info-section {
+    display: none;
   }
 }

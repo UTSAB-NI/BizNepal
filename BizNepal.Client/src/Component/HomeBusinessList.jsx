@@ -8,7 +8,7 @@ const BusinessListingSection = () => {
     <Container
       fluid
       style={{
-        backgroundColor: "#2E50D4",
+        background: "linear-gradient(135deg, #1e3c72 0%, #2a5298 100%)",
         color: "white",
         padding: "50px 20px",
         textAlign: "left",

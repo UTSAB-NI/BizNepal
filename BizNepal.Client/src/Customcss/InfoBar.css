@@ -1,12 +1,53 @@
-.info-bar .bg-color {
-    background-color: #fdd6d6; /* Soft pink */
+/* Parent Selector for Isolation */
+.info-bar-container {
+  /* General Styling for the InfoBar Container */
+  background-color: #f8f9fa; /* Light background */
+  border-bottom: 1px solid #dee2e6; /* Subtle border */
+  padding: 20px 0;
+}
+
+/* Row Styling */
+.info-bar-container .bg-color {
+  background-color: #ffffff; /* White background for the row */
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+}
+
+/* Left Section Styling */
+.info-bar-container .d-flex.align-items-center {
+  gap: 20px; /* Spacing between elements */
+}
+
+.info-bar-container h1 {
+  font-size: 2.5rem; /* Larger font size */
+  font-weight: bold;
+  color: #343a40; /* Dark text color */
+}
+
+/* Right Section Styling */
+.info-bar-container .justify-content-around {
+  gap: 20px; /* Spacing between columns */
+}
+
+.info-bar-container .fs-4 {
+  font-size: 1.5rem; /* Slightly larger font size */
+  font-weight: bold;
+  color: #007bff; /* Primary color */
+}
+
+.info-bar-container p {
+  font-size: 1rem;
+  color: #6c757d; /* Subtle text color */
+  margin-bottom: 0;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .info-bar-container h1 {
+    font-size: 2rem; /* Smaller font size on smaller screens */
   }
-  
-  .info-bar .text-dark {
-    color: #3e3e3e; /* Dark text */
+
+  .info-bar-container .fs-4 {
+    font-size: 1.25rem; /* Smaller font size on smaller screens */
   }
-  
-  .info-bar h1, h3 {
-    margin: 0;
-  }
-  
+}

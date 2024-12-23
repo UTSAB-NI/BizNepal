@@ -52,7 +52,7 @@
   font-size: 1rem;
   transition: all 0.3s ease;
 }
-.file-input {
+.businesslist .file-input {
   border: 2px dashed #e2e8f0;
   padding: 2rem;
   text-align: center;
@@ -60,7 +60,7 @@
   cursor: pointer;
   transition: all 0.3s ease;
 }
-.file-input:hover {
+.businesslist .file-input:hover {
   border-color: #667eea;
   background: #f7fafc;
 }

@@ -1,0 +1,134 @@
+/* General Styles */
+.create-review {
+    .card {
+      border: none;
+      border-radius: 15px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+  
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+    }
+  
+    .card-title {
+      font-weight: bold;
+      color: #333;
+      font-size: 1.5rem;
+    }
+  
+    .form-control {
+      border: 2px solid #e2e8f0;
+      border-radius: 10px;
+      padding: 1rem;
+      transition: border-color 0.3s, box-shadow 0.3s;
+    }
+  
+    .form-control:focus {
+      border-color: #0d6efd;
+      box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.2);
+    }
+  
+    .btn-success {
+      background-color: #28a745;
+      border: none;
+      border-radius: 25px;
+      padding: 0.8rem 1.5rem;
+      font-size: 1rem;
+      font-weight: bold;
+      transition: all 0.3s;
+    }
+  
+    .btn-success:hover {
+      background-color: #218838;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    }
+  
+    /* Review Section */
+    .review-card {
+      border-radius: 10px;
+      background: #f8f9fa;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      transition: all 0.3s;
+    }
+  
+    .review-card:hover {
+      background: #e9ecef;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    }
+  
+    .review-card .user-icon {
+      font-size: 1.5rem;
+      color: #6c757d;
+      margin-right: 0.5rem;
+    }
+  
+    .review-card .review-date {
+      font-size: 0.9rem;
+      color: #6c757d;
+    }
+  
+    .review-card .review-comment {
+      font-size: 1rem;
+      color: #495057;
+      margin-top: 0.5rem;
+    }
+  
+    /* Star Rating */
+    .star-rating {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+  
+    .star-rating .star {
+      font-size: 1.5rem;
+      color: #ffc107;
+      cursor: pointer;
+      transition: color 0.3s;
+    }
+  
+    .star-rating .star.inactive {
+      color: #e2e8f0;
+    }
+  
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .card-title {
+        font-size: 1.25rem;
+      }
+  
+      .form-control {
+        padding: 0.75rem;
+      }
+  
+      .btn-success {
+        padding: 0.7rem 1.2rem;
+        font-size: 0.9rem;
+      }
+  
+      .review-card {
+        padding: 1rem;
+      }
+  
+      .review-card .user-icon {
+        font-size: 1.25rem;
+      }
+  
+      .review-card .review-date {
+        font-size: 0.8rem;
+      }
+  
+      .review-card .review-comment {
+        font-size: 0.9rem;
+      }
+  
+      .star-rating .star {
+        font-size: 1.25rem;
+      }
+    }
+  }

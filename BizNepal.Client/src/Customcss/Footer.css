@@ -1,0 +1,74 @@
+/* Footer Container */
+.footer {
+    background-color: #343a40; /* Dark background */
+    color: #ffffff; /* White text */
+    padding: 40px 0;
+    font-family: "Arial", sans-serif;
+  }
+  
+  /* Footer Links */
+  .footer a {
+    color: #ffffff; /* White links */
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+  
+  .footer a:hover {
+    color: #007bff; /* Blue on hover */
+  }
+  
+  /* Footer Headings */
+  .footer h5 {
+    font-size: 1.25rem;
+    font-weight: bold;
+    margin-bottom: 1.5rem;
+  }
+  
+  /* Footer Paragraphs */
+  .footer p {
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+  
+  /* Social Media Icons */
+  .footer-social-icons svg {
+    width: 24px;
+    height: 24px;
+    fill: #ffffff;
+    margin-right: 15px;
+    transition: fill 0.3s ease;
+  }
+  
+  .footer-social-icons a:hover svg {
+    fill: #007bff; /* Blue on hover */
+  }
+  
+  /* Newsletter Form */
+  .footer-newsletter .form-control {
+    background-color: #495057; /* Dark input background */
+    color: #ffffff; /* White text */
+    border: none;
+  }
+  
+  .footer-newsletter .form-control::placeholder {
+    color: #adb5bd; /* Light placeholder text */
+  }
+  
+  .footer-newsletter .btn-light {
+    background-color: #f8f9fa; /* Light button */
+    border: none;
+  }
+  
+  .footer-newsletter .btn-light:hover {
+    background-color: #e2e6ea; /* Slightly darker on hover */
+  }
+  
+  /* Horizontal Line */
+  .footer hr {
+    border-top: 1px solid #495057; /* Dark line */
+  }
+  
+  /* Copyright Section */
+  .footer .text-muted {
+    font-size: 0.9rem;
+  }

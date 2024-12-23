@@ -225,7 +225,6 @@ const BusinessListScreen = () => {
                       value={website}
                       onChange={(e) => setWebsite(e.target.value)}
                       placeholder="Enter Website"
-                      required
                     />
                   </Form.Group>
 

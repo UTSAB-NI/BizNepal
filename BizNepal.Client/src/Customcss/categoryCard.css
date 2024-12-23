@@ -4,6 +4,10 @@
   justify-content: center;
   align-items: center;
   flex-wrap: wrap;
+  /* border: 2px solid #f0f0f0; */
+  /* box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); */
+  /* background-color: #fff; */
+  background-attachment: fixed;
 }
 .category-icon {
   width: 60px;
@@ -19,6 +23,7 @@
   transition: all 0.3s ease;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   cursor: pointer;
+  margin-left: 1rem;
 }
 
 .category-card:hover {
