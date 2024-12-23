@@ -127,7 +127,7 @@ public class BusinessController : ControllerBase
     #region Create Business
 
     [HttpPost("Create", Order = 4)]
-    public async Task<IActionResult> Create([FromBody] CreateBusinessDto input)
+    public async Task<IActionResult> Create([FromForm] CreateBusinessDto input)
     {
         // Ensure the user is authenticated
         var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
