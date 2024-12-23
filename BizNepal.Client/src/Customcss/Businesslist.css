@@ -1,6 +1,66 @@
-.businesslist-right-col{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+.businesslist .header {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 2rem;
+  color: white;
+  text-align: center;
+}
+
+.businesslist .header h1 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+.businesslist .location-btn {
+  background: #667eea;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.3s ease;
+}
+
+.businesslist .location-btn:hover {
+  background: #5a67d8;
+  color: white;
+}
+
+.businesslist .map-section {
+  background: #f7fafc;
+  border-radius: 8px;
+  padding: 1rem;
+}
+
+.businesslist .map-container {
+  height: 400px;
+  background: #e2e8f0;
+  border-radius: 8px;
+  margin-top: 1rem;
+}
+.businesslist .form-label {
+  font-size: 18px;
+  font-weight: 400;
+  margin-top: 12px;
+}
+.businesslist .form-control {
+  width: 100%;
+  padding: 0.75rem;
+  border: 2px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+.businesslist .file-input {
+  border: 2px dashed #e2e8f0;
+  padding: 2rem;
+  text-align: center;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+.businesslist .file-input:hover {
+  border-color: #667eea;
+  background: #f7fafc;
 }

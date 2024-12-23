@@ -47,7 +47,7 @@ const CategoryList = () => {
             <MDBCol key={c.id} xs={6} sm={4} md={3} lg={2} className="mb-4">
               <Link to={`/category/${c.categoryName}`}>
                 <CategoryCard
-                  // iconPath={c.iconPath}
+                  iconPath={c.iconPath}
                   categoryName={c.categoryName}
                 />
               </Link>

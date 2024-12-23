@@ -12,18 +12,12 @@ const SearchScreen = () => {
 
   // Fetch business based on keyword
   const response = useSerachBusinessQuery(keyword, { skip: !keyword });
-  
+
   const { data, error, isLoading, isError } = response;
 
   return (
     <>
       <Container className="search-container">
-        <Link to="/">
-          <button className="btn btn-outline-warning my-3 text-dark">
-            Go Back
-          </button>
-        </Link>
-
         {isLoading && <Loader />}
 
         {isError ? (
@@ -35,7 +29,7 @@ const SearchScreen = () => {
           />
         ) : (
           <div>
-            <h1 className="search-title">Search Results</h1>
+            <h1 className="search-title my-3">Search Results</h1>
             <Row>
               {data?.map((b) => (
                 <Col key={b.businessId} sm={12} md={6} lg={4} xl={3}>

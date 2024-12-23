@@ -32,6 +32,7 @@ const GetCategory = () => {
   const [categoryData, setCategoryData] = useState([]);
   const [filters, setFilters] = useState({
     ratings: [],
+    ratings: [],
     District: "",
     City: "",
   });
@@ -249,7 +250,6 @@ const GetCategory = () => {
                     onClick={() => toggleRating(rating)}
                     className="me-2 text-light m-1 pe-auto"
                   >
-<<<<<<< HEAD
                     {rating} Star
                   </Badge>
                 ))}
@@ -268,77 +268,6 @@ const GetCategory = () => {
         </Col>
       </Row>
     </Container>
-=======
-                    <Link
-                      to={`/business/${business.businessId}`}
-                      className="text-decoration-none"
-                    >
-                      <MDBCard className="h-100">
-                        <MDBCardImage
-                          // src={business.businessImages[0]?. || ""}
-                          src={`${API_BASE_URL}${business?.businessImages[0]?.imageUrl}`}
-                          alt={business.businessName}
-                          className="img-fluid rounded-top"
-                          style={{ height: "200px", objectFit: "cover" }}
-                        />
-                        <MDBCardBody>
-                          <MDBCardTitle className="text-dark">
-                            {business.businessName}
-                          </MDBCardTitle>
-                          <MDBCardText className="text-warning">
-                            {Array.from({ length: 5 }, (_, i) => i + 1).map(
-                              (star) => (
-                                <span
-                                  key={star}
-                                  className={`fs-4 ${
-                                    business.overallRating >= star
-                                      ? "text-warning"
-                                      : "text-muted"
-                                  }`}
-                                >
-                                  ★
-                                </span>
-                              )
-                            )}
-                            <span className="text-muted">
-                              {" "}
-                              ({business.reviews?.length || 0} reviews)
-                            </span>
-                          </MDBCardText>
-                          <MDBCardText className="text-muted">
-                            {business.category.categoryName}
-                          </MDBCardText>
-                          <div className="card-footer bg-white d-flex justify-content-center align-item-center">
-                            <a href={business.website}>
-                              <Button variant="secondary" className="rounded-0">
-                                View Website
-                              </Button>
-                            </a>
-                            <Button
-                              onClick={() =>
-                                openInGoogleMaps(
-                                  business.location.latitude,
-                                  business.location.longitude
-                                )
-                              }
-                              className="btn btn-warning mx-3"
-                            >
-                              Get Direction
-                            </Button>
-                          </div>
-                        </MDBCardBody>
-                      </MDBCard>
-                    </Link>
-                  </MDBCol>
-                ))
-              : !isLoading && (
-                  <p className="text-center text-muted">No businesses found.</p>
-                )}
-          </MDBRow>
-        </MDBCol>
-      </MDBRow>
-    </MDBContainer>
->>>>>>> d9ab7de5cdb17af438c020d4bced8db4255ad783
   );
 };
 

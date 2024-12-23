@@ -1,54 +1,56 @@
 import React from "react";
-import { Card, Button } from "react-bootstrap";
+import { Card, Button, Badge } from "react-bootstrap";
+import { Link } from "react-router-dom";
 
-const Business = ({ business }) => {
+const SearchBusiness = ({ business }) => {
   return (
-    <Card className="business-card">
-      <Card.Img variant="top" src={business.imageUrl || "/default-img.png"} />
-      <Card.Body>
-        <Card.Title>{business.businessName}</Card.Title>
-        <Card.Text>{business.description}</Card.Text>
-        <Card.Text>{business.category.categoryName}</Card.Text>
-
-        <Button variant="primary" href={`/business/${business.businessId}`}>
-          View Details
-        </Button>
-      </Card.Body>
+    <Card className="mb-3 search-business-card shadow">
+      <Link
+        to={`/business/${business.businessId}`}
+        className="text-decoration-none"
+      >
+        <Card.Img
+          variant="top"
+          // src={`${API_BASE_URL}${business?.businessImages[0]?.imageUrl}`}
+          alt={business.businessName}
+          style={{ height: "200px", objectFit: "cover" }}
+        />
+        <Card.Body>
+          <h5 className="mb-2">
+            {business.businessName || "Unknown Business"}
+          </h5>
+          <Badge bg="info" className="mb-3">
+            {business.category?.categoryName || "Unknown Category"}
+          </Badge>
+          <p>{business.address?.city || "Unknown City"}</p>
+          <div className="d-flex flex-wrap">
+            {Array.from({ length: 5 }, (_, i) => i + 1).map((star) => (
+              <span
+                key={star}
+                className={`fs-4 ${
+                  business.overallRating >= star ? "text-warning" : "text-muted"
+                }`}
+              >
+                ★
+              </span>
+            ))}
+            <span className="text-muted">
+              {" "}
+              ({business.reviews?.length || 0} reviews)
+            </span>
+          </div>
+        </Card.Body>
+      </Link>
+      <div className="d-flex justify-content-between m-3">
+        <Link to={`/business/${business.businessId}`}>
+          <Button variant="outline-primary" className="mx-2 ">
+            View Details
+          </Button>
+        </Link>
+        <Button variant="outline-secondary">Bookmark</Button>
+      </div>
     </Card>
   );
 };
 
-// Add styles
-const styles = {
-  businessCard: {
-    margin: '1rem',
-    boxShadow: '0 4px 8px rgba(0,0,0,0.1)',
-    transition: 'transform 0.2s',
-    '&:hover': {
-      transform: 'translateY(-5px)'
-    }
-  },
-  cardImage: {
-    height: '200px',
-    objectFit: 'cover'
-  },
-  cardTitle: {
-    fontSize: '1.25rem',
-    fontWeight: 'bold',
-    marginBottom: '0.75rem'
-  },
-  cardText: {
-    color: '#666',
-    marginBottom: '0.5rem'
-  },
-  button: {
-    backgroundColor: '#007bff',
-    border: 'none',
-    padding: '0.5rem 1rem',
-    '&:hover': {
-      backgroundColor: '#0056b3'
-    }
-  }
-};
-
-export default Business;
+export default SearchBusiness;

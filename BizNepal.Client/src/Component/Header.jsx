@@ -1,19 +1,13 @@
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import {
-  Nav,
-  Navbar,
-  Container,
-  Image,
-  Button,
-  NavDropdown,
-} from "react-bootstrap";
-import { LinkContainer } from "react-router-bootstrap";
+import { Nav, Navbar, Container, Image, Button } from "react-bootstrap";
+
 import { Logout } from "../slices/authSlices";
-import TokenDecode from "./TokenDecode";
+
 import "../Customcss/header.css";
 import Searchbox from "./Searchbox";
+import ResponsiveSidebar from "./ResponsiveSidebarprofile";
 
 const Header = ({ toggleTheme, currentTheme }) => {
   const themeIcon = currentTheme === "light" ? "🌙" : "🌞";
@@ -42,7 +36,7 @@ const Header = ({ toggleTheme, currentTheme }) => {
           className="toggle-btn"
         />
         <Navbar.Collapse id="basic-navbar-nav">
-          <Nav className="me-auto align-items-center">
+          <Nav className="me-auto align-items-center navbar-menu-section">
             <Nav.Link as={Link} to="/" className="px-3">
               Home
             </Nav.Link>
@@ -57,23 +51,30 @@ const Header = ({ toggleTheme, currentTheme }) => {
             </div>
           </Nav>
 
-          <Nav className="align-items-center">
+          <Nav className="align-items-center navbar-button-section">
+            {userInfo &&
+              (userInfo.role === "Admin" || userInfo.role === "SuperAdmin") && (
+                <Button
+                  className="mx-2 nav-btn btn-admin"
+                  target="_blank"
+                  href="/admin"
+                >
+                  Admin
+                </Button>
+              )}
+
             {userInfo ? (
               <>
-                <NavDropdown title={<TokenDecode />} id="username">
-                  <LinkContainer to="/profile">
-                    <NavDropdown.Item>Profile</NavDropdown.Item>
-                  </LinkContainer>
-                  <NavDropdown.Item onClick={logouthandler}>
-                    Logout
-                  </NavDropdown.Item>
-                </NavDropdown>
-
                 <Nav.Link as={Link} to="/businesslist">
-                  <Button variant="danger" className="btn-business mx-2 nav-btn ">
+                  <Button
+                    variant="danger"
+                    className="btn-business mx-2 nav-btn "
+                  >
                     + List Your Business
                   </Button>
                 </Nav.Link>
+
+                <ResponsiveSidebar />
               </>
             ) : (
               <>
@@ -97,24 +98,13 @@ const Header = ({ toggleTheme, currentTheme }) => {
               </>
             )}
 
-            {userInfo &&
-              (userInfo.role === "Admin" || userInfo.role === "SuperAdmin") && (
-                <Button
-                  className="mx-2 nav-btn btn-admin"
-                  target="_blank"
-                  href="/admin"
-                >
-                  Admin
-                </Button>
-              )}
-
-            <Button
+            {/* <Button
               variant="outline-secondary"
               className="btn-theme mx-2 "
               onClick={toggleTheme}
             >
               {themeIcon}
-            </Button>
+            </Button> */}
           </Nav>
         </Navbar.Collapse>
       </Container>

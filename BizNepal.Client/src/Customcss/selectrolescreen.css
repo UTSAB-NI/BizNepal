@@ -1,0 +1,70 @@
+/* :root {
+    --primary: #6c757d;
+    --secondary: #f8f9fa;
+    --text: #343a40;
+  }
+  
+  body {
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    background: var(--secondary);
+    color: var(--text);
+    line-height: 1.6;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  } */
+
+.role-container {
+  max-width: 1200px;
+  padding: 2rem;
+}
+
+.role-header h1 {
+  color: #6c757d;
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+.role-card {
+  background: white;
+  border-radius: 15px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+  cursor: pointer;
+}
+
+.role-card:hover {
+  transform: translateY(-10px);
+}
+
+.role-icon {
+  width: 80px;
+  height: 80px;
+  margin: 0 auto 1.5rem;
+}
+
+.role-title {
+  color: #6c757d;
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.role-description {
+  color: #666;
+  margin-bottom: 1.5rem;
+}
+
+.select-btn {
+  color: white;
+  border: none;
+  padding: 0.8rem 1.5rem;
+  border-radius: 25px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: opacity 0.3s ease;
+}
+
+.select-btn:hover {
+  opacity: 0.9;
+}

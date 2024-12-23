@@ -11,11 +11,11 @@ const Carasoule = () => {
                   className="d-block w-100"
                   alt="..."
                 />
-                <MDBCarouselCaption>
+                {/* <MDBCarouselCaption>
                   <Link to="/register">
                     <MDBBtn>Get Best Deals</MDBBtn>
                   </Link>
-                </MDBCarouselCaption>
+                </MDBCarouselCaption> */}
               </MDBCarouselItem>
 
               <MDBCarouselItem itemId={2}>
@@ -24,11 +24,11 @@ const Carasoule = () => {
                   className="d-block w-100"
                   alt="..."
                 />
-                <MDBCarouselCaption>
+                {/* <MDBCarouselCaption>
                   <Link to="/register">
                     <MDBBtn>Get Best Deals</MDBBtn>
                   </Link>
-                </MDBCarouselCaption>
+                </MDBCarouselCaption> */}
               </MDBCarouselItem>
 
               <MDBCarouselItem itemId={3}>
@@ -37,11 +37,11 @@ const Carasoule = () => {
                   className="d-block w-100"
                   alt="..."
                 />
-                <MDBCarouselCaption>
+                {/* <MDBCarouselCaption>
                   <Link to="/register">
                     <MDBBtn>Get Best Deals</MDBBtn>
                   </Link>
-                </MDBCarouselCaption>
+                </MDBCarouselCaption> */}
               </MDBCarouselItem>
             </MDBCarousel>
     </div>

@@ -4,14 +4,24 @@
 .navbar-brand {
   /* border: 2px solid red; */
 }
+.navbar-menu-section {
+  /* border: 2px solid red; */
+}
+
+.navbar-button-section {
+  /* border: 2px solid red; */
+  max-width: 450px;
+  width: 100%;
+}
 .navbar-nav {
   /* border: 2px solid red; */
-  /* width: 100%; */
+}
+.profile-dropdown {
+  /* border: 2px solid red; */
 }
 .nav-btn {
   padding: 0.6rem 1.2rem;
   border-radius: 25px;
-  font-size: 1rem;
   font-weight: 500;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -49,8 +59,26 @@
 
 .btn-register {
   background-color: #ff6b6b;
+  background: transparent;
+  border: 2px solid rgba(90, 82, 82, 0.2);
+}
+.nav-btn.btn-login:hover {
+  background: rgba(92, 76, 76, 0.1);
+  border-color: rgba(29, 26, 26, 0.3);
+  color: grey;
+}
+
+.btn-register {
+  background-color: #ff6b6b;
   color: white;
   border: none;
+  box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+}
+
+.nav-btn.btn-register:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(255, 107, 107, 0.4);
+  color: grey;
   box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
 }
 
@@ -62,9 +90,27 @@
 
 .btn-business {
   background-color: #ff6b6b;
+  background-color: #ff6b6b;
   color: white;
   border: none;
   box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+  box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+}
+.nav-btn.btn-business:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(255, 107, 107, 0.4);
+  /* color: grey; */
+}
+
+.btn-admin {
+  background: transparent;
+  border: 2px solid rgba(90, 82, 82, 0.2);
+  color: grey;
+}
+.nav-btn.btn-admin:hover {
+  background: rgba(92, 76, 76, 0.1);
+  border-color: rgba(29, 26, 26, 0.3);
+  color: grey;
 }
 .nav-btn.btn-business:hover {
   transform: translateY(-2px);

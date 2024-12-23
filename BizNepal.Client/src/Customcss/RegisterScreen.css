@@ -1,0 +1,56 @@
+/* General Styling */
+.register-container {
+    max-width: 500px;
+    margin: 0 auto;
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .register-form {
+    margin-top: 20px;
+  }
+  
+  .text-primary {
+    color: #2a5298 !important;
+  }
+  
+  .text-danger {
+    color: #dc3545 !important;
+  }
+  
+  .text-muted {
+    color: #6c757d !important;
+  }
+  
+  .gradient-custom-2 {
+    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+    color: white;
+    border: none;
+  }
+  
+  .gradient-custom-2:hover {
+    background: linear-gradient(135deg, #2a5298 0%, #1e3c72 100%);
+  }
+  
+  .password-toggle-btn {
+    position: absolute;
+    right: 10px;
+    top: 50px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #6c757d;
+  }
+  
+  .password-toggle-btn:hover {
+    color: #2a5298;
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .register-container {
+      padding: 20px;
+    }
+  }

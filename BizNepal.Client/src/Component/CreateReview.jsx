@@ -6,7 +6,8 @@ import {
   useCreateReviewMutation,
   useGetUserReviewQuery,
 } from "../slices/userApiSlices";
-import { fitBounds } from "google-map-react";
+import { FaStar, FaUserCircle } from "react-icons/fa"; // Adding icons for better visualization
+import "../Customcss/CreateReview.css"; // Custom CSS for styling
 
 const StarRating = ({ rating, onClick, size = "fs-4", editable = true }) => {
   return (
@@ -33,7 +34,6 @@ const CreateReview = ({ businessId }) => {
   const [feedbackType, setFeedbackType] = useState("");
 
   const { userInfo: user } = useSelector((state) => state.auth);
-  
   const navigate = useNavigate();
 
   // Get user reviews
@@ -64,9 +64,11 @@ const CreateReview = ({ businessId }) => {
       refetch();
       setComment("");
       setRating(1);
+      setFeedback("Review submitted successfully!");
+      setFeedbackType("success");
     } catch (error) {
       console.error("Error submitting review:", error);
-      setFeedback(error.data);
+      setFeedback(error.data || "Failed to submit review. Please try again.");
       setFeedbackType("danger");
     }
   };
@@ -75,96 +77,104 @@ const CreateReview = ({ businessId }) => {
     (review) => review.businessId === businessId
   );
 
-  console.log(filteredReviews)
   return (
     <>
       {/* Review Form */}
-
-      <Card className="my-4 p-3 shadow-sm">
-        {feedback && (
-          <Alert
-            variant={feedbackType}
-            onClose={() => setFeedback("")}
-            dismissible
-          >
-            {feedback}
-          </Alert>
-        )}
-        <Card.Body>
-          <Card.Title
-            className="text-center mb-4"
-            style={{ fontSize: "1.5rem" }}
-          >
-            Leave a Review
-          </Card.Title>
-          <Form onSubmit={submitHandler}>
-            <Form.Group controlId="comment" className="mb-3">
-              <Form.Label className="fw-bold">Comment</Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="Write your comment here..."
-                value={comment}
-                onChange={(e) => setComment(e.target.value)}
-                className="rounded"
-                required
-              />
-            </Form.Group>
-
-            <Form.Group controlId="rating" className="mb-4">
-              <Form.Label className="fw-bold">Rating</Form.Label>
-              <StarRating rating={rating} onClick={setRating} />
-            </Form.Group>
-
-            <Button
-              type="submit"
-              variant="success"
-              className="w-100 py-2"
-              style={{ fontSize: "1rem" }}
-              disabled={reviewLoading || createReviewLoading}
+      <div className="create-review">
+        <Card className="my-4 p-3 shadow-sm">
+          {feedback && (
+            <Alert
+              variant={feedbackType}
+              onClose={() => setFeedback("")}
+              dismissible
             >
-              {createReviewLoading ? "Submitting..." : "Submit Review"}
-            </Button>
-          </Form>
-        </Card.Body>
-      </Card>
-
-      {/* Reviews Section */}
-      <Card className="my-4 p-3 shadow-sm">
-        <Card.Body>
-          <Card.Title
-            className="text-center mb-4"
-            style={{ fontSize: "1.5rem" }}
-          >
-            Reviews
-          </Card.Title>
-          {reviewLoading ? (
-            <div>Loading reviews...</div>
-          ) : reviewError ? (
-            <div>Error fetching reviews. Please try again later.</div>
-          ) : filteredReviews.length > 0 ? (
-            filteredReviews.map((review) => (
-              <Card key={review.reviewId} className="mb-3 p-3">
-                <div className="d-flex justify-content-between align-items-center">
-                  <div>
-                    <strong>{review.createdBy}</strong>
-                    <span className="text-muted ms-2">
-                      {new Date(review.createdAt).toLocaleDateString()}
-                    </span>
-                  </div>
-                  <StarRating
-                    rating={review.rating}
-                    size="fs-6"
-                    editable={false}
-                  />
-                </div>
-                <p className="mt-2">{review.comment}</p>
-              </Card>
-            ))
-          ) : (
-            <div>No reviews available</div>
+              {feedback}
+            </Alert>
           )}
-        </Card.Body>
-      </Card>
+          <Card.Body>
+            <Card.Title
+              className="text-center mb-4"
+              style={{ fontSize: "1.5rem" }}
+            >
+              Leave a Review
+            </Card.Title>
+            <Form onSubmit={submitHandler}>
+              <Form.Group controlId="comment" className="mb-3">
+                <Form.Label className="fw-bold">Comment</Form.Label>
+                <Form.Control
+                  as="textarea"
+                  rows={3}
+                  placeholder="Write your comment here..."
+                  value={comment}
+                  onChange={(e) => setComment(e.target.value)}
+                  className="rounded"
+                  required
+                />
+              </Form.Group>
+
+              <Form.Group controlId="rating" className="mb-4">
+                <Form.Label className="fw-bold">Rating</Form.Label>
+                <StarRating rating={rating} onClick={setRating} />
+              </Form.Group>
+
+              <Button
+                type="submit"
+                variant="success"
+                className="w-100 py-2"
+                style={{ fontSize: "1rem" }}
+                disabled={reviewLoading || createReviewLoading}
+              >
+                {createReviewLoading ? "Submitting..." : "Submit Review"}
+              </Button>
+            </Form>
+          </Card.Body>
+        </Card>
+
+        {/* Reviews Section */}
+        <Card className="my-4 p-3 shadow-sm">
+          <Card.Body>
+            <Card.Title
+              className="text-center mb-4"
+              style={{ fontSize: "1.5rem" }}
+            >
+              Reviews
+            </Card.Title>
+            {reviewLoading ? (
+              <div className="text-center">
+                <div className="spinner-border text-primary" role="status">
+                  <span className="visually-hidden">Loading...</span>
+                </div>
+              </div>
+            ) : reviewError ? (
+              <div className="text-center text-danger">
+                Error fetching reviews. Please try again later.
+              </div>
+            ) : filteredReviews.length > 0 ? (
+              filteredReviews.map((review) => (
+                <Card key={review.reviewId} className="mb-3 p-3">
+                  <div className="d-flex justify-content-between align-items-center">
+                    <div className="d-flex align-items-center gap-2">
+                      <FaUserCircle className="fs-4 text-muted" />
+                      <strong>{review.createdBy}</strong>
+                      <span className="text-muted ms-2">
+                        {new Date(review.createdAt).toLocaleDateString()}
+                      </span>
+                    </div>
+                    <StarRating
+                      rating={review.rating}
+                      size="fs-6"
+                      editable={false}
+                    />
+                  </div>
+                  <p className="mt-2">{review.comment}</p>
+                </Card>
+              ))
+            ) : (
+              <div className="text-center text-muted">No reviews available</div>
+            )}
+          </Card.Body>
+        </Card>
+      </div>
     </>
   );
 };

@@ -1,0 +1,34 @@
+.popular-category-container {
+  padding: 20px;
+  /* background: linear-gradient(45deg, #b85252cc, #cb7f3d); */
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+}
+
+/* .popular-category-card {
+  width: 9rem;
+  padding: 4px;
+  border-radius: 20px;
+  font-size: 12px;
+  transition: all 0.3s;
+  border: 2px solid rgba(175, 169, 169, 0.207);
+  box-shadow: 0 10px 20px rgba(33, 28, 28, 0.1);
+  background-color: white;
+} */
+
+.popular-category-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(33, 28, 28, 0.1);
+}
+
+.popular-category-card .category-icon {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.popular-category-card .card-title {
+  font-size: 1.5rem;
+  font-weight: 500;
+  /* margin-top: 0.5rem; */
+  color: rgb(113, 111, 104);
+}
