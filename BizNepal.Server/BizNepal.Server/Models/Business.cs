@@ -16,11 +16,10 @@ public class Business : AuditModel
     [Required]
     public string Description { get; set; }
 
-    public string Website { get; set; }
+    public string? Website { get; set; }
 
     [Required]
     public string PhoneNumber { get; set; }
-
 
     public Guid AddressId { get; set; }
     [ForeignKey("AddressId")]
