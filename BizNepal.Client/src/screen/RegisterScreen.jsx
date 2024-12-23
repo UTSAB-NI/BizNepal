@@ -45,13 +45,14 @@ const RegisterScreen = () => {
     if (!validatePassword()) return;
 
     try {
-      const response = await register({
-        userName: username,
-        email,
-        password,
-        role,
-      }).unwrap();
-      toast.success(response.message);
+      // const response = await register({
+      //   userName: username,
+      //   email,
+      //   password,
+      //   role,
+      // }).unwrap();
+      // toast.success(response.message);
+      localStorage.setItem("data", JSON.stringify(formData));
       navigate("/selectrole");
     } catch (error) {
       setFeedback(
@@ -150,13 +151,28 @@ const RegisterScreen = () => {
           </button>
         </Form.Group>
 
+        {/* <Form.Group controlId="role" className="mb-4">
+          <Form.Label>Role</Form.Label>
+          <Form.Control
+            as="select"
+            name="role"
+            value={formData?.role}
+            onChange={handleChange}
+            required
+          >
+            <option value="">Select Role</option>
+            <option value="Admin">Admin</option>
+            <option value="GeneralUser">GeneralUser</option>
+            <option value="BusinessOwner">BusinessOwner</option>
+          </Form.Control>
+        </Form.Group> */}
         <Button
           variant="primary"
           type="submit"
           className="w-100 gradient-custom-2"
           disabled={isLoading}
         >
-          {isLoading ? "Registering..." : "Register"}
+          {isLoading ? "Continue..." : "Continue"}
         </Button>
 
         {isLoading && <Loader />}
