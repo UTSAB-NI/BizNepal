@@ -32,6 +32,7 @@ const GetCategory = () => {
   const [categoryData, setCategoryData] = useState([]);
   const [filters, setFilters] = useState({
     ratings: [],
+    ratings: [],
     District: "",
     City: "",
   });

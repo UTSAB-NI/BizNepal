@@ -67,6 +67,7 @@ const router = createBrowserRouter(
         <Route path="/category/:category" element={<GetCategory />} />
         <Route path="/business/:id" element={<GetBusinessByIdScreen />} />
         {/* <Route path="/test" element={<TestScreen />} /> */}
+        {/* <Route path="/test" element={<TestScreen />} /> */}
 
         {/* //protected route */}
         <Route path="/" element={<ProtectedRoute />}>

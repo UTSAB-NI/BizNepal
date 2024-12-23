@@ -2,6 +2,7 @@ import React from "react";
 
 import { MDBContainer } from "mdb-react-ui-kit";
 import Carasoule from "./Carasoule";
+import Searchbox from "./Searchbox";
 import "../Customcss/PromoBanner.css";
 
 const PromoBanner = () => {
