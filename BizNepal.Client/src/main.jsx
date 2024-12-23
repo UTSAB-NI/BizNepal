@@ -37,8 +37,11 @@ import ManageBusiness from "./screen/Admin/ManageBusiness.jsx";
 import ManageCategory from "./screen/Admin/ManageCategory.jsx";
 import AllUser from "./screen/Admin/AllUser.jsx";
 import AdminDashboard from "./screen/Admin/AdminDashboard.jsx";
-import TestScreen from "./screen/TestScreen.jsx";
+// import TestScreen from "./screen/TestScreen.jsx";
+import BusinessFilter from "./screen/Test.jsx";
 
+import AccountSettings from "./screen/AccountSettingScreen.jsx";
+import EditProfile from "./screen/EditProfileScreen.jsx";
 // import { Provider } from "react-redux";
 
 const router = createBrowserRouter(
@@ -48,16 +51,19 @@ const router = createBrowserRouter(
         <Route path="/" element={<HomeScreen />} />
         <Route path="/search/:keyword" element={<SearchScreen />} />
         <Route path="/login" element={<LoginScreen />} />
+        <Route path="/businessfilter" element={<BusinessFilter />} />
 
         <Route path="/register" element={<RegisterScreen />} />
         <Route path="/category/:category" element={<GetCategory />} />
         <Route path="/business/:id" element={<GetBusinessByIdScreen />} />
-        <Route path="/test" element={<TestScreen />} />
+        {/* <Route path="/test" element={<TestScreen />} /> */}
 
         {/* //protected route */}
         <Route path="/" element={<ProtectedRoute />}>
           <Route path="profile" element={<UserprofileScreen />} />
           <Route path="businesslist" element={<BusinessListScreen />} />
+          <Route path="accountsettings/:id" element={<AccountSettings />} />
+          <Route path="editprofile/:id" element={<EditProfile />} />
         </Route>
       </Route>
 

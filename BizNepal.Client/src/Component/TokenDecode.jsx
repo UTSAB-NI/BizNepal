@@ -10,19 +10,22 @@ const TokenDecode = () => {
       "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress";
 
     const decode = jwtDecode(token);
-    const userName = decode[username];
+    const claimUserName = decode[username];
 
-    const name = userName.split("@");
+    const name = claimUserName.split("@");
     console.log(name);
     return name[0];
-    
   };
 
-    return (
-        <>
-        <small>{userName(userInfo.jwtToken)}</small>
-        </>
-    );
+  const userId = (token) => {
+    const claimUserid =
+      "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier";
+    const decode = jwtDecode(token);
+    const userId = decode[claimUserid];
+    return userId;
+  };
+
+  return { userName, userId };
 };
 
 export default TokenDecode;

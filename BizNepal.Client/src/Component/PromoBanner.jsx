@@ -1,49 +1,36 @@
 import React from "react";
-import { Link } from "react-router-dom";
-import { Container, Row, Col, Card, Image, Carousel } from "react-bootstrap";
-import {
-  MDBCarousel,
-  MDBCarouselItem,
-  MDBCarouselCaption,
-  MDBBtn,
-  MDBContainer,
-  MDBRow,
-  MDBCol,
-} from "mdb-react-ui-kit";
+
+import { MDBContainer, MDBRow, MDBCol } from "mdb-react-ui-kit";
 import Carasoule from "./Carasoule";
+import Searchbox from "./Searchbox";
 import "../Customcss/PromoBanner.css";
 
 const PromoBanner = () => {
   return (
     <>
-      <MDBContainer>
-        <MDBRow>
-          <MDBCol md={8} className="left-cover-page">
-            <Carasoule />
-          </MDBCol>
-          <MDBCol md={4} className="right-cover-page">
-            <MDBRow
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              <MDBCol md={6} className="box">
-                <img src="/images/1.png" className="img"></img>
-              </MDBCol>
-              <MDBCol md={6} className="box">
-                <img src="/images/2.png" className="img"></img>
-              </MDBCol>
-              <MDBCol md={6} className="box">
-                <img src="/images/3.png" className="img"></img>
-              </MDBCol>
-              <MDBCol md={6} className="box">
-                <img src="/images/4.png" className="img"></img>
-              </MDBCol>
-            </MDBRow>
-          </MDBCol>
-        </MDBRow>
+      <MDBContainer fluid className="hero">
+        <div className="content">
+          <div className="header">
+            <h1>biznepal</h1>
+            <p class="tagline">Discover local businesses in your area</p>
+
+            <div class="carousel">
+              <Carasoule />
+            </div>
+
+            {/* <Searchbox /> */}
+
+            <div class="popular-categories">
+              <h2>Popular Categories</h2>
+              <div class="category">Restaurants</div>
+              <div class="category">Retail</div>
+              <div class="category">Services</div>
+              <div class="category">Healthcare</div>
+              <div class="category">Technology</div>
+              <div class="category">Entertainment</div>
+            </div>
+          </div>
+        </div>
       </MDBContainer>
     </>
   );

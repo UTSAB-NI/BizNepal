@@ -17,6 +17,7 @@
     "autoprefixer": "^10.4.20",
     "axios": "^1.7.7",
     "bootstrap": "^5.3.3",
+    "cdbreact": "^1.5.19",
     "chart.js": "^4.4.6",
     "datatables.net-bs5": "^2.1.7",
     "datatables.net-dt": "^2.1.7",

@@ -139,7 +139,14 @@ const BusinessListScreen = () => {
   };
 
   return (
-    <div>
+    <div className="businesslist">
+      <div className="header">
+        <h1>
+          <i className="fas fa-store"></i> Add Your Business
+        </h1>
+        <p>List your business in our directory and reach more customers</p>
+      </div>
+
       {Feedback && (
         <Alert
           variant={FeedbackType}
@@ -151,7 +158,6 @@ const BusinessListScreen = () => {
       )}
 
       <Container>
-        <h3 className="my-3">Enter Your Business Details Here</h3>
         <Row>
           <Col md="6" className="my-4">
             <Form onSubmit={submitHandler}>
@@ -307,12 +313,14 @@ const BusinessListScreen = () => {
                       type="file"
                       multiple
                       onChange={handleImageChange}
+                      className="file-input"
+                      placeholder="Upload Business Images"
                     />
                   </Form.Group>
                 </Col>
               </Row>
 
-              <Button type="submit" variant="primary" className="my-3">
+              <Button type="submit" variant="success" className="my-3">
                 {businessLoading ? (
                   <i className="fas fa-spinner fa-spin"></i>
                 ) : (
@@ -322,15 +330,18 @@ const BusinessListScreen = () => {
             </Form>
           </Col>
 
-          <Col md="6" className="businesslist-right-col">
+          <Col md="6" className="businesslist-right-col map-section">
             <Button
               onClick={fetchLocation}
               variant="outline-primary"
-              className="my-3"
+              className="my-3 location-btn"
             >
-              Get Current Location
+              <i className="fas fa-location-arrow"></i> Get Current Location
             </Button>
-            <div style={{ height: "400px", width: "100%" }}>
+            <div
+              style={{ height: "400px", width: "100%" }}
+              className="map-container"
+            >
               <GoogleMapReact
                 bootstrapURLKeys={{
                   key: "AIzaSyD1RO9GfOjORh4culViEC-2ZZbakdvc7Gk",

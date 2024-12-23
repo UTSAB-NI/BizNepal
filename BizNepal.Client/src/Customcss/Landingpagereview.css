@@ -1,0 +1,77 @@
+.landingpage-review-section {
+  /* border: 2px solid green; */
+  /* background-color: #FF7E7E; */
+  background-color: #f1f1f1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.reviews-container {
+  max-width: 450px;
+  /* border: 2px solid red; */
+  /* margin: 5px; */
+  padding: 8px;
+}
+.review-card {
+  background: #fff;
+  border: 2px solid #f1f1f1;
+  border-radius: 10px;
+  padding: 2rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  width: 100%;
+}
+
+.review-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+}
+
+.review-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.reviewer-avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  margin-right: 1rem;
+  fill: #007bff;
+}
+
+.reviewer-info {
+  flex-grow: 1;
+}
+
+.reviewer-name {
+  font-weight: bold;
+  color: #333;
+  margin: 0;
+}
+
+.business-name {
+  color: #666;
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+.rating {
+  color: #ffd700;
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+}
+
+.review-text {
+  color: #555;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.review-date {
+  color: #999;
+  font-size: 0.8rem;
+  margin-top: 1rem;
+}
