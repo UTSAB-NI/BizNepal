@@ -8,6 +8,7 @@ import "../Customcss/searchbox.css";
 const Searchbox = () => {
   const [query, setQuery] = useState("");
   const [suggestions, setSuggestions] = useState([]);
+  const [selectedSuggestion, setSelectedSuggestion] = useState("");
   const navigate = useNavigate();
 
   // Fetch suggestions from API
@@ -32,52 +33,59 @@ const Searchbox = () => {
   // Update query on input change
   const handleChange = (e) => {
     setQuery(e.target.value);
+    setSelectedSuggestion(""); // Clear selected suggestion when typing
   };
 
   // Handle selecting a suggestion
-  // const handleSelectSuggestion = (suggestion) => {
-  //   setQuery(suggestion); // Update query to the selected suggestion
-  //   setSuggestions([]); // Clear suggestions after selection
-  // };
-
-  // Trigger the search
-  const handleSearch = (suggestion) => {
+  const handleSelectSuggestion = (suggestion) => {
+    setSelectedSuggestion(suggestion); // Update selected suggestion
     setQuery(suggestion); // Update query to the selected suggestion
     setSuggestions([]); // Clear suggestions after selection
-    if (query.trim()) {
-      navigate(`/search/${query}`);
+  };
+
+  // Trigger the search
+  const handleSearch = () => {
+    if (selectedSuggestion.trim()) {
+      navigate(`/search/${selectedSuggestion}`);
     }
   };
 
   return (
-    <Form className="search-box" onSubmit={handleSearch}>
-      <Form.Control
-        type="text"
-        value={query}
-        onChange={handleChange}
-        placeholder="Search for a business..."
-        className=""
-      />
+    <Form className="search-box d-flex align-items-center">
+      <div className="input-group">
+        {/* Suggestions dropdown */}
+        <Form.Control
+          type="text"
+          value={selectedSuggestion || query}
+          onChange={handleChange}
+          placeholder="Search for a business..."
+          className="form-control"
+        />
 
-      {/* Suggestions list */}
-      {suggestions.length > 0 && (
-        <ListGroup className="mb-3">
-          {suggestions.map((suggestion, index) => (
-            <ListGroup.Item
-              key={index}
-              onClick={() => handleSearch(suggestion)}
-              style={{ cursor: "pointer" }}
-            >
-              {suggestion}
-            </ListGroup.Item>
-          ))}
-        </ListGroup>
-      )}
+        {/* Suggestions list */}
+        {suggestions.length > 0 && (
+          <ListGroup className="suggestion-dropdown">
+            {suggestions.map((suggestion, index) => (
+              <ListGroup.Item
+                key={index}
+                onClick={() => handleSelectSuggestion(suggestion)}
+                style={{ cursor: "pointer" }}
+              >
+                {suggestion}
+              </ListGroup.Item>
+            ))}
+          </ListGroup>
+        )}
 
-      {/* Search button */}
-      <Button variant="danger" onClick={handleSearch} className="mx-2 btn-sm ">
-        <MDBIcon icon="search" className="ms-2" className="text-center" />
-      </Button>
+        {/* Search button */}
+        <Button
+          variant="danger"
+          onClick={handleSearch}
+          className="btn-sm search-button"
+        >
+          <MDBIcon icon="search" className="text-center" />
+        </Button>
+      </div>
     </Form>
   );
 };

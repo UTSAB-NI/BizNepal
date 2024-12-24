@@ -5,7 +5,7 @@ import CategoryList from "../Component/CategoryList.jsx";
 import HomeReviewCard from "../Component/HomeReviewCard.jsx";
 import BusinessListingSection from "../Component/HomeBusinessList.jsx";
 import PopularCategory from "../Component/PopularCategory.jsx";
-import Footer from "../Component/Footer.jsx";
+
 import {
   useGetUserReviewQuery,
   useGetbusinessQuery,
@@ -19,10 +19,9 @@ const HomeScreen = () => {
       <InfoBar reviews={reviewData} business={businessData} />
       <PopularCategory />
       <CategoryList />
-      
+
       <HomeReviewCard reviews={reviewData} />
       <BusinessListingSection />
-      <Footer />
     </div>
   );
 };

@@ -4,6 +4,7 @@ import { ToastContainer } from "react-toastify";
 // import 'react-toastify/dist/ReactToastify.css';
 import Header from "./Component/Header";
 import "./App.css";
+import Footer from "./Component/Footer";
 
 function App() {
   // Dark mode
@@ -26,6 +27,7 @@ function App() {
       <Header toggleTheme={toggleTheme} currentTheme={theme} />
       <Outlet />
       <ToastContainer />
+      <Footer />
     </>
   );
 }
