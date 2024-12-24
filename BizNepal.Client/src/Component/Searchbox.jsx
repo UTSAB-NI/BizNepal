@@ -81,7 +81,7 @@ const Searchbox = () => {
         <Button
           variant="danger"
           onClick={handleSearch}
-          className="btn-sm search-button"
+          className="btn-sm search-button d-flex justify-content-center align-items-center"
         >
           <MDBIcon icon="search" className="text-center" />
         </Button>
