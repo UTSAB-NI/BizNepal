@@ -26,8 +26,8 @@ function App() {
     <>
       <Header toggleTheme={toggleTheme} currentTheme={theme} />
       <Outlet />
-      <ToastContainer />
       <Footer />
+      <ToastContainer />
     </>
   );
 }

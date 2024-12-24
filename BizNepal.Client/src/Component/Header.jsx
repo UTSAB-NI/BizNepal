@@ -81,7 +81,7 @@ const Header = ({ toggleTheme, currentTheme }) => {
                         variant="danger"
                         className="btn-business-dashboard mx-2 nav-btn"
                       >
-                        Business Dashboard
+                        Dashboard
                       </Button>
                     </Nav.Link>
                   </>

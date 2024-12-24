@@ -110,7 +110,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #978c8c;
+  background:none;
+  color: black;
 }
 .btn-admin {
   background: transparent;
@@ -122,10 +123,8 @@
   border-color: rgba(29, 26, 26, 0.3);
   color: grey;
 }
-.nav-btn.btn-business:hover {
+.nav-btn .btn-business:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(255, 107, 107, 0.4);
-  /* color: grey; */
 }
 
 .btn-theme {
