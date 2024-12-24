@@ -35,6 +35,7 @@ const CategoryList = () => {
       <MDBContainer
         className="landingpage-category-container"
         style={{ marginTop: "100px", marginBottom: "100px" }}
+        id="category"
       >
         <h2 className="text-dark text-center">Browse By Category </h2>
 

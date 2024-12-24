@@ -30,11 +30,19 @@
   overflow: hidden;
   border-radius: 20px;
   /* box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3); */
-  /* background: rgba(255, 255, 255, 0.1); */
   backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  /* border: 1px solid rgba(255, 255, 255, 0.2); */
 }
-
+.promo-banner-container::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, #e1e2e4 0%, #c5cad1 100%);
+  opacity: 0.9;
+}
 .content {
   max-width: 1200px;
   margin: 0 auto;
