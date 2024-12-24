@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import "../Customcss/Footer.css";
 import { FaFacebook, FaTwitter, FaLinkedin, FaInstagram } from "react-icons/fa";
 
@@ -10,15 +11,17 @@ const Footer = () => {
           {/* About Section */}
           <div className="col-lg-4 mb-4">
             <h5 className="mb-4">
-              <img
-                src="/images/biznepallogo.png"
-                alt="logo"
-                style={{
-                  width: "200px",
-                  backgroundColor: "white",
-                  borderRadius: "50px",
-                }}
-              />
+              <a href="#top">
+                <img
+                  src="/images/biznepallogo.png"
+                  alt="logo"
+                  style={{
+                    width: "200px",
+                    backgroundColor: "white",
+                    borderRadius: "50px",
+                  }}
+                />
+              </a>
             </h5>
             <p>
               Connecting local businesses with customers since 2023. Our

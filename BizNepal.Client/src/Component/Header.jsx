@@ -25,7 +25,7 @@ const Header = ({ toggleTheme, currentTheme }) => {
   };
 
   return (
-    <Navbar expand="lg" className="bg-body-tertiary py-3 shadow-sm">
+    <Navbar expand="lg" className="bg-body-tertiary shadow-sm" id="top">
       <Container fluid className="align-items-center">
         <Navbar.Brand as={Link} to="/" className="d-flex align-items-center">
           <Image src="/images/biznepallogo.png" style={{ width: "150px" }} />

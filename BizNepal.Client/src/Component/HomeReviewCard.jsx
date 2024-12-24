@@ -21,7 +21,7 @@ const ReviewCard = ({ reviews }) => {
     : [];
 
   return (
-    <div className="landingpage-review-section bg-light">
+    <div className="landingpage-review-section bg-light" id="review">
       <h2 className="section-title text-center">Recent Reviews</h2>
       <p className="section-subtitle text-center mt-3">
         See what people are saying about local businesses

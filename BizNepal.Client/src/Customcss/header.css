@@ -6,12 +6,14 @@
 }
 .navbar-menu-section {
   /* border: 2px solid red; */
+  max-width: 800px;
+  width: 100%;
 }
 
 .navbar-button-section {
   /* border: 2px solid red; */
   max-width: 450px;
-  width: 100%;
+  /* width: 100%; */
 }
 .navbar-nav {
   /* border: 2px solid red; */
@@ -19,6 +21,7 @@
 .profile-dropdown {
   /* border: 2px solid red; */
 }
+
 .nav-btn {
   padding: 0.6rem 1.2rem;
   border-radius: 25px;
@@ -118,16 +121,6 @@
   /* color: grey; */
 }
 
-.btn-admin {
-  background: transparent;
-  border: 2px solid rgba(90, 82, 82, 0.2);
-  color: grey;
-}
-.nav-btn.btn-admin:hover {
-  background: rgba(92, 76, 76, 0.1);
-  border-color: rgba(29, 26, 26, 0.3);
-  color: grey;
-}
 .btn-theme {
   display: flex;
   align-items: center;
