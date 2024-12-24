@@ -17,7 +17,7 @@ const PromoVideo = () => {
             height: "auto",
             position: "relative",
             zIndex: "1",
-            opacity: "0.5",
+            opacity: "0.7",
             mixBlendMode: "multiply",
         }}>
           <source src="/images/video/covervideo.mp4" type="video/mp4" />
