@@ -50,7 +50,7 @@ const ResponsiveSidebarProfile = () => {
         onHide={toggleSidebar}
         placement="end" // Slides in from the right
         style={{
-          backgroundColor: "black",
+          background: "linear-gradient(135deg, #1e3c72 0%, #2a5298 100%)",
           color: "white",
           width: "fit-content", // Fit content width
           padding: "10px", // 10px padding
