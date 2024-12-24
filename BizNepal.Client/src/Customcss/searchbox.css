@@ -14,9 +14,7 @@
 .search-box .btn {
   width: 40px;
   height: 40px;
-  border: none;
-  background: none;
-  color: rgb(255, 21, 0);
+  border: none;  
   border-radius: 0 8px 8px 0;
   box-shadow: 0 4px 15px rgba(16, 16, 16, 0.179);
   font-size: 1rem;
