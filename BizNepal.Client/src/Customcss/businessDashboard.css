@@ -67,8 +67,8 @@
   color: "#fff";
 }
 
-.main-content {
-  border: 2px solid red;
+.business-dashboard-main-content {
+  /* border: 2px solid red; */
   height: 100vh;
   flex: 1;
   padding: "20px";
