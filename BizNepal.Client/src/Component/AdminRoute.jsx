@@ -1,35 +1,33 @@
 import React from "react";
 import Sidenavbar from "./Sidenavbar"; // The sidebar component
-import { Outlet,Navigate } from "react-router-dom"; // To render child routes
+import { Outlet, Navigate } from "react-router-dom"; // To render child routes
 import { useSelector } from "react-redux";
 import AllUser from "../screen/Admin/AllUser";
-const AdminLayout = () => {
+const AdminRoute = () => {
+  const { userInfo } = useSelector((state) => state.auth);
+  console.log("userINFO", userInfo);
 
-  const {userInfo} = useSelector(state => state.auth);
-  // console.log("userINFO",userInfo);
-
-
-  return userInfo && userInfo.role === "Admin" || "SuperAdmin" ? (
+  return userInfo &&
+    (userInfo.role === "Admin" || userInfo.role === "SuperAdmin") ? (
     <div style={styles.container}>
       <div style={styles.sidebar}>
-        <Sidenavbar />  {/* Side Navigation Bar */}
+        <Sidenavbar /> {/* Side Navigation Bar */}
       </div>
-      
+
       <div style={styles.mainContent}>
         <Outlet /> {/* Render the main content here */}
       </div>
     </div>
-  ):(
-
+  ) : (
     <Navigate to="/login" />
-  )
+  );
 };
 
 const styles = {
   container: {
     display: "flex", // Flexbox layout for side-by-side positioning
     height: "100vh", // Full viewport height
-    width: "100%",  // Full viewport width
+    width: "100%", // Full viewport width
   },
   sidebar: {
     width: "250px", // Fixed width for the sidebar
@@ -37,6 +35,7 @@ const styles = {
     color: "#fff",
   },
   mainContent: {
+    // border:"2px solid red",
     flex: 1, // Takes up the remaining width
     padding: "20px", // Add padding around the content
     backgroundColor: "#f0f0f0", // Optional background color for content area
@@ -44,4 +43,4 @@ const styles = {
   },
 };
 
-export default AdminLayout;
+export default AdminRoute;

@@ -101,7 +101,14 @@
   box-shadow: 0 6px 20px rgba(255, 107, 107, 0.4);
   /* color: grey; */
 }
-
+.btn-business-dashboard {
+  width: 100px;
+  border-radius: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #978c8c;
+}
 .btn-admin {
   background: transparent;
   border: 2px solid rgba(90, 82, 82, 0.2);

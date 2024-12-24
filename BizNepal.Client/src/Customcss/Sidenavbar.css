@@ -4,7 +4,6 @@
   width: 250px; /* Fixed width */
   background-color: #333;
   color: white;
-  position: fixed; /* Stay fixed on the left side */
   overflow-y: auto; /* Enables vertical scrolling */
 }
 

@@ -64,6 +64,9 @@ const ProfilePage = () => {
     }
   }, [userData]);
 
+  console.log("user", user);
+  console.log("userType", userType);
+  
   const renderUserTypeBadge = () => {
     if (userType === "business") {
       return (

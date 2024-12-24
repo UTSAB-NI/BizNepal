@@ -1,0 +1,82 @@
+.business-dashboard-sidebar {
+  width: 250px;
+  height: 100vh;
+  background: #2c3e50;
+  color: #ecf0f1;
+  padding: 20px 0;
+  transition: width 0.3s ease;
+  overflow-y: auto;
+}
+
+.business-dashboard-sidebar.collapsed {
+  width: 50px;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  margin-bottom: 30px;
+}
+
+.logo-text {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.sidebar-link {
+  display: flex;
+  align-items: center;
+  padding: 12px 20px;
+  color: #ecf0f1;
+  text-decoration: none;
+  transition: background 0.2s ease;
+}
+
+.sidebar-link:hover {
+  background: #1abc9c;
+}
+
+.sidebar-link.active {
+  background: #3498db;
+}
+
+.sidebar-icon {
+  width: 20px;
+  height: 20px;
+  margin-right: 15px;
+}
+
+.link-text {
+  white-space: nowrap;
+}
+
+.business-dashboard-sidebar.collapsed + .toggle-btn {
+  left: 60px;
+}
+
+.dashboard-container {
+  display: flex;
+  height: "100vh";
+  width: "100%";
+}
+
+.sidebar-container {
+  width: "250px";
+  background-color: "#333";
+  color: "#fff";
+}
+
+.main-content {
+  border: 2px solid red;
+  height: 100vh;
+  flex: 1;
+  padding: "20px";
+  background-color: "#f0f0f0";
+  overflow-y: auto;
+}
+
+.business-dashboard {
+  padding: 30px;
+  background-color: #f8f9fa;
+}

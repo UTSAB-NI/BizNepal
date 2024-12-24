@@ -49,6 +49,12 @@ import AboutDevelopers from "./screen/DeveloperScreen.jsx";
 import SelectRoleScreen from "./screen/SelectRoleScreen.jsx";
 // import { Provider } from "react-redux";
 
+import BusinessRoute from "./Component/BusinessRoute.jsx";
+import BusinessDashboard from "./screen/BusinessOwner/BusinessDashboard.jsx";
+import AllReview from "./screen/BusinessOwner/AllReview.jsx";
+import AllListingBusiness from "./screen/BusinessOwner/AllListingBusiness.jsx";
+import BusinessProfile from "./screen/BusinessOwner/BusinessProfile.jsx";
+
 const router = createBrowserRouter(
   createRoutesFromElements(
     <>
@@ -86,6 +92,15 @@ const router = createBrowserRouter(
         <Route path="/admin/business" element={<ManageBusiness />} />
         <Route path="/admin/category" element={<ManageCategory />} />
         <Route path="/admin/alluser" element={<AllUser />} />
+      </Route>
+
+      {/* //business route */}
+      <Route element={<BusinessRoute />}>
+        <Route path="/business" element={<BusinessDashboard />} />
+        <Route path="/business/profile" element={<BusinessProfile />} />
+        <Route path="/business/allreview" element={<AllReview />} />
+        <Route path="/business/alllisting" element={<AllListingBusiness />} />
+        
       </Route>
     </>
   )
