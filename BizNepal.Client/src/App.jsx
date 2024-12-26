@@ -26,7 +26,7 @@ function App() {
     <>
       <Header toggleTheme={toggleTheme} currentTheme={theme} />
       <Outlet />
-      <Footer />
+      {/* <Footer /> */}
       <ToastContainer />
     </>
   );
