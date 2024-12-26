@@ -65,16 +65,16 @@ const Footer = () => {
             <h5 className="mb-4">Quick Links</h5>
             <ul className="list-unstyled">
               <li className="mb-2">
-                <a href="/about">About Us</a>
+                <Link to="/about">About Us</Link>
               </li>
               <li className="mb-2">
-                <a href="/developer">Developer</a>
+                <Link to="/developer">Developer</Link>
               </li>
               {/* <li className="mb-2">
                 <a href="https://whybusinessthis.com/blog">Blog</a>
               </li> */}
               <li className="mb-2">
-                <a href="/faq">FAQ</a>
+                <Link to="/faq">FAQ</Link>
               </li>
             </ul>
           </div>
