@@ -76,14 +76,14 @@ const Header = ({ toggleTheme, currentTheme }) => {
 
                 {userInfo.role === "BusinessOwner" && (
                   <>
-                    <Nav.Link as={Link} to="/business">
-                      <Button
-                        variant="danger"
-                        className="btn-business-dashboard mx-2 nav-btn"
-                      >
-                        Dashboard
-                      </Button>
-                    </Nav.Link>
+                    <Button
+                      variant="danger"
+                      className="btn-business-dashboard mx-2 nav-btn"
+                      target="_blank"   
+                      href="/business"
+                    >
+                      Dashboard
+                    </Button>
                   </>
                 )}
                 <ResponsiveSidebar />

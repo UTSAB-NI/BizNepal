@@ -21,19 +21,40 @@ import {
   FaBuilding,
   FaTag,
   FaCog,
-  FaBell,
-  FaLock,
   FaSignOutAlt,
 } from "react-icons/fa";
 import TokenDecode from "../Component/TokenDecode";
-import { useGetUserByIdQuery } from "../slices/userApiSlices"; // Import useGetUserByIdQuery
-
+import {
+  useGetUserByIdQuery,
+  useGetUserReviewQuery,
+} from "../slices/userApiSlices";
 import { Logout } from "../slices/authSlices";
-
 import "../Customcss/userprofile.css";
+
 const ProfilePage = () => {
   const dispatch = useDispatch();
-  const navigate = useNavigate(); // Use navigate for routing
+  const navigate = useNavigate();
+
+  const { userInfo } = useSelector((state) => state.auth);
+  const userId = userInfo?.jwtToken
+    ? TokenDecode().userId(userInfo.jwtToken)
+    : null;
+
+  const { data: userData, error: userError } = useGetUserByIdQuery(userId);
+  const { data: userReview } = useGetUserReviewQuery();
+
+  const [user, setUser] = useState(null);
+  const [userType, setUserType] = useState("general");
+  const [activeTab, setActiveTab] = useState("posts");
+
+  useEffect(() => {
+    if (userData) {
+      setUser(userData);
+      setUserType(userData.businesses?.length > 0 ? "business" : "general");
+    } else if (userError) {
+      console.error(userError);
+    }
+  }, [userData, userError]);
 
   const logoutHandler = () => {
     localStorage.removeItem("userInfo");
@@ -41,65 +62,73 @@ const ProfilePage = () => {
     navigate("/");
   };
 
-  const { userInfo } = useSelector((state) => state.auth);
+  const renderBadge = () => (
+    <Badge
+      bg={userType === "business" ? "success" : "warning"}
+      className={`profile-type text-light ${userType === "business" ? "type-business" : "type-user"}`}
+    >
+      {userType === "business" ? "Business Account" : "General User"}
+    </Badge>
+  );
 
-  const [user, setUser] = useState(null);
-  const [userType, setUserType] = useState("general");
-  const [activeTab, setActiveTab] = useState("posts");
+  const renderBusinessDetails = () => (
+    userType === "business" && (
+      <ListGroup.Item>
+        <h3 className="sidebar-title">Business Details</h3>
+        <div className="info-item">
+          <FaBuilding />
+          <span>Business Type</span>
+        </div>
+        <div className="info-item">
+          <FaTag />
+          <span>Business Category</span>
+        </div>
+      </ListGroup.Item>
+    )
+  );
 
-  const userId = userInfo?.jwtToken
-    ? TokenDecode().userId(userInfo.jwtToken)
-    : null; // Get user ID from token
+  const renderReviews = () => {
+    const userReviews = userReview?.filter((review) => review.userId === userId);
 
-  const { data: userData, error, isLoading } = useGetUserByIdQuery(userId); // Use useGetUserByIdQuery
-  console.log("userdata", userData);
-  // setUser(userData); // Set user data to state
-  useEffect(() => {
-    if (userData) {
-      setUser(userData);
-      setUserType(userData.businesses?.length > 0 ? "business" : "general");
-    } else {
-      setUser(null);
-      console.log(error);
-    }
-  }, [userData]);
-
-  console.log("user", user);
-  console.log("userType", userType);
-  
-  const renderUserTypeBadge = () => {
-    if (userType === "business") {
-      return (
-        <Badge bg="success" className="profile-type type-business text-light">
-          Business Account
-        </Badge>
-      );
-    } else {
-      return (
-        <Badge bg="warning" className="profile-type type-user text-light">
-          General User
-        </Badge>
-      );
-    }
-  };
-
-  const renderBusinessDetails = () => {
-    if (userType === "business") {
-      return (
-        <ListGroup.Item>
-          <h3 className="sidebar-title">Business Details</h3>
-          <div className="info-item">
-            <FaBuilding />
-            <span id="business-type">Business Type</span>
-          </div>
-          <div className="info-item">
-            <FaTag />
-            <span id="business-category">Business Category</span>
-          </div>
-        </ListGroup.Item>
-      );
-    }
-    return null;
+    return userReviews?.map((review, index) => (
+      <Card key={index} className="review-card">
+        <Row>
+          <Col xs={2} className="text-center">
+            <Image
+              src="/image/1.jpg"
+              roundedCircle
+              alt="User Avatar"
+              className="reviewer-avatar"
+            />
+          </Col>
+          <Col xs={10}>
+            <Row className="align-items-center">
+              <Col xs={8}>
+                <h5 className="reviewer-name">{review?.business?.businessName}</h5>
+              </Col>
+              <Col xs={4} className="text-end">
+                <Badge bg="success" style={{ fontSize: "0.8rem" }}>
+                  Reviewed
+                </Badge>
+              </Col>
+            </Row>
+            <Row className="mt-2">
+              <Col xs={12}>
+                <p>{review?.comment}</p>
+              </Col>
+            </Row>
+            <Row className="mt-2">
+              <Col xs={6}>
+                <p>{Array(review?.rating).fill("⭐").join(" ")}</p>
+              </Col>
+              <Col xs={6} className="text-end text-muted">
+                <p>{new Date(review?.createdAt).toLocaleDateString()}</p>
+              </Col>
+            </Row>
+          </Col>
+        </Row>
+      </Card>
+    ));
   };
 
   return (
@@ -130,26 +159,10 @@ const ProfilePage = () => {
               >
                 <FaEdit /> Edit Profile
               </Button>
-
               <div className="profile-info">
-                <h1 className="profile-name">
-                  {user?.userName || "Loading..."}
-                </h1>
-                <div className="profile-username">
-                  @{user?.userName || "loading"}
-                </div>
-                {renderUserTypeBadge()}
-
-                <div className="profile-stats">
-                  <div className="stat">
-                    <div className="stat-value">0</div>
-                    <div className="stat-label">Following</div>
-                  </div>
-                  <div className="stat">
-                    <div className="stat-value">0</div>
-                    <div className="stat-label">Followers</div>
-                  </div>
-                </div>
+                <h1 className="profile-name">{user?.userName || "Loading..."}</h1>
+                <div className="profile-username">@{user?.userName || "loading"}</div>
+                {renderBadge()}
               </div>
             </Card.Body>
           </Card>
@@ -164,48 +177,26 @@ const ProfilePage = () => {
                 <h3 className="sidebar-title">Contact Information</h3>
                 <div className="info-item">
                   <FaEnvelope />
-                  <span id="user-email">
-                    {user?.email || "email@example.com"}
-                  </span>
+                  <span>{user?.email || "email@example.com"}</span>
                 </div>
                 <div className="info-item">
                   <FaPhone />
-                  <span id="user-phone">
-                    {user?.phoneNumber || "0000000000"}
-                  </span>
+                  <span>{user?.phoneNumber || "0000000000"}</span>
                 </div>
                 <div className="info-item">
                   <FaMapMarkerAlt />
-                  <span id="user-location">
-                    {user?.location || "City, Country"}
-                  </span>
+                  <span>{user?.location || "City, Country"}</span>
                 </div>
               </ListGroup.Item>
-
               {renderBusinessDetails()}
-
               <ListGroup.Item>
                 <h3 className="sidebar-title">Settings</h3>
-                <div className="settings-item" id="account-settings">
-                  <Link
-                    to={`/accountsettings/${userId}`}
-                    style={{ textDecoration: "none", color: "#475569" }}
-                  >
+                <div className="settings-item">
+                  <Link to={`/accountsettings/${userId}`} className="text-decoration-none text-dark">
                     <FaCog /> Account Settings
                   </Link>
                 </div>
-                {/* <div className="settings-item" id="notification-settings">
-                  <FaBell /> Notifications
-                </div>
-                <div className="settings-item" id="privacy-settings">
-                  <FaLock /> Privacy & Security
-                </div>
-                */}
-                <div
-                  className="settings-item danger"
-                  id="logout"
-                  onClick={logoutHandler}
-                >
+                <div className="settings-item danger" onClick={logoutHandler}>
                   <FaSignOutAlt /> Logout
                 </div>
               </ListGroup.Item>
@@ -216,25 +207,18 @@ const ProfilePage = () => {
         <Col md={9}>
           <Card className="main-content">
             <Card.Body>
-              <Tabs
-                activeKey={activeTab}
-                onSelect={(k) => setActiveTab(k)}
-                className="mb-3"
-              >
+              <Tabs activeKey={activeTab} onSelect={setActiveTab} className="mb-3">
                 <Tab eventKey="posts" title="Posts">
-                  <div id="content-posts">
-                    {/* Posts will be dynamically loaded here */}
-                  </div>
+                  <div>Posts will be dynamically loaded here</div>
                 </Tab>
                 <Tab eventKey="about" title="About">
-                  <div id="content-about">
-                    <p id="user-bio">{user?.bio || "Loading bio..."}</p>
-                  </div>
+                  <p>{user?.bio || "Loading bio..."}</p>
                 </Tab>
                 <Tab eventKey="services" title="Services">
-                  <div id="content-services">
-                    {/* Services will be dynamically loaded here */}
-                  </div>
+                  <div>Services will be dynamically loaded here</div>
+                </Tab>
+                <Tab eventKey="review" title="Reviewed">
+                  {renderReviews()}
                 </Tab>
               </Tabs>
             </Card.Body>
