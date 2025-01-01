@@ -60,6 +60,7 @@ public class ReviewController(ApplicationDbContext context, IMapper mapper) : Co
     {
         var reviews= await _context.Reviews
             .Include(b=>b.Business)
+            .ThenInclude(c=>c.BusinessImages)
             .OrderByDescending(b=>b.CreatedAt)
             .ToListAsync();
 
