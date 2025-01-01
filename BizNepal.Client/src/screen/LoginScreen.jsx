@@ -35,8 +35,13 @@ const LoginScreen = () => {
 
   const submitHandler = async (e) => {
     e.preventDefault();
+    if (!userIdentifier || !password) {
+      setFeedback("Please fill all the fields.");
+      return;
+    }
     try {
       const res = await login({ userIdentifier, password }).unwrap();
+
       if (res) {
         dispatch(setCredentials(res));
         navigate("/");
@@ -46,7 +51,7 @@ const LoginScreen = () => {
       }
     } catch (error) {
       setFeedback(
-        error.data || "An error occurred. Please try again."
+        error?.data || "An error occurred. Please try again."
       );
     }
   };

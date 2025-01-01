@@ -56,6 +56,7 @@ const SelectRoleScreen = () => {
   const previousLocalState = JSON.parse(localStorage.getItem("data"));
   const { username, email, password } = previousLocalState || {};
 
+
   const handleSubmit = async (role) => {
     if (!role) {
       toast.error("Please select a role.");

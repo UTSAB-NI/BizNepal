@@ -26,6 +26,7 @@ import GetCategory from "./screen/GetCategory.jsx";
 import SearchScreen from "./screen/SearchScreen.jsx";
 import UserprofileScreen from "./screen/UserprofileScreen.jsx";
 import GetBusinessByIdScreen from "./screen/GetBusinessByIdScreen.jsx";
+import HelpScreen from "./screen/HelpScreen.jsx";
 
 import ProtectedRoute from "./Component/ProtectedRoute.jsx";
 import BusinessListScreen from "./screen/BusinessListScreen.jsx";
@@ -60,13 +61,14 @@ const router = createBrowserRouter(
     <>
       <Route path="/login" element={<LoginScreen />} />
       <Route path="/register" element={<RegisterScreen />} />
+      <Route path="/selectrole" element={<SelectRoleScreen />} />
       <Route path="/" element={<App />}>
         <Route path="/" element={<HomeScreen />} />
         <Route path="/about" element={<About />} />
         <Route path="/faq" element={<FAQ />} />
+        <Route path="help" element={<HelpScreen />} />
         <Route path="/developer" element={<AboutDevelopers />} />
         <Route path="/search/:keyword" element={<SearchScreen />} />
-        <Route path="/selectrole" element={<SelectRoleScreen />} />
 
         <Route path="/businessfilter" element={<BusinessFilter />} />
 
@@ -100,7 +102,6 @@ const router = createBrowserRouter(
         <Route path="/business/profile" element={<BusinessProfile />} />
         <Route path="/business/allreview" element={<AllReview />} />
         <Route path="/business/alllisting" element={<AllListingBusiness />} />
-        
       </Route>
     </>
   )
