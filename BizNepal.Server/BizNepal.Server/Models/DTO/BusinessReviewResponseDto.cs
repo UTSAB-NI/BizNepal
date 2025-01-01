@@ -19,7 +19,8 @@ namespace BizNepal.Server.Models.DTO
         public string UserId { get; set; }
 
         public Guid CategoryId { get; set; }
-        
-       
+
+        public List<ImageResponseDto> BusinessImages { get; set; }
+
     }
 }
