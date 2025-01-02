@@ -53,8 +53,8 @@ import BusinessRoute from "./Component/BusinessRoute.jsx";
 import BusinessDashboard from "./screen/BusinessOwner/BusinessDashboard.jsx";
 import AllReview from "./screen/BusinessOwner/AllReview.jsx";
 import AllListingBusiness from "./screen/BusinessOwner/AllListingBusiness.jsx";
-import BusinessProfile from "./screen/BusinessOwner/BusinessProfile.jsx";
 
+import ParticularBusinessReview from "./screen/BusinessOwner/ParticularBusinessReview.jsx";
 const router = createBrowserRouter(
   createRoutesFromElements(
     <>
@@ -97,9 +97,13 @@ const router = createBrowserRouter(
       {/* //business route */}
       <Route element={<BusinessRoute />}>
         <Route path="/business" element={<BusinessDashboard />} />
-        <Route path="/business/profile" element={<BusinessProfile />} />
+
         <Route path="/business/allreview" element={<AllReview />} />
         <Route path="/business/alllisting" element={<AllListingBusiness />} />
+        <Route
+          path="/business/particularreview/:id"
+          element={<ParticularBusinessReview />}
+        />
       </Route>
     </>
   )

@@ -11,73 +11,68 @@ import {
 } from "react-bootstrap";
 import { FaArrowLeft } from "react-icons/fa";
 import "../Customcss/accountSettings.css";
-import { useGetUserByIdQuery } from "../slices/userApiSlices";
+import { useUpdateUserPasswordMutation } from "../slices/userApiSlices";
 
 const AccountSettings = () => {
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [alert, setAlert] = useState({ message: "", type: "" });
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [feedback, setFeedback] = useState("");
+  const [feedbackType, setFeedbackType] = useState("");
 
-  //using praameter from url to fetch user data
-
-  const { id } = useParams();
-
-  //fetching user data
-  const { data: user, error, isLoading } = useGetUserByIdQuery(id);
-  console.log("userdata", user);
-
-  const previousPassword = user?.passwordHash;
-
-  const showAlert = (message, type = "danger") => {
-    setAlert({ message, type });
-    setTimeout(() => setAlert({ message: "", type: "" }), 5000);
-  };
+  // Update password
+  const [updateUserPassword, { isloading: updatePassword, iserror }] =
+    useUpdateUserPasswordMutation();
 
   const handlePasswordChange = async (event) => {
     event.preventDefault();
-
-    if (isSubmitting) return;
-
+    const formdata = {
+      currentPassword,
+      newPassword,
+    };
+    console.log(formdata);
     // Basic validation
     if (newPassword !== confirmPassword) {
-      showAlert("New passwords do not match");
+      setFeedback("New passwords do not match");
+      setFeedbackType("danger");
       return;
     }
 
     if (newPassword === currentPassword) {
-      showAlert("New password must be different from current password");
-      return;
-    }
-
-    if (previousPassword !== currentPassword) {
-      showAlert("Current password is incorrect");
+      setFeedback("New password must be different from current password");
+      setFeedbackType("danger");
       return;
     }
 
     try {
-      setIsSubmitting(true);
+      const res = await updateUserPassword(formdata).unwrap();
 
-      // Simulate an API call to update the password
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-
-      // Show success message
-      showAlert("Password updated successfully", "success");
+      if (res) {
+        setFeedback(res?.message);
+        setFeedbackType("success");
+      }
 
       // Reset form
       setCurrentPassword("");
       setNewPassword("");
       setConfirmPassword("");
     } catch (error) {
-      showAlert("Failed to update password. Please try again.");
-    } finally {
-      setIsSubmitting(false);
+      setFeedback("Failed to update password. Please try again.");
+      setFeedbackType("danger");
     }
   };
 
   return (
     <Container className="mt-4">
+      {feedback && (
+        <Alert
+          variant={feedbackType}
+          onClose={() => setFeedback("")}
+          dismissible
+        >
+          {feedback}
+        </Alert>
+      )}
       <Card className="settings-card">
         <Card.Body>
           <Row className="settings-header">
@@ -94,12 +89,6 @@ const AccountSettings = () => {
               <h1 className="settings-title">Account Settings</h1>
             </Col>
           </Row>
-
-          {alert.message && (
-            <Alert variant={alert.type} className="mt-3">
-              {alert.message}
-            </Alert>
-          )}
 
           <Form onSubmit={handlePasswordChange} id="password-form">
             <Form.Group className="form-group">
@@ -150,7 +139,7 @@ const AccountSettings = () => {
             <Button
               type="submit"
               className="submit-button"
-              disabled={isSubmitting}
+              disabled={updatePassword}
             >
               Update Password
             </Button>

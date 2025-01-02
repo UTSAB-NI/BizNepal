@@ -11,7 +11,10 @@ import {
 } from "react-bootstrap";
 import { FaArrowLeft } from "react-icons/fa";
 import "../Customcss/editProfile.css";
-import { useGetUserByIdQuery } from "../slices/userApiSlices";
+import {
+  useGetUserByIdQuery,
+  useUpdateUserMutation,
+} from "../slices/userApiSlices";
 
 const EditProfile = () => {
   const [formData, setFormData] = useState({
@@ -19,11 +22,15 @@ const EditProfile = () => {
     email: "",
     phone: "",
   });
-  const [alert, setAlert] = useState({ message: "", type: "" });
-  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const [feedback, setFeedback] = useState("");
+  const [feedbacktype, setFeedbacktype] = useState("danger");
 
   const { id } = useParams();
-  const { data: user, error, isLoading } = useGetUserByIdQuery(id);
+  const { data: user, error, isLoading, refetch } = useGetUserByIdQuery(id);
+
+  const [updateUser, { isLoading: updateloading, isError }] =
+    useUpdateUserMutation();
 
   useEffect(() => {
     if (user) {
@@ -35,11 +42,6 @@ const EditProfile = () => {
     }
   }, [user]);
 
-  const showAlert = (message, type = "danger") => {
-    setAlert({ message, type });
-    setTimeout(() => setAlert({ message: "", type: "" }), 5000);
-  };
-
   const handleInputChange = (e) => {
     const { id, value } = e.target;
     setFormData((prev) => ({ ...prev, [id]: value }));
@@ -47,23 +49,31 @@ const EditProfile = () => {
 
   const handleProfileUpdate = async (event) => {
     event.preventDefault();
-    if (isSubmitting) return;
+    console.log(formData);
 
     try {
-      setIsSubmitting(true);
+      const res = await updateUser({ ...formData }).unwrap();
 
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      showAlert("Profile updated successfully", "success");
+      setFeedback(res?.message);
+      setFeedbacktype("success");
+      refetch();
     } catch (error) {
-      showAlert("Failed to update profile. Please try again.");
-    } finally {
-      setIsSubmitting(false);
+      setFeedback("Failed to update profile. Please try again.");
+      setFeedbacktype("danger");
     }
   };
 
   return (
     <Container className="mt-4">
+      {feedback && (
+        <Alert
+          variant={feedbacktype}
+          onClose={() => setFeedback("")}
+          dismissible
+        >
+          <p>{feedback}</p>
+        </Alert>
+      )}
       <Card className="settings-card">
         <Card.Body>
           <Row className="settings-header">
@@ -71,12 +81,6 @@ const EditProfile = () => {
               <h1 className="settings-title">Edit Profile</h1>
             </Col>
           </Row>
-
-          {alert.message && (
-            <Alert variant={alert.type} className="mt-3">
-              {alert.message}
-            </Alert>
-          )}
 
           <Form onSubmit={handleProfileUpdate} id="profile-form">
             <Form.Group className="form-group">
@@ -129,7 +133,7 @@ const EditProfile = () => {
             <Button
               type="submit"
               className="submit-button"
-              disabled={isSubmitting}
+              disabled={updateloading}
             >
               Save Changes
             </Button>

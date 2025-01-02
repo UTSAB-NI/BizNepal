@@ -33,6 +33,8 @@ import {
 import { Logout } from "../slices/authSlices";
 import "../Customcss/userprofile.css";
 
+const API_BASE_URL = "https://localhost:5000"; // for image url in lcoalhost 5000 port number
+
 const ProfilePage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -53,7 +55,7 @@ const ProfilePage = () => {
   useEffect(() => {
     if (userData) {
       setUser(userData);
-      setUserType(userInfo.role ==="BusinessOwner" ? "business" : "general");
+      setUserType(userInfo.role === "BusinessOwner" ? "business" : "general");
     } else if (userError) {
       console.error(userError);
     }
@@ -76,32 +78,16 @@ const ProfilePage = () => {
     </Badge>
   );
 
-  const renderBusinessDetails = () =>
-    userType === "business" && (
-      <ListGroup.Item>
-        <h3 className="sidebar-title">Business Details</h3>
-        <div className="info-item">
-          <FaBuilding />
-          <span>Business Type</span>
-        </div>
-        <div className="info-item">
-          <FaTag />
-          <span>Business Category</span>
-        </div>
-      </ListGroup.Item>
-    );
-
   const renderReviews = () => {
     const userReviews = userReview?.filter(
       (review) => review.userId === userId
     );
-
     return userReviews?.map((review, index) => (
       <Card key={index} className="review-card">
         <Row>
           <Col xs={2} className="text-center">
             <Image
-              src="/image/1.jpg"
+              src={`${API_BASE_URL}${review?.business?.businessImages[0]?.imageUrl}`}
               roundedCircle
               alt="User Avatar"
               className="reviewer-avatar"

@@ -7,3 +7,4 @@ export const SEARCHBY_CATEGORIES_URL = "/api/Business/searchByCategory";
 export const SEARCH_URL = "/api/Business/search";
 export const CATEGORIES_URL = "/api/Category";
 export const REVIEW_URL = "/api/Review";
+export const UPDATE_USER_URL = "/api/Account";
