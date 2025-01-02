@@ -46,7 +46,6 @@ import EditProfile from "./screen/EditProfileScreen.jsx";
 
 import About from "./screen/AboutusScreen.jsx";
 import FAQ from "./screen/FaqScreen.jsx";
-import AboutDevelopers from "./screen/DeveloperScreen.jsx";
 import SelectRoleScreen from "./screen/SelectRoleScreen.jsx";
 // import { Provider } from "react-redux";
 
@@ -54,8 +53,8 @@ import BusinessRoute from "./Component/BusinessRoute.jsx";
 import BusinessDashboard from "./screen/BusinessOwner/BusinessDashboard.jsx";
 import AllReview from "./screen/BusinessOwner/AllReview.jsx";
 import AllListingBusiness from "./screen/BusinessOwner/AllListingBusiness.jsx";
-import BusinessProfile from "./screen/BusinessOwner/BusinessProfile.jsx";
 
+import ParticularBusinessReview from "./screen/BusinessOwner/ParticularBusinessReview.jsx";
 const router = createBrowserRouter(
   createRoutesFromElements(
     <>
@@ -67,7 +66,6 @@ const router = createBrowserRouter(
         <Route path="/about" element={<About />} />
         <Route path="/faq" element={<FAQ />} />
         <Route path="help" element={<HelpScreen />} />
-        <Route path="/developer" element={<AboutDevelopers />} />
         <Route path="/search/:keyword" element={<SearchScreen />} />
 
         <Route path="/businessfilter" element={<BusinessFilter />} />
@@ -99,9 +97,13 @@ const router = createBrowserRouter(
       {/* //business route */}
       <Route element={<BusinessRoute />}>
         <Route path="/business" element={<BusinessDashboard />} />
-        <Route path="/business/profile" element={<BusinessProfile />} />
+
         <Route path="/business/allreview" element={<AllReview />} />
         <Route path="/business/alllisting" element={<AllListingBusiness />} />
+        <Route
+          path="/business/particularreview/:id"
+          element={<ParticularBusinessReview />}
+        />
       </Route>
     </>
   )

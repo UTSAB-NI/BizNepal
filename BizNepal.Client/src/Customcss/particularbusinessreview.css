@@ -1,0 +1,58 @@
+.particularbusiness-header {
+  background: linear-gradient(135deg, #4a90e2 0%, #2c3e50 100%);
+  color: white;
+  padding: 2rem 0;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.review-card {
+  transition: transform 0.2s;
+  border-left: 4px solid #4a90e2;
+}
+
+.review-card:hover {
+  transform: translateX(5px);
+}
+
+.rating-stars {
+  color: #ffc107;
+}
+
+.star-filled {
+  color: #ffc107;
+}
+
+.star-empty {
+  color: #e4e5e9;
+}
+
+.review-stats {
+  border-radius: 10px;
+  transition: all 0.3s;
+}
+
+.review-stats:hover {
+  transform: scale(1.05);
+}
+
+.review-date {
+  color: #6c757d;
+  font-size: 0.9rem;
+}
+
+.verified-badge {
+  background-color: #28a745;
+  color: white;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 0.8rem;
+}
+
+.review-response {
+  background-color: #f8f9fa;
+  padding: 15px;
+  border-radius: 8px;
+  margin-top: 10px;
+  border-left: 3px solid #4a90e2;
+}

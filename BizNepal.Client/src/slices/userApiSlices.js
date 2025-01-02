@@ -5,6 +5,7 @@ import {
   USERS_URL,
   CATEGORIES_URL,
   REVIEW_URL,
+  UPDATE_USER_URL,
 } from "../constant";
 
 const userApiSlice = apiSlice.injectEndpoints({
@@ -36,6 +37,13 @@ const userApiSlice = apiSlice.injectEndpoints({
     getbusiness: builder.query({
       query: () => ({
         url: BUSINESS_URL,
+        method: "GET",
+      }),
+    }),
+
+    getcreatedbusinessByUser: builder.query({
+      query: (userId) => ({
+        url: `${BUSINESS_URL}/user/${userId}`,
         method: "GET",
       }),
     }),
@@ -155,6 +163,24 @@ const userApiSlice = apiSlice.injectEndpoints({
         body: reviewData,
       }),
     }),
+
+    //user profile update
+    updateUser: builder.mutation({
+      query: (data) => ({
+        url: `${UPDATE_USER_URL}/update-profile`,
+        method: "PATCH",
+        body: data,
+      }),
+    }),
+
+    //user password update
+    updateUserPassword: builder.mutation({
+      query: (data) => ({
+        url: `${UPDATE_USER_URL}/update-password`,
+        method: "POST",
+        body: data,
+      }),
+    }),
   }),
 });
 
@@ -178,4 +204,7 @@ export const {
   useEditCategorybyadminMutation,
   useCreateReviewMutation,
   useGetUserReviewQuery,
+  useUpdateUserMutation,
+  useUpdateUserPasswordMutation,
+  useGetcreatedbusinessByUserQuery,
 } = userApiSlice;

@@ -34,8 +34,9 @@ const ResponsiveSidebarProfile = () => {
     navigate("/");
   };
 
-
-  const username = userInfo?.jwtToken ? TokenDecode().userName(userInfo.jwtToken) : "Guest";
+  const username = userInfo?.jwtToken
+    ? TokenDecode().userName(userInfo.jwtToken)
+    : "Guest";
 
   return (
     <div>
@@ -56,12 +57,7 @@ const ResponsiveSidebarProfile = () => {
           padding: "10px", // 10px padding
         }} // Black background with white text
       >
-        <Offcanvas.Header closeButton closeVariant="white">
-          <Offcanvas.Title className="d-flex align-items-center">
-            {username}
-            <hr className="my-2 w-100" />
-          </Offcanvas.Title>
-        </Offcanvas.Header>
+        <Offcanvas.Header closeButton closeVariant="white"></Offcanvas.Header>
         <Offcanvas.Body>
           <ul className="list-unstyled m-0 p-0">
             <li className="my-2">
