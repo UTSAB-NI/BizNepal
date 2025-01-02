@@ -1,6 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { Container, Card, Form, Button, Alert, Row, Col } from "react-bootstrap";
+import {
+  Container,
+  Card,
+  Form,
+  Button,
+  Alert,
+  Row,
+  Col,
+} from "react-bootstrap";
 import { FaArrowLeft } from "react-icons/fa";
 import "../Customcss/editProfile.css";
 import { useGetUserByIdQuery } from "../slices/userApiSlices";
@@ -59,15 +67,6 @@ const EditProfile = () => {
       <Card className="settings-card">
         <Card.Body>
           <Row className="settings-header">
-            <Col xs={1}>
-              <Button
-                variant="light"
-                className="back-button"
-                onClick={() => window.history.back()}
-              >
-                <FaArrowLeft />
-              </Button>
-            </Col>
             <Col>
               <h1 className="settings-title">Edit Profile</h1>
             </Col>

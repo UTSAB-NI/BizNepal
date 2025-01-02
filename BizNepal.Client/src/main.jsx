@@ -46,7 +46,6 @@ import EditProfile from "./screen/EditProfileScreen.jsx";
 
 import About from "./screen/AboutusScreen.jsx";
 import FAQ from "./screen/FaqScreen.jsx";
-import AboutDevelopers from "./screen/DeveloperScreen.jsx";
 import SelectRoleScreen from "./screen/SelectRoleScreen.jsx";
 // import { Provider } from "react-redux";
 
@@ -67,7 +66,6 @@ const router = createBrowserRouter(
         <Route path="/about" element={<About />} />
         <Route path="/faq" element={<FAQ />} />
         <Route path="help" element={<HelpScreen />} />
-        <Route path="/developer" element={<AboutDevelopers />} />
         <Route path="/search/:keyword" element={<SearchScreen />} />
 
         <Route path="/businessfilter" element={<BusinessFilter />} />

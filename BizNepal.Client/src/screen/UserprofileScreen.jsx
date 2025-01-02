@@ -23,7 +23,9 @@ import {
   FaCog,
   FaSignOutAlt,
 } from "react-icons/fa";
+
 import TokenDecode from "../Component/TokenDecode";
+
 import {
   useGetUserByIdQuery,
   useGetUserReviewQuery,
@@ -47,10 +49,11 @@ const ProfilePage = () => {
   const [userType, setUserType] = useState("general");
   const [activeTab, setActiveTab] = useState("posts");
 
+  console.log("User Data", userData);
   useEffect(() => {
     if (userData) {
       setUser(userData);
-      setUserType(userData.businesses?.length > 0 ? "business" : "general");
+      setUserType(userInfo.role ==="BusinessOwner" ? "business" : "general");
     } else if (userError) {
       console.error(userError);
     }
@@ -65,13 +68,15 @@ const ProfilePage = () => {
   const renderBadge = () => (
     <Badge
       bg={userType === "business" ? "success" : "warning"}
-      className={`profile-type text-light ${userType === "business" ? "type-business" : "type-user"}`}
+      className={`profile-type text-light ${
+        userType === "business" ? "type-business" : "type-user"
+      }`}
     >
       {userType === "business" ? "Business Account" : "General User"}
     </Badge>
   );
 
-  const renderBusinessDetails = () => (
+  const renderBusinessDetails = () =>
     userType === "business" && (
       <ListGroup.Item>
         <h3 className="sidebar-title">Business Details</h3>
@@ -84,11 +89,12 @@ const ProfilePage = () => {
           <span>Business Category</span>
         </div>
       </ListGroup.Item>
-    )
-  );
+    );
 
   const renderReviews = () => {
-    const userReviews = userReview?.filter((review) => review.userId === userId);
+    const userReviews = userReview?.filter(
+      (review) => review.userId === userId
+    );
 
     return userReviews?.map((review, index) => (
       <Card key={index} className="review-card">
@@ -104,7 +110,9 @@ const ProfilePage = () => {
           <Col xs={10}>
             <Row className="align-items-center">
               <Col xs={8}>
-                <h5 className="reviewer-name">{review?.business?.businessName}</h5>
+                <h5 className="reviewer-name">
+                  {review?.business?.businessName}
+                </h5>
               </Col>
               <Col xs={4} className="text-end">
                 <Badge bg="success" style={{ fontSize: "0.8rem" }}>
@@ -160,8 +168,12 @@ const ProfilePage = () => {
                 <FaEdit /> Edit Profile
               </Button>
               <div className="profile-info">
-                <h1 className="profile-name">{user?.userName || "Loading..."}</h1>
-                <div className="profile-username">@{user?.userName || "loading"}</div>
+                <h1 className="profile-name">
+                  {user?.userName || "Loading..."}
+                </h1>
+                <div className="profile-username">
+                  @{user?.userName || "loading"}
+                </div>
                 {renderBadge()}
               </div>
             </Card.Body>
@@ -172,42 +184,44 @@ const ProfilePage = () => {
       <Row className="mt-4">
         <Col md={3}>
           <Card className="profile-sidebar">
-            <ListGroup variant="flush">
-              <ListGroup.Item>
-                <h3 className="sidebar-title">Contact Information</h3>
-                <div className="info-item">
-                  <FaEnvelope />
-                  <span>{user?.email || "email@example.com"}</span>
-                </div>
-                <div className="info-item">
-                  <FaPhone />
-                  <span>{user?.phoneNumber || "0000000000"}</span>
-                </div>
-                <div className="info-item">
-                  <FaMapMarkerAlt />
-                  <span>{user?.location || "City, Country"}</span>
-                </div>
-              </ListGroup.Item>
-              {renderBusinessDetails()}
-              <ListGroup.Item>
-                <h3 className="sidebar-title">Settings</h3>
-                <div className="settings-item">
-                  <Link to={`/accountsettings/${userId}`} className="text-decoration-none text-dark">
-                    <FaCog /> Account Settings
-                  </Link>
-                </div>
-                <div className="settings-item danger" onClick={logoutHandler}>
-                  <FaSignOutAlt /> Logout
-                </div>
-              </ListGroup.Item>
-            </ListGroup>
+            <div className="info-item">
+              <FaEnvelope />
+              <span>{user?.email || "email@example.com"}</span>
+            </div>
+            <div className="info-item">
+              <FaPhone />
+              <span>{user?.phoneNumber || "0000000000"}</span>
+            </div>
+            <div className="info-item">
+              <FaMapMarkerAlt />
+              <span>{user?.location || "City, Country"}</span>
+            </div>
+
+            {/* {renderBusinessDetails()} */}
+
+            <h3 className="sidebar-title">Settings</h3>
+            <div className="settings-item">
+              <Link
+                to={`/accountsettings/${userId}`}
+                className="text-decoration-none text-dark"
+              >
+                <FaCog /> Account Settings
+              </Link>
+            </div>
+            <div className="settings-item danger" onClick={logoutHandler}>
+              <FaSignOutAlt /> Logout
+            </div>
           </Card>
         </Col>
 
         <Col md={9}>
           <Card className="main-content">
             <Card.Body>
-              <Tabs activeKey={activeTab} onSelect={setActiveTab} className="mb-3">
+              <Tabs
+                activeKey={activeTab}
+                onSelect={setActiveTab}
+                className="mb-3"
+              >
                 <Tab eventKey="posts" title="Posts">
                   <div>Posts will be dynamically loaded here</div>
                 </Tab>
