@@ -544,41 +544,62 @@ public class BusinessController : ControllerBase
     [HttpPost("predict")]
     public async Task<IActionResult> PredictOverallSentiment(Guid businessId)
     {
-        // FastAPI endpoint URL
-        var url = "http://localhost:8000/predict-sentiment"; // Update the FastAPI endpoint URL if needed
+        var url = "http://localhost:8000/predict-sentiment"; 
 
         var reviews = _context.Reviews.Where(c => c.BusinessId == businessId).ToList();
-        var comments = reviews.Select(c => c.Comment).ToList();  // Ensure this is a List<string>
+        var comments = reviews.Select(c => c.Comment).ToList();  
 
-        // Create the ReviewInput object that FastAPI expects
         var reviewInput = new { reviews = comments };
         var content = new StringContent(JsonSerializer.Serialize(reviewInput), Encoding.UTF8, "application/json");
 
         try
         {
-            // Send the POST request to FastAPI
             var response = await _httpClient.PostAsync(url, content);
 
             if (response.IsSuccessStatusCode)
             {
-                // Deserialize the response JSON to ReviewOutput
                 var responseContent = await response.Content.ReadAsStringAsync();
                 var predictionResponse = JsonSerializer.Deserialize<PredictionResponseDto>(responseContent);
 
-                // Return the response as a View, or you can return it as a JSON response
-                return Ok(predictionResponse); // For example, sending back the response as a JSON result
+                return Ok(predictionResponse);
             }
             else
             {
-                // Handle failed request
                 return StatusCode((int)response.StatusCode, "Error calling FastAPI endpoint");
             }
         }
         catch (Exception ex)
         {
-            // Handle exception (e.g., network failure)
             return StatusCode(500, $"Internal server error: {ex.Message}");
         }
+
+    }
+
+    [HttpGet("user/{userId}")]
+    public async Task<ActionResult<BusinessResponseDto>> GetBusinessByUser(string userId)
+    {
+        if (string.IsNullOrWhiteSpace(userId))
+        {
+            return BadRequest("Please provide userid!");
+        }
+
+        var business=await _context.Businesses
+            .Where(c=>c.UserId==userId)
+            .Include(b => b.Location)
+            .Include(b => b.Category)
+            .Include(c => c.Reviews)
+            .Include(c => c.Address)
+            .Include(c => c.BusinessImages)
+            .ToListAsync();
+
+        if (business == null)
+        {
+            return NotFound($"Business with given userid {userId} not found.");
+        }
+
+        var businessDto = _mapper.Map<List<BusinessResponseDto>>(business);
+
+        return Ok(businessDto);
 
     }
 

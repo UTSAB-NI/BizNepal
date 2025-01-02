@@ -24,7 +24,7 @@ public class MappingProfile : Profile
             CategoryId = src.CategoryId,
             CategoryName = src.Category.CategoryName,
             IconPath=src.Category.IconPath
-            
+
         }))
 
         .ForMember(dest => dest.BusinessImages, opt => opt.MapFrom(src => src.BusinessImages))
