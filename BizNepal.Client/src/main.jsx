@@ -27,6 +27,7 @@ import SearchScreen from "./screen/SearchScreen.jsx";
 import UserprofileScreen from "./screen/UserprofileScreen.jsx";
 import GetBusinessByIdScreen from "./screen/GetBusinessByIdScreen.jsx";
 import HelpScreen from "./screen/HelpScreen.jsx";
+import BookmarkedItemsScreen from "./screen/BookmarkedItemsScreen.jsx";
 
 import ProtectedRoute from "./Component/ProtectedRoute.jsx";
 import BusinessListScreen from "./screen/BusinessListScreen.jsx";
@@ -67,6 +68,7 @@ const router = createBrowserRouter(
         <Route path="/faq" element={<FAQ />} />
         <Route path="help" element={<HelpScreen />} />
         <Route path="/search/:keyword" element={<SearchScreen />} />
+        <Route path="/bookmark" element={<BookmarkedItemsScreen />} />
 
         <Route path="/businessfilter" element={<BusinessFilter />} />
 

@@ -1,5 +1,5 @@
 import React from "react";
-import "../Customcss/PromoVideo.css";
+// import "../Customcss/PromoVideo.css";
 const PromoVideo = () => {
   return (
     <div>

@@ -41,14 +41,6 @@
   color: #2a5298;
 }
 
-.text-primary {
-  color: #2a5298 !important;
-}
-
-.text-muted {
-  color: #6c757d !important;
-}
-
 /* Responsive Design */
 @media (max-width: 768px) {
   .login-form-section {

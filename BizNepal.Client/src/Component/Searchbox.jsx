@@ -41,23 +41,36 @@ const Searchbox = () => {
     setSelectedSuggestion(suggestion); // Update selected suggestion
     setQuery(suggestion); // Update query to the selected suggestion
     setSuggestions([]); // Clear suggestions after selection
+    handleSearch(suggestion); // Trigger search
   };
 
   // Trigger the search
-  const handleSearch = () => {
-    if (selectedSuggestion.trim()) {
-      navigate(`/search/${selectedSuggestion}`);
+  const handleSearch = (searchQuery = query) => {
+    if (searchQuery.trim()) {
+      navigate(`/search/${searchQuery}`);
+      setQuery(""); // Clear query after search
+      setSelectedSuggestion(""); // Clear selected suggestion after search
+      setSuggestions([]); // Clear suggestions after search
+    }
+  };
+
+  // Handle Enter key press
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault(); // Prevent form submission
+      handleSearch();
     }
   };
 
   return (
     <Form className="search-box d-flex align-items-center">
       <div className="input-group">
-        {/* Suggestions dropdown */}
+        {/* Input field */}
         <Form.Control
           type="text"
           value={selectedSuggestion || query}
           onChange={handleChange}
+          onKeyDown={handleKeyDown}
           placeholder="Search for a business..."
           className="form-control"
         />
@@ -80,7 +93,7 @@ const Searchbox = () => {
         {/* Search button */}
         <Button
           variant="danger"
-          onClick={handleSearch}
+          onClick={() => handleSearch()}
           className="btn-sm search-button d-flex justify-content-center align-items-center"
         >
           <MDBIcon icon="search" className="text-center" />

@@ -37,7 +37,7 @@
 }
 
 .category-page .business-card .btn {
-  border-radius: 25px;
+  /* border-radius: 25px; */
   font-weight: bold;
   transition: all 0.3s ease;
 }

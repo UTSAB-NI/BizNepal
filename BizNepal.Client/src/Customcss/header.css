@@ -13,120 +13,86 @@
 .navbar-button-section {
   /* border: 2px solid red; */
   max-width: 450px;
-  /* width: 100%; */
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
 }
 .navbar-nav {
   /* border: 2px solid red; */
 }
-.profile-dropdown {
-  /* border: 2px solid red; */
-}
 
 .nav-btn {
-  padding: 0.6rem 1.2rem;
-  border-radius: 25px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  position: relative;
-  overflow: hidden;
-}
-.nav-btn::after {
-  content: "";
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(
-    to right,
-    transparent,
-    rgba(255, 255, 255, 0.1),
-    transparent
-  );
-  transform: translateX(-100%);
-  transition: transform 0.6s ease;
-}
-.nav-btn:hover::after {
-  transform: translateX(100%);
-}
-.btn-login {
-  background: transparent;
-  border: 2px solid rgba(90, 82, 82, 0.2);
-}
-.nav-btn.btn-login:hover {
-  background: rgba(92, 76, 76, 0.1);
-  border-color: rgba(29, 26, 26, 0.3);
-  color: grey;
-}
-
-.btn-register {
-  background-color: #ff6b6b;
-  background: transparent;
-  border: 2px solid rgba(90, 82, 82, 0.2);
-}
-.nav-btn.btn-login:hover {
-  background: rgba(92, 76, 76, 0.1);
-  border-color: rgba(29, 26, 26, 0.3);
-  color: grey;
-}
-
-.btn-register {
-  background-color: #ff6b6b;
-  color: white;
   border: none;
-  box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
-}
-
-.nav-btn.btn-register:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(255, 107, 107, 0.4);
-  color: grey;
-  box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
-}
-
-.nav-btn.btn-register:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(255, 107, 107, 0.4);
-  color: grey;
-}
-
-.btn-business {
-  background-color: #ff6b6b;
-  background-color: #ff6b6b;
-  color: white;
-  border: none;
-  box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
-  box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
-}
-.nav-btn.btn-business:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(255, 107, 107, 0.4);
-  /* color: grey; */
-}
-.btn-business-dashboard {
-  width: 100px;
-  border-radius: 20px;
+  padding: 10px 10px;
+  border-radius: 8px;
+  height: 35px;
+  text-align: center;
   display: flex;
-  justify-content: center;
   align-items: center;
-  background:none;
-  color: black;
-}
-.btn-admin {
-  background: transparent;
-  border: 2px solid rgba(90, 82, 82, 0.2);
-  color: grey;
-}
-.nav-btn.btn-admin:hover {
-  background: rgba(92, 76, 76, 0.1);
-  border-color: rgba(29, 26, 26, 0.3);
-  color: grey;
-}
-.nav-btn .btn-business:hover {
-  transform: translateY(-2px);
+  justify-content: center;
 }
 
+.nav-btn:hover {
+  transition: 0.5s;
+}
+/* this is for login button css  */
+.btn-login {
+  /* background-color: #d1485f; */
+  background: linear-gradient(90deg, #48aad1 0%, #957fd3 100%);
+  color: white;
+  transition: all 0.3s ease 0s;
+}
+.btn-login:hover {
+  background: linear-gradient(90deg, #d19648 0%, #d37f7f 100%);
+  translate: 0.5s;
+}
+/* this is for register button css */
+.btn-register {
+  background: linear-gradient(90deg, #d19648 0%, #d37f7f 100%);
+  color: white;
+  transition: all 0.3s ease 0s;
+}
+.btn-register:hover {
+  background: linear-gradient(90deg, #48aad1 0%, #957fd3 100%);
+  translate: 0.5s;
+}
+/* this is for admin button css  */
+.btn-admin {
+  background-color: #5b575abb;
+  color: white;
+  transition: all 0.3s ease 0s;
+}
+
+.btn-admin:hover {
+  background-color: #5b575a;
+  translate: 0.5s;
+}
+.btn-admin .admin-icon {
+  margin-right: 5px;
+}
+/* this is for listing buisiness button  */
+.btn-business {
+  background-color: #d1485f;
+  color: white;
+  transition: all 0.3s ease 0s;
+}
+.btn-business:hover {
+  background-color: #ff6b7d;
+  translate: 0.5s;
+}
+
+/* this is for business dashboard navigation button css  */
+.btn-business-dashboard {
+  background-color: #5b575abb;
+  color: white;
+  transition: all 0.3s ease 0s;
+}
+
+.btn-business-dashboard:hover {
+  background-color: #5b575a;
+  translate: 0.5s;
+}
 .btn-theme {
   display: flex;
   align-items: center;

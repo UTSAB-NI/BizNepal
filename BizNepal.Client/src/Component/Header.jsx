@@ -1,28 +1,36 @@
-import { Link } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useMemo } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
+import { RiAdminFill } from "react-icons/ri";
+import { MdSpaceDashboard } from "react-icons/md";
 import { Nav, Navbar, Container, Image, Button } from "react-bootstrap";
-
 import { Logout } from "../slices/authSlices";
-
 import "../Customcss/header.css";
 import Searchbox from "./Searchbox";
 import ResponsiveSidebar from "./ResponsiveSidebarprofile";
 
 const Header = ({ toggleTheme, currentTheme }) => {
   const themeIcon = currentTheme === "light" ? "🌙" : "🌞";
-
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
   const { userInfo } = useSelector((state) => state.auth);
-  // console.log("userInfo", userInfo.role);
+  const [cartStatus, setCartStatus] = useState(false);
 
   const logouthandler = () => {
     localStorage.removeItem("userInfo");
     dispatch(Logout());
     navigate("/");
   };
+
+  // Memoize the bookmark count calculation to avoid unnecessary re-renders
+  const bookmarkCount = useMemo(() => {
+    const bookmarkedItems = localStorage.getItem("bookmark");
+    if (bookmarkedItems) {
+      return bookmarkedItems.split(",").length;
+    }
+    setCartStatus(true);
+    return 0;
+  }, []);
 
   return (
     <Navbar expand="lg" className="bg-body-tertiary shadow-sm" id="top">
@@ -40,83 +48,78 @@ const Header = ({ toggleTheme, currentTheme }) => {
             <Nav.Link as={Link} to="/" className="px-3">
               Home
             </Nav.Link>
-
             <Nav.Link as={Link} to="/about" className="px-3">
               Why biznepal?
             </Nav.Link>
 
-            {/* Integrated SearchWithSuggestions Component */}
             <div className="searchbox-wrapper d-flex align-items-center">
               <Searchbox />
+            </div>
+
+            <div className="d-flex align-items-center text-end">
+              <Nav.Link as={Link} to="/bookmark" className="px-3">
+                <span
+                  className={` ${
+                    cartStatus ? "text-secondary" : "text-dark"
+                  } fas fa-bookmark`}
+                />
+                {bookmarkCount > 0 && (
+                  <span className="text-primary mx-2">
+                    {bookmarkCount} item
+                  </span>
+                )}
+              </Nav.Link>
             </div>
           </Nav>
 
           <Nav className="align-items-center navbar-button-section">
-            {userInfo &&
-              (userInfo.role === "Admin" || userInfo.role === "SuperAdmin") && (
-                <Button
-                  className="mx-2 nav-btn btn-admin"
-                  target="_blank"
-                  href="/admin"
-                >
-                  Admin
-                </Button>
-              )}
-
             {userInfo ? (
               <>
                 <Nav.Link as={Link} to="/businesslist">
-                  <Button
+                  <button
                     variant="danger"
-                    className="btn-business mx-2 nav-btn "
+                    className="btn-business mx-2 nav-btn"
                   >
                     + List Your Business
-                  </Button>
+                  </button>
                 </Nav.Link>
-
+                {userInfo &&
+                  (userInfo.role === "Admin" ||
+                    userInfo.role === "SuperAdmin") && (
+                    <Nav.Link as={Link} to="/admin" target="_blank">
+                      <button className="nav-btn btn-admin">
+                        <RiAdminFill className="admin-icon" />
+                        Admin
+                      </button>
+                    </Nav.Link>
+                  )}
                 {userInfo.role === "BusinessOwner" && (
-                  <>
-                    <Button
-                      variant="danger"
-                      className="btn-business-dashboard mx-2 nav-btn"
-                      target="_blank"   
-                      href="/business"
-                    >
+                  <button
+                    variant="danger"
+                    className="btn-business-dashboard mx-2 nav-btn"
+                  >
+                    <a href="/business" target="_blank" className="text-white">
+                      <MdSpaceDashboard
+                        className="admin-icon"
+                        style={{ marginRight: "8px" }}
+                      />
                       Dashboard
-                    </Button>
-                  </>
+                    </a>
+                  </button>
                 )}
                 <ResponsiveSidebar />
               </>
             ) : (
               <>
                 <Nav.Link as={Link} to="/login">
-                  <Button
-                    variant="outline-primary"
-                    className="mx-2 btn-login nav-btn"
-                  >
-                    Login
-                  </Button>
+                  <button className="mx-2 btn-login nav-btn">Login</button>
                 </Nav.Link>
 
                 <Nav.Link as={Link} to="/register">
-                  <Button
-                    variant="outline-primary"
-                    className="mx-2 btn-register nav-btn "
-                  >
-                    Sign Up
-                  </Button>
+                  <button className="mx-2 btn-register nav-btn">Sign Up</button>
                 </Nav.Link>
               </>
             )}
-
-            {/* <Button
-              variant="outline-secondary"
-              className="btn-theme mx-2 "
-              onClick={toggleTheme}
-            >
-              {themeIcon}
-            </Button> */}
           </Nav>
         </Navbar.Collapse>
       </Container>
