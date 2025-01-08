@@ -8,12 +8,10 @@ import { Logout } from "../slices/authSlices";
 import { useNavigate } from "react-router-dom"; // Import useNavigate
 
 import {
-  FaClipboardList,
   FaUsers,
-  FaAddressBook,
   FaSignOutAlt,
-  FaCog,
   FaQuestionCircle,
+  FaUserCircle 
 } from "react-icons/fa";
 
 const ResponsiveSidebarProfile = () => {
@@ -42,7 +40,8 @@ const ResponsiveSidebarProfile = () => {
     <div>
       {/* Open Sidebar Button (Avatar Image) */}
       <Button variant="link" onClick={toggleSidebar} className="p-0">
-        <AvatarImage />
+        {/* <AvatarImage /> */}
+        <FaUserCircle className="fs-2 text-dark" />
       </Button>
 
       {/* Sidebar */}

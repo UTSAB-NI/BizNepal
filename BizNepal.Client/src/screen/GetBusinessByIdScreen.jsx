@@ -1,14 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  Alert,
-  Row,
-  Col,
-  Card,
-  Button,
-  Image,
-  ListGroup,
-  Container,
-} from "react-bootstrap";
+import { Alert, Row, Col, Button, Image, Container } from "react-bootstrap";
 import { useParams } from "react-router-dom";
 import { useGetbusinessByIdQuery } from "../slices/userApiSlices";
 import Loader from "../Component/Loader";
@@ -26,6 +17,7 @@ const GetBusinessByIdScreen = () => {
     data: businessdatabyid,
     isLoading,
     isError,
+    refetch,
   } = useGetbusinessByIdQuery(businessid);
 
   useEffect(() => {
@@ -39,6 +31,10 @@ const GetBusinessByIdScreen = () => {
   const imageUrl = `${API_BASE_URL}${businessdatabyid?.businessImages[0]?.imageUrl}`;
   // const imageUrl = "/images/image.png";
 
+  const BookmarkController = (businessid) => {
+    localStorage.setItem("bookmark", businessid);
+    window.location.reload();
+  };
   return (
     <Container className="business-container">
       {isLoading && <Loader />}
@@ -52,9 +48,26 @@ const GetBusinessByIdScreen = () => {
           {/* Hero Section */}
           <div className="hero-section">
             <Image src={imageUrl} alt="Business" className="hero-image" />
-            <div className="hero-overlay">
+            <div className="hero-overlay ">
               <h1>{businessdatabyid.businessName}</h1>
-              <p className="mb-0">{businessdatabyid.category.categoryName}</p>
+              <div className="d-flex align-items-center mb-3">
+                <p className="mb-0 mx-2">
+                  {businessdatabyid.category.categoryName}
+                </p>
+                <button
+                  // className={`${
+                  //   businessid === localStorage.getItem("bookmark")
+                  //     ? "bookmark-button"
+                  //     : "bookmark-button"
+                  // }
+                  // `}
+                  className="bookmark-button"
+                  onClick={() => BookmarkController(businessid)}
+                >
+                  <i className="fas fa-bookmark me-2"></i>
+                  Bookmark
+                </button>
+              </div>
             </div>
           </div>
 
@@ -148,7 +161,10 @@ const GetBusinessByIdScreen = () => {
             <Row className="g-4">
               <Col md={4}>
                 <div className="stats-card">
-                  <div className="satisfaction-circle" style={{ "--percentage": "75%" }}>
+                  <div
+                    className="satisfaction-circle"
+                    style={{ "--percentage": "75%" }}
+                  >
                     75%
                   </div>
                   <h4>Positive Reviews</h4>
@@ -157,7 +173,10 @@ const GetBusinessByIdScreen = () => {
               </Col>
               <Col md={4}>
                 <div className="stats-card">
-                  <div className="satisfaction-circle" style={{ "--percentage": "15%" }}>
+                  <div
+                    className="satisfaction-circle"
+                    style={{ "--percentage": "15%" }}
+                  >
                     15%
                   </div>
                   <h4>Neutral Reviews</h4>
@@ -166,11 +185,16 @@ const GetBusinessByIdScreen = () => {
               </Col>
               <Col md={4}>
                 <div className="stats-card">
-                  <div className="satisfaction-circle" style={{ "--percentage": "10%" }}>
+                  <div
+                    className="satisfaction-circle"
+                    style={{ "--percentage": "10%" }}
+                  >
                     10%
                   </div>
                   <h4>Areas to Improve</h4>
-                  <p className="satisfaction-label">Improvement Opportunities</p>
+                  <p className="satisfaction-label">
+                    Improvement Opportunities
+                  </p>
                 </div>
               </Col>
             </Row>

@@ -2,16 +2,17 @@ import React from "react";
 import { Card, Button, Badge } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
+const API_BASE_URL = "https://localhost:5000";
 const SearchBusiness = ({ business }) => {
   return (
-    <Card className="mb-3 search-business-card shadow">
+    <Card className="mb-3 business-card shadow">
       <Link
         to={`/business/${business.businessId}`}
         className="text-decoration-none"
       >
         <Card.Img
           variant="top"
-          // src={`${API_BASE_URL}${business?.businessImages[0]?.imageUrl}`}
+          src={`${API_BASE_URL}${business?.businessImages[0]?.imageUrl}`}
           alt={business.businessName}
           style={{ height: "200px", objectFit: "cover" }}
         />
@@ -43,11 +44,8 @@ const SearchBusiness = ({ business }) => {
       </Link>
       <div className="d-flex justify-content-between m-3">
         <Link to={`/business/${business.businessId}`}>
-          <Button variant="outline-primary" className="mx-2 ">
-            View Details
-          </Button>
+          <Button>View Details</Button>
         </Link>
-        <Button variant="outline-secondary">Bookmark</Button>
       </div>
     </Card>
   );

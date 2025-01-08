@@ -186,9 +186,8 @@ const GetCategory = () => {
         </Link>
         <div className="d-flex justify-content-between m-3">
           <Link to={`/business/${business.businessId}`}>
-            <Button variant="outline-primary">View Details</Button>
+            <Button>View Details</Button>
           </Link>
-          <Button variant="outline-secondary">Bookmark</Button>
         </div>
       </Card>
     ));

@@ -26,7 +26,8 @@ const AllReview = () => {
   const businessReview = createdBusiness?.map(
     (business) => business?.reviews
   );
-  console.log("businessIdforReview", businessReview);
+  
+  console.log("businessReview", businessReview);
 
   const {
     data: userReview,
@@ -34,12 +35,6 @@ const AllReview = () => {
     isLoading: userReviewLoading,
   } = useGetUserReviewQuery();
 
-  // const FilteredReview = userReview?.filter(
-  //   (review) => review.userId === businessIdforReview[0]
-  // );
-
-  // console.log("createdBusiness", createdBusiness);
-  console.log("userReview", userReview);
   // Render stars based on rating
   const renderStars = (rating) => {
     return Array.from({ length: 5 }, (_, i) => (
@@ -76,6 +71,7 @@ const AllReview = () => {
                 <Card.Body>
                   <div className="d-flex justify-content-between align-items-start">
                     <div>
+                      <h6 className="text-mute text-secondary">{review.business.businessName}</h6>
                       <h5 className="card-title">{review.comment}</h5>
                       <div className="rating-stars mb-2">
                         {renderStars(review.rating)}
