@@ -1,67 +1,67 @@
 import React, { useState, useEffect } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, useLocation, Link } from "react-router-dom";
 import {
   Container,
-  Form,
   Row,
   Col,
-  Button,
   Card,
   Badge,
+  Button,
   Spinner,
   Alert,
+  Form,
+  Pagination,
 } from "react-bootstrap";
-import { useSearchByCategoryQuery } from "../slices/categoryApiSlices";
-import { useGetAllCategoriesQuery } from "../slices/userApiSlices";
+import { useGetbusinessQuery } from "../slices/userApiSlices";
 import districtofNepal from "../data/Districtofnepal";
 import "../Customcss/Test.css";
 
-const initialCategories = [{ name: "No categories", active: false }];
-const API_BASE_URL = "https://localhost:5000"; // Base URL for API for images
+const API_BASE_URL = "https://localhost:5000";
 
-const GetCategory = () => {
+const BusinessResult = () => {
   const { category } = useParams();
-  const {
-    data: businessByCategory,
-    error,
-    isLoading,
-  } = useSearchByCategoryQuery(category);
+  const { search } = useLocation();
+  const searchParams = new URLSearchParams(search);
+  const querySearch = searchParams.get("search") || "";
 
-  const { data: allCategoriesData } = useGetAllCategoriesQuery();
-
-  const [categoryData, setCategoryData] = useState([]);
+  const [categoryData, setCategoryData] = useState([]); // To store the final filtered data
   const [filters, setFilters] = useState({
-    ratings: [],
     ratings: [],
     District: "",
     City: "",
   });
-  const [searchQuery, setSearchQuery] = useState("");
-  const [categories, setCategories] = useState(initialCategories);
+  const [searchQuery, setSearchQuery] = useState(querySearch);
   const [feedback, setFeedback] = useState("");
+  const [pageNumber, setPageNumber] = useState(1); // Track the current page
+  const [pageSize, setPageSize] = useState(10); // Page size
+  const [loading, setLoading] = useState(false); // Loading state
+
+  // Call useGetbusinessQuery directly
+  const {
+    data: paginatedBusinessData,
+    error,
+    isLoading,
+  } = useGetbusinessQuery({
+    category: category || "",
+    searchTerm: querySearch || "",
+    pageSize,
+    pageNumber,
+    isAscending: true,
+  });
+
+  console.log("API Response:", paginatedBusinessData);
 
   useEffect(() => {
-    if (allCategoriesData) {
-      setCategories(
-        allCategoriesData.map((cat) => ({
-          name: cat.categoryName || "Unnamed Category",
-          active: false,
-        }))
-      );
-    }
-  }, [allCategoriesData]);
-
-  useEffect(() => {
-    if (businessByCategory) {
-      const filteredData = businessByCategory.filter((item) => {
+    if (paginatedBusinessData && paginatedBusinessData.items) {
+      const filteredData = paginatedBusinessData.items.filter((item) => {
         const matchesSearch = searchQuery
           ? item.businessName?.toLowerCase().includes(searchQuery.toLowerCase())
           : true;
 
         const matchesRating =
           filters.ratings.length > 0
-            ? filters.ratings.some((rating) =>
-                item.reviews?.some((review) => review.rating === Number(rating))
+            ? filters.ratings.some(
+                (rating) => Math.floor(item.overallRating) === Number(rating)
               )
             : true;
 
@@ -80,27 +80,32 @@ const GetCategory = () => {
         return matchesSearch && matchesRating && matchesDistrict && matchesCity;
       });
 
+      console.log("Filtered Data:", filteredData);
       setCategoryData(filteredData);
+      setLoading(false); // Stop loading once filtering is done
     }
-    if (error) {
-      setFeedback("An error occurred. Please try again later.");
-    }
-  }, [businessByCategory, filters, searchQuery, error]);
+  }, [paginatedBusinessData, filters, searchQuery]);
 
+  // Handle page size change
+  const handlePageSizeChange = (event) => {
+    setPageSize(Number(event.target.value));
+    setPageNumber(1); // Reset to page 1 when page size changes
+  };
+
+  // Handle page number change
+  const handlePageNumberChange = (page) => {
+    setPageNumber(page);
+  };
+
+  // Clear all filters
   const clearFilters = () => {
     setFilters({ ratings: [], District: "", City: "" });
     setSearchQuery("");
-    if (businessByCategory) setCategoryData(businessByCategory);
+    setCategoryData(paginatedBusinessData.items);
+    setPageNumber(1);
   };
 
-  const toggleCategory = (index) => {
-    const updatedCategories = categories.map((cat, i) => ({
-      ...cat,
-      active: i === index ? !cat.active : cat.active,
-    }));
-    setCategories(updatedCategories);
-  };
-
+  // Toggle rating filter
   const toggleRating = (rating) => {
     setFilters((prevFilters) => {
       const updatedRatings = prevFilters.ratings.includes(rating)
@@ -110,22 +115,9 @@ const GetCategory = () => {
     });
   };
 
-  const renderCategoriesButton = () => {
-    return categories?.map((category, index) => (
-      <Badge
-        key={index}
-        bg={category.active ? "primary" : "light"}
-        onClick={() => toggleCategory(index)}
-        className="category-badges"
-      >
-        {category.name || "Unnamed Category"}
-      </Badge>
-    ));
-  };
-
-  // Render businesses based on the category selected and filters applied
+  // Render businesses
   const renderBusinesses = () => {
-    if (isLoading) {
+    if (isLoading || loading) {
       return (
         <div className="text-center my-5">
           <Spinner animation="border" variant="primary" />
@@ -193,6 +185,65 @@ const GetCategory = () => {
     ));
   };
 
+  // Render pagination with page size dropdown
+  const renderPagination = () => {
+    const totalItems = paginatedBusinessData?.totalCount || 0;
+    const totalPages =
+      paginatedBusinessData?.totalPage || Math.ceil(totalItems / pageSize);
+
+    // Do not render pagination if there's only one page or no data
+    if (totalPages <= 1 || totalItems === 0) {
+      return null;
+    }
+
+    const pageNumbers = [];
+    for (let i = 1; i <= totalPages; i++) {
+      pageNumbers.push(i);
+    }
+
+    return (
+      <div className="d-flex flex-column align-items-center mt-4">
+        {/* Pagination Controls */}
+        <Pagination className="mb-3">
+          <Pagination.Prev
+            onClick={() => handlePageNumberChange(pageNumber - 1)}
+            disabled={pageNumber === 1}
+          />
+          {pageNumbers.map((page) => (
+            <Pagination.Item
+              key={page}
+              active={page === pageNumber}
+              onClick={() => handlePageNumberChange(page)}
+            >
+              {page}
+            </Pagination.Item>
+          ))}
+          <Pagination.Next
+            onClick={() => handlePageNumberChange(pageNumber + 1)}
+            disabled={pageNumber === totalPages}
+          />
+        </Pagination>
+
+        {/* Page Size Dropdown */}
+        {/* <Form.Group className="d-flex align-items-center">
+          <Form.Control
+            as="select"
+            value={pageSize}
+            onChange={handlePageSizeChange}
+            className="form-select-sm"
+            style={{ width: "auto" }}
+          >
+            {[5, 10, 20].map((size) => (
+              <option key={size} value={size}>
+                {size} items per page
+              </option>
+            ))}
+          </Form.Control>
+        </Form.Group> */}
+      </div>
+    );
+  };
+
   return (
     <Container fluid className="category-page">
       <Row className="mt-3">
@@ -234,7 +285,7 @@ const GetCategory = () => {
                 onChange={(e) =>
                   setFilters({ ...filters, City: e.target.value })
                 }
-              ></Form.Control>
+              />
             </Form.Group>
 
             <Form.Group className="mt-3">
@@ -262,12 +313,17 @@ const GetCategory = () => {
         </Col>
 
         <Col md={9} className="business-section">
-          <h2 className="mb-4">{category} Businesses</h2>
+          <h2 className="mb-4">
+            {category || querySearch
+              ? `${category || "All"} Businesses`
+              : "Businesses"}
+          </h2>
           <div className="d-flex flex-wrap">{renderBusinesses()}</div>
+          {renderPagination()}
         </Col>
       </Row>
     </Container>
   );
 };
 
-export default GetCategory;
+export default BusinessResult;

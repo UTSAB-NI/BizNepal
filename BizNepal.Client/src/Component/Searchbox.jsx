@@ -47,7 +47,9 @@ const Searchbox = () => {
   // Trigger the search
   const handleSearch = (searchQuery = query) => {
     if (searchQuery.trim()) {
-      navigate(`/search/${searchQuery}`);
+      // navigate(`/search/${searchQuery}`);
+      navigate(`/search?search=${searchQuery}`);
+
       setQuery(""); // Clear query after search
       setSelectedSuggestion(""); // Clear selected suggestion after search
       setSuggestions([]); // Clear suggestions after search

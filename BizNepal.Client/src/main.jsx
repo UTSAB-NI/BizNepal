@@ -22,7 +22,7 @@ import App from "./App.jsx";
 import HomeScreen from "./screen/HomeScreen.jsx";
 import LoginScreen from "./screen/LoginScreen.jsx";
 import RegisterScreen from "./screen/RegisterScreen.jsx";
-import GetCategory from "./screen/GetCategory.jsx";
+import BusinessResult from "./screen/BusinessResult.jsx";
 import SearchScreen from "./screen/SearchScreen.jsx";
 import UserprofileScreen from "./screen/UserprofileScreen.jsx";
 import GetBusinessByIdScreen from "./screen/GetBusinessByIdScreen.jsx";
@@ -67,12 +67,14 @@ const router = createBrowserRouter(
         <Route path="/about" element={<About />} />
         <Route path="/faq" element={<FAQ />} />
         <Route path="help" element={<HelpScreen />} />
-        <Route path="/search/:keyword" element={<SearchScreen />} />
+        {/* <Route path="/search/:keyword" element={<BusinessResult />} /> */}
+        <Route path="/search" element={<BusinessResult />} />
+
         <Route path="/bookmark" element={<BookmarkedItemsScreen />} />
 
         <Route path="/businessfilter" element={<BusinessFilter />} />
 
-        <Route path="/category/:category" element={<GetCategory />} />
+        <Route path="/category/:category" element={<BusinessResult />} />
         <Route path="/business/:id" element={<GetBusinessByIdScreen />} />
         {/* <Route path="/test" element={<TestScreen />} /> */}
         {/* <Route path="/test" element={<TestScreen />} /> */}
