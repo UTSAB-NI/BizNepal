@@ -5,34 +5,31 @@ import { FaFacebook, FaTwitter, FaLinkedin, FaInstagram } from "react-icons/fa";
 
 const Footer = () => {
   return (
-    <footer className="footer">
+    <footer className="footer py-3">
       <div className="container">
-        <div className="row mb-5">
+        <div className="row mb-4">
           {/* About Section */}
-          <div className="col-lg-4 mb-4">
-            <h5 className="mb-4">
-              <a href="#top">
-                <img
-                  src="/images/biznepallogo.png"
-                  alt="logo"
-                  style={{
-                    width: "200px",
-                    backgroundColor: "white",
-                    borderRadius: "50px",
-                  }}
-                />
-              </a>
-            </h5>
-            <p>
-              Connecting local businesses with customers since 2023. Our
-              platform helps you discover, review, and connect with the best
-              local businesses in your area.
+          <div className="col-lg-3 col-md-6 mb-3">
+            <a href="#top">
+              <img
+                src="/images/biznepallogo.png"
+                alt="logo"
+                style={{
+                  width: "150px",
+                  backgroundColor: "white",
+                  borderRadius: "30px",
+                }}
+              />
+            </a>
+            <p className="small mt-2">
+              Connecting local businesses with customers since 2023.
             </p>
-            <div className="footer-social-icons mt-4">
+            <div className="footer-social-icons mt-3">
               <a
                 href="https://facebook.com/whybusinessthis"
                 target="_blank"
                 rel="noopener noreferrer"
+                className="me-2"
               >
                 <FaFacebook />
               </a>
@@ -40,6 +37,7 @@ const Footer = () => {
                 href="https://twitter.com/whybusinessthis"
                 target="_blank"
                 rel="noopener noreferrer"
+                className="me-2"
               >
                 <FaTwitter />
               </a>
@@ -47,6 +45,7 @@ const Footer = () => {
                 href="https://linkedin.com/company/whybusinessthis"
                 target="_blank"
                 rel="noopener noreferrer"
+                className="me-2"
               >
                 <FaLinkedin />
               </a>
@@ -61,16 +60,12 @@ const Footer = () => {
           </div>
 
           {/* Quick Links Section */}
-          <div className="col-lg-2 col-md-4 mb-4">
-            <h5 className="mb-4">Quick Links</h5>
-            <ul className="list-unstyled">
+          <div className="col-lg-2 col-md-6 mb-3">
+            <h6 className="mb-3">Quick Links</h6>
+            <ul className="list-unstyled small">
               <li className="mb-2">
                 <Link to="/about">About Us</Link>
               </li>
-
-              {/* <li className="mb-2">
-                <a href="https://whybusinessthis.com/blog">Blog</a>
-              </li> */}
               <li className="mb-2">
                 <Link to="/faq">FAQ</Link>
               </li>
@@ -81,9 +76,9 @@ const Footer = () => {
           </div>
 
           {/* For Businesses Section */}
-          <div className="col-lg-2 col-md-4 mb-4">
-            <h5 className="mb-4">For Businesses</h5>
-            <ul className="list-unstyled">
+          <div className="col-lg-2 col-md-6 mb-3">
+            <h6 className="mb-3">For Businesses</h6>
+            <ul className="list-unstyled small">
               <li className="mb-2">
                 <a href="/businesslist">Add Your Business</a>
               </li>
@@ -104,45 +99,34 @@ const Footer = () => {
           </div>
 
           {/* Newsletter Section */}
-          <div className="col-lg-4 col-md-4 mb-4">
-            <div className="footer-newsletter">
-              <h5 className="mb-4">Subscribe to Our Newsletter</h5>
-              <p>
-                Get the latest updates about local businesses and special
-                offers.
-              </p>
-              <form className="mt-3">
-                <div className="input-group mb-3">
-                  <input
-                    type="email"
-                    className="form-control"
-                    placeholder="Your email address"
-                    aria-label="Your email address"
-                  />
-                  <button className="btn btn-light" type="submit">
-                    Subscribe
-                  </button>
-                </div>
-              </form>
-            </div>
+          <div className="col-lg-3 col-md-6 mb-3">
+            <h6 className="mb-3">Subscribe</h6>
+            <form className="small">
+              <div className="input-group">
+                <input
+                  type="email"
+                  className="form-control form-control-sm"
+                  placeholder="Your email"
+                  aria-label="Your email"
+                />
+                <button className="btn btn-light btn-sm" type="submit">
+                  Subscribe
+                </button>
+              </div>
+            </form>
           </div>
         </div>
 
-        {/* Horizontal Line */}
-        <hr className="my-4" />
-
-        {/* Copyright and Policies Section */}
+        {/* Bottom Section */}
         <div className="row align-items-center">
-          <div className="col-md-6 text-center text-md-start mb-3 mb-md-0">
-            <p className="mb-0">
-              © {new Date().getFullYear()} bizNepal. All rights reserved.
-            </p>
+          <div className="col-md-6 text-center text-md-start small">
+            © {new Date().getFullYear()} bizNepal. All rights reserved.
           </div>
-          <div className="col-md-6 text-center text-md-end">
-            <a href="https://whybusinessthis.com/terms" className="me-3">
-              Terms of Service
+          <div className="col-md-6 text-center text-md-end small">
+            <a href="https://whybusinessthis.com/terms" className="me-2">
+              Terms
             </a>
-            <a href="https://whybusinessthis.com/privacy">Privacy Policy</a>
+            <a href="https://whybusinessthis.com/privacy">Privacy</a>
           </div>
         </div>
       </div>
