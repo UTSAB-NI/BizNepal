@@ -17,6 +17,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     public DbSet<Review> Reviews { get; set; }
     public DbSet<BusinessImage> BusinessImages { get; set; }
     public DbSet<Address> Addresses { get; set; }
+    public DbSet<Bookmark> Bookmarks { get; set; }
 
 
 

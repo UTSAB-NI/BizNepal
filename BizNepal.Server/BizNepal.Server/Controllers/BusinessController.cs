@@ -9,6 +9,7 @@ using System.Net.Http;
 using System.Security.Claims;
 using System.Text;
 using System.Text.Json;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace BizNepal.Server.Controllers;
 
@@ -431,10 +432,10 @@ public class BusinessController : ControllerBase
             return BadRequest("Query cannot be empty.");
         }
 
-        var suggestions = _context.Businesses // or any entity you're searching
-            .Where(b => b.BusinessName.Contains(query)) // Change to match your requirements
-            .Select(b => b.BusinessName)                // Returning names for simplicity
-            .Take(10)                           // Limit suggestions for performance
+        var suggestions = _context.Businesses 
+            .Where(b => b.BusinessName.ToLower().Contains(query.ToLower())) 
+            .Select(b => b.BusinessName)                
+            .Take(10)                           
             .ToList();
 
         return Ok(suggestions);
