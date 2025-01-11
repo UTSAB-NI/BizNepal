@@ -4,8 +4,9 @@ import { ToastContainer } from "react-toastify";
 import { FaArrowUp } from "react-icons/fa";
 // import 'react-toastify/dist/ReactToastify.css';
 import Header from "./Component/Header";
-import "./App.css";
 import Footer from "./Component/Footer";
+import ScrollToTop from "./Component/ScrollToTop"; // Import the ScrollToTop component
+import "./App.css";
 
 function App() {
   // Back-to-top button visibility
@@ -25,7 +26,8 @@ function App() {
 
   return (
     <>
-      <Header />
+      <ScrollToTop /> {/* Add this component to ensure scroll reset */}
+      <Header toggleTheme={toggleTheme} currentTheme={theme} />
       <Outlet />
 
       {/* Back-to-top button */}
