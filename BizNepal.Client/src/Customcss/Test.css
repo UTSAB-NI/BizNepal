@@ -163,3 +163,35 @@
     line-height: 12px;
   }
 }
+
+
+.filter-section {
+  position: sticky;
+  top: 20px; /* Distance from the top of the viewport */
+  height: fit-content; /* Adjusts the height dynamically */
+  z-index: 1000; /* Ensures it stays above other content */
+  background-color: white; /* Optional: To ensure the background is visible */
+  padding-bottom: 10px; /* Ensure all content is within the sticky container */
+}
+
+.filter-card {
+  overflow: visible; /* Ensures content remains visible */
+}
+
+/* .business-card {
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
+}
+
+.business-card.show {
+  opacity: 1;
+}
+
+.spinner-border {
+  animation: spin 1s infinite linear;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+} */

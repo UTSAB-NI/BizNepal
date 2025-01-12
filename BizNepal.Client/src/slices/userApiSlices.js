@@ -34,10 +34,30 @@ const userApiSlice = apiSlice.injectEndpoints({
       }),
     }),
 
+    // getbusiness: builder.query({
+    //   query: () => ({
+    //     url: BUSINESS_URL,
+    //     method: "GET",
+    //   }),
+    // }),
+
     getbusiness: builder.query({
-      query: () => ({
-        url: BUSINESS_URL,
+      query: ({
+        pageSize = 10,
+        searchTerm = "",
+        category = "",
+        pageNumber = 1,
+        isAscending = true,
+      }) => ({
+        url: `${BUSINESS_URL}`,
         method: "GET",
+        params: {
+          pageSize,
+          searchTerm,
+          category,
+          pageNumber,
+          isAscending,
+        },
       }),
     }),
 
