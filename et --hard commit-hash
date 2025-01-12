@@ -1,0 +1,255 @@
+[33mcommit ad4d7c602c0c188d8c49b3b7a453e7b8b8c40445[m[33m ([m[1;36mHEAD -> [m[1;32mpup-rahul[m[33m, [m[1;31morigin/pup-rahul[m[33m)[m
+Author: Rahul Adhikari <rahul077@academiacollege.edu.np>
+Date:   Sun Jan 12 10:59:04 2025 +0545
+
+    update in frontend
+
+[33mcommit 96340c13fdef166b28c4cbf722571fc0859d00be[m[33m ([m[1;32mmain[m[33m)[m
+Merge: e8c9306 f172497
+Author: Rahul Adhikari <123219021+Rahulad12@users.noreply.github.com>
+Date:   Wed Jan 8 22:57:46 2025 +0545
+
+    Merge pull request #76 from UTSAB-NI/pup-rahul
+    
+     updating ui and fixing ui bugs
+
+[33mcommit f172497c38518e4f3df211c4265f03c626c87d4c[m
+Author: Rahul Adhikari <rahul077@academiacollege.edu.np>
+Date:   Wed Jan 8 22:50:20 2025 +0545
+
+     updating ui and fixing ui bugs
+
+[33mcommit e8c930632553f277f0caa6cbf7356b03c237d437[m
+Merge: 91fd9e6 528bc54
+Author: Rahul Adhikari <123219021+Rahulad12@users.noreply.github.com>
+Date:   Thu Jan 2 21:27:31 2025 +0545
+
+    Merge pull request #75 from UTSAB-NI/pup-rahul
+    
+    Pup rahul
+
+[33mcommit 528bc546440f93369f5e3a6c790a78c502417d2a[m
+Author: Rahul Adhikari <rahul077@academiacollege.edu.np>
+Date:   Thu Jan 2 21:24:11 2025 +0545
+
+    business dashboard , userprofile update ,userpassword and user reviewd businessimage add
+
+[33mcommit 73ce82fff8f4bbf1eff332750f9d3253e9eb6bc6[m
+Merge: f7bced8 91fd9e6
+Author: Rahul Adhikari <rahul077@academiacollege.edu.np>
+Date:   Thu Jan 2 10:01:57 2025 +0545
+
+    Merge branch 'main' of https://github.com/UTSAB-NI/BizNepal into pup-rahul
+
+[33mcommit f7bced86a08c80d7b9b9fe8fbf835197f5fcda56[m
+Author: Rahul Adhikari <rahul077@academiacollege.edu.np>
+Date:   Thu Jan 2 10:01:48 2025 +0545
+
+    fixing error in userprofile section
+
+[33mcommit 91fd9e6d4c39c12ace9cf4effe199a6f0864f413[m
+Merge: be05754 496bf76
+Author: Mjolnir <66776784+UTSAB-NI@users.noreply.github.com>
+Date:   Wed Jan 1 10:23:14 2025 -0800
+
+    Merge pull request #74 from UTSAB-NI/utsab
+    
+    Add api for update password and update profile
+
+[33mcommit 496bf769a57cc4c4e395994de059e4e4ea637a0f[m
+Author: utsab singh <utsabsingh5@gmail.com>
+Date:   Thu Jan 2 00:07:21 2025 +0545
+
+    Add api for update password and update profile
+
+[33mcommit be057540a36d51773ecd5a5662cf9ab00f55a6a1[m
+Merge: 79e4950 02c1e5c
+Author: Mjolnir <66776784+UTSAB-NI@users.noreply.github.com>
+Date:   Wed Jan 1 08:32:53 2025 -0800
+
+    Merge pull request #73 from UTSAB-NI/utsab
+    
+    Add Business by user api and business image to review
+
+[33mcommit 02c1e5cd5baa374507a4ef2d1bf88daebe078f8e[m
+Author: utsab singh <utsabsingh5@gmail.com>
+Date:   Wed Jan 1 22:16:55 2025 +0545
+
+    Add Businnes by user api and business image to review
+
+[33mcommit 79e4950eb374032c6c8677263d4c93eff6f327e0[m
+Author: Rahul Adhikari <rahul077@academiacollege.edu.np>
+Date:   Wed Jan 1 20:35:06 2025 +0545
+
+    Update and finxing error in code
+
+[33mcommit f4f048e754c8c5638169abd17f87e741317d1842[m
+Merge: 9bbc79f 31a0ebc
+Author: Rahul Adhikari <rahul077@academiacollege.edu.np>
+Date:   Mon Dec 30 09:32:57 2024 +0545
+
+    update in main
+
+[33mcommit 9bbc79fd7dc54df5b6889f0d9bc2360e1d8a21a1[m
+Author: Rahul Adhikari <rahul077@academiacollege.edu.np>
+Date:   Mon Dec 30 09:27:37 2024 +0545
+
+    change in main
+
+[33mcommit 31a0ebc993f6423dc37899142fd8f715fba3be32[m
+Merge: df2aa03 41b501e
+Author: Rahul Adhikari <123219021+Rahulad12@users.noreply.github.com>
+Date:   Mon Dec 30 09:17:37 2024 +0545
+
+    Merge pull request #72 from UTSAB-NI/pup-rahul
+    
+    Pup rahul
+
+[33mcommit 41b501effffb0841c55b295c68638c08a1ea10b9[m
+Merge: 6b3ae45 df2aa03
+Author: Rahul Adhikari <rahul077@academiacollege.edu.np>
+Date:   Mon Dec 30 09:17:04 2024 +0545
+
+    Update Conflicts
+
+[33mcommit 6b3ae452349ee4f2a96adf12f34bd4a8e4f5eed6[m
+Author: Rahul Adhikari <rahul077@academiacollege.edu.np>
+Date:   Mon Dec 30 09:16:06 2024 +0545
+
+    Fixing Bug
+
+[33mcommit df2aa03dff1516cd65a6da9463e00bf774df529d[m
+Merge: 42e899d a849a61
+Author: Rahul Adhikari <123219021+Rahulad12@users.noreply.github.com>
+Date:   Thu Dec 26 17:47:00 2024 +0545
+
+    Merge pull request #71 from UTSAB-NI/pup-rahul
+    
+    Add user reviewd view section in userprofile so they can view busines…
+
+[33mcommit a849a614c90e1ffe539df6a4b8c6fbc5fb3ef97e[m
+Author: Rahul Adhikari <rahul077@academiacollege.edu.np>
+Date:   Thu Dec 26 17:42:05 2024 +0545
+
+    Add user reviewd view section in userprofile so they can view business they reviewd
+
+[33mcommit 42e899d8b2ac236a7ac56f355d421fe96d703549[m
+Author: utsab singh <utsabsingh5@gmail.com>
+Date:   Wed Dec 25 18:56:42 2024 +0545
+
+    fix bug
+
+[33mcommit faa22dbc715de38cea5c7c741ecd240109128d25[m
+Merge: f358ca5 cb0c491
+Author: Rahul Adhikari <123219021+Rahulad12@users.noreply.github.com>
+Date:   Tue Dec 24 20:50:53 2024 +0545
+
+    Merge pull request #70 from UTSAB-NI/pup-rahul
+    
+    adding business dashboard and updating button
+
+[33mcommit cb0c491892c4f60d833592fd5a33b9f3261575c7[m
+Author: Rahul Adhikari <rahul077@academiacollege.edu.np>
+Date:   Tue Dec 24 20:50:05 2024 +0545
+
+    adding business dashboard and updating button
+
+[33mcommit f358ca5f8d9c8d8abd2687296db9bbf6c34a89a6[m
+Merge: 3d5dfa2 6066680
+Author: Rahul Adhikari <rahul077@academiacollege.edu.np>
+Date:   Tue Dec 24 20:30:46 2024 +0545
+
+    Merge branch 'main' of https://github.com/UTSAB-NI/BizNepal
+
+[33mcommit 6066680c48178a56ac523a70bd2338daeae07004[m
+Merge: 310a35c 4baf204
+Author: Rahul Adhikari <123219021+Rahulad12@users.noreply.github.com>
+Date:   Tue Dec 24 20:30:13 2024 +0545
+
+    Merge pull request #69 from UTSAB-NI/pup-rahul
+    
+    update in searchbar button
+
+[33mcommit 4baf2045ba37b01e8dafc57d2c3b9a33e2fa2da7[m
+Author: Rahul Adhikari <rahul077@academiacollege.edu.np>
+Date:   Tue Dec 24 20:29:11 2024 +0545
+
+    update in searchbar button
+
+[33mcommit 3d5dfa2bfbfa6d9db29ff609fb50d1a7f76609f5[m
+Merge: 874662e 310a35c
+Author: Rahul Adhikari <rahul077@academiacollege.edu.np>
+Date:   Tue Dec 24 20:19:43 2024 +0545
+
+    update with pull
+
+[33mcommit 310a35c88322f271c2d86b61778b2463bf343fe9[m
+Merge: a90ba0c 31baad3
+Author: Rahul Adhikari <123219021+Rahulad12@users.noreply.github.com>
+Date:   Tue Dec 24 20:17:42 2024 +0545
+
+    Merge pull request #68 from UTSAB-NI/pup-rahul
+    
+    Pup rahul
+
+[33mcommit 31baad304e4df17fcf7e1cff3c1d504a9b6d253c[m
+Author: Rahul Adhikari <rahul077@academiacollege.edu.np>
+Date:   Tue Dec 24 20:16:58 2024 +0545
+
+    update in promovideo cover
+
+[33mcommit 1892e85b23cfe0e3a1c5a98c871eec08632b5f60[m
+Author: Rahul Adhikari <rahul077@academiacollege.edu.np>
+Date:   Tue Dec 24 19:08:17 2024 +0545
+
+    update in search bar box
+
+[33mcommit 874662e32d03c419486a9349f3d36ec65ea1daf8[m
+Merge: dc36ecb a90ba0c
+Author: Rahul Adhikari <rahul077@academiacollege.edu.np>
+Date:   Tue Dec 24 16:07:39 2024 +0545
+
+    Merge branch 'main' of https://github.com/UTSAB-NI/BizNepal
+
+[33mcommit a90ba0c9a8aa39239b89d984a27b048c877493ca[m
+Merge: d35f175 0451c36
+Author: Rahul Adhikari <123219021+Rahulad12@users.noreply.github.com>
+Date:   Tue Dec 24 16:07:06 2024 +0545
+
+    Merge pull request #67 from UTSAB-NI/pup-rahul
+    
+    creating business dahsboard
+
+[33mcommit 0451c36dc87abe5c34d10e31efcef69336c46401[m
+Author: Rahul Adhikari <rahul077@academiacollege.edu.np>
+Date:   Tue Dec 24 16:02:08 2024 +0545
+
+    creating business dahsboard
+
+[33mcommit dc36ecb208f3831f4fa230086079634b62543a52[m
+Author: Rahul Adhikari <rahul077@academiacollege.edu.np>
+Date:   Tue Dec 24 15:59:04 2024 +0545
+
+    creating bussiness dashbord
+
+[33mcommit d35f1751d3ecc86fb0869c7eae85d89e2f4d6428[m
+Merge: 61e0f28 8240025
+Author: Rahul Adhikari <123219021+Rahulad12@users.noreply.github.com>
+Date:   Tue Dec 24 09:49:58 2024 +0545
+
+    Merge pull request #66 from UTSAB-NI/pup-rahul
+    
+    update in landing page banner
+
+[33mcommit 824002523a5d377ece9b3bba66abf40469d72f48[m
+Author: Rahul Adhikari <rahul077@academiacollege.edu.np>
+Date:   Tue Dec 24 09:48:37 2024 +0545
+
+    update in landing page banner
+
+[33mcommit 61e0f28824c5a5312380ccdab831b79054cea283[m
+Merge: e04f6a1 c5f41c1
+Author: Rahul Adhikari <123219021+Rahulad12@users.noreply.github.com>
+Date:   Mon Dec 23 22:58:35 2024 +0545
+
+    Merge pull request #

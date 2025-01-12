@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using BizNepal.Server.Data;
 using BizNepal.Server.Models;
 using BizNepal.Server.Models.DTO;
@@ -9,6 +9,7 @@ using System.Net.Http;
 using System.Security.Claims;
 using System.Text;
 using System.Text.Json;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace BizNepal.Server.Controllers;
 
