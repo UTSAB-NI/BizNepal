@@ -1,6 +1,9 @@
 .navbar {
-  /* border: 2px solid red; */
+  background-color: rgba(255, 255, 255, 1) !important;; /* Fully opaque white background */
+  transition: background-color 0.5s ease; /* Smooth transition */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Optional shadow for effect */
 }
+
 .navbar-brand {
   /* border: 2px solid red; */
 }
@@ -17,9 +20,6 @@
   display: flex;
   justify-content: flex-end;
   align-items: center;
-}
-.navbar-nav {
-  /* border: 2px solid red; */
 }
 
 .nav-btn {
@@ -93,20 +93,7 @@
   background-color: #5b575a;
   translate: 0.5s;
 }
-.btn-theme {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 40px; /* Adjust as needed */
-  height: 40px; /* Adjust as needed */
-  border-radius: 50%;
-  padding: 0;
-  font-size: 1.2rem; /* Adjust as needed */
-}
 
-.btn-theme:hover {
-  background-color: #ddd; /* Light grey background on hover */
-}
 
 /* Style for search box wrapper in header */
 .searchbox-wrapper {

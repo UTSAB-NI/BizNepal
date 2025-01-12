@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { RiAdminFill } from "react-icons/ri";
 import { MdSpaceDashboard } from "react-icons/md";
+import { BsBookmarkFill } from "react-icons/bs";
 import { Nav, Navbar, Container, Image, Button } from "react-bootstrap";
 import { Logout } from "../slices/authSlices";
 import "../Customcss/header.css";
@@ -21,7 +22,6 @@ const Header = () => {
     navigate("/");
   };
 
-  // Memoize the bookmark count calculation to avoid unnecessary re-renders
   const bookmarkCount = useMemo(() => {
     const bookmarkedItems = localStorage.getItem("bookmark");
     if (bookmarkedItems) {
@@ -58,26 +58,39 @@ const Header = () => {
             <div className="searchbox-wrapper d-flex align-items-center">
               <Searchbox />
             </div>
-
-            <div className="d-flex align-items-center text-end">
-              <Nav.Link as={Link} to="/bookmark" className="px-3">
-                <span
-                  className={` ${
-                    cartStatus ? "text-secondary" : "text-dark"
-                  } fas fa-bookmark`}
-                />
-                {bookmarkCount > 0 && (
-                  <span className="text-primary mx-2">
-                    {bookmarkCount} item
-                  </span>
-                )}
-              </Nav.Link>
-            </div>
           </Nav>
 
           <Nav className="align-items-center navbar-button-section">
             {userInfo ? (
               <>
+                <Nav.Link
+                  as={Link}
+                  to="/bookmark"
+                  className="position-relative mx-3"
+                >
+                  <BsBookmarkFill
+                    size={20}
+                    className={`${cartStatus ? "text-secondary" : "text-dark"}`}
+                  />
+                  {bookmarkCount > 0 && (
+                    <span
+                      className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary"
+                      style={{
+                        fontSize: "0.65rem",
+                        marginTop: "7px",
+                        marginLeft: "-5px",
+                        minWidth: "16px",
+                        height: "16px",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        padding: "0 4px",
+                      }}
+                    >
+                      {bookmarkCount}
+                    </span>
+                  )}
+                </Nav.Link>
                 <Nav.Link as={Link} to="/businesslist">
                   <button
                     variant="danger"

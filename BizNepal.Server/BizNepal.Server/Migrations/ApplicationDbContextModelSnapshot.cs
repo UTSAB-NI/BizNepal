@@ -477,6 +477,25 @@ namespace BizNepal.Server.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("BizNepal.Server.Models.Bookmark", b =>
+                {
+                    b.HasOne("BizNepal.Server.Models.Business", "Business")
+                        .WithMany()
+                        .HasForeignKey("BusinnessId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("BizNepal.Server.Models.ApplicationUser", "ApplicationUser")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ApplicationUser");
+
+                    b.Navigation("Business");
+                });
+
             modelBuilder.Entity("BizNepal.Server.Models.Business", b =>
                 {
                     b.HasOne("BizNepal.Server.Models.Address", "Address")
