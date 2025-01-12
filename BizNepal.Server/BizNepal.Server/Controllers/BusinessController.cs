@@ -30,7 +30,7 @@ public class BusinessController : ControllerBase
     #region Get all Businesses
 
     [HttpGet(Order =2)]
-    public async Task<ActionResult<IEnumerable<BusinessResponseDto>>> GetAll(int pageSize = 50,
+    public async Task<ActionResult<PaginatedResponse<BusinessResponseDto>>> GetAll(int pageSize = 50,
                                        string? searchTerm = null,
                                        string? category = null,
                                        int pageNumber = 1,
@@ -51,7 +51,7 @@ public class BusinessController : ControllerBase
         if (!string.IsNullOrWhiteSpace(category))
         {
 
-            businesses = businesses.Where(b => b.Category.CategoryName==category);
+            businesses = businesses.Where(b => b.Category.CategoryName.ToLower()==category.ToLower());
         }
 
         // search based no businessname if businessName is passed to api
@@ -89,7 +89,15 @@ public class BusinessController : ControllerBase
 
         var businessResponseList = _mapper.Map<List<BusinessResponseDto>>(paginatedBook);
 
-        return Ok(businessResponseList);
+        //return Ok(businessResponseList);
+        var result = new PaginatedResponse<BusinessResponseDto>
+        {
+            TotalCount = businessCount,
+            TotalPage = totalPages,
+            Items = businessResponseList
+        };
+
+        return Ok(result);
     }
 
     #endregion
@@ -431,10 +439,10 @@ public class BusinessController : ControllerBase
             return BadRequest("Query cannot be empty.");
         }
 
-        var suggestions = _context.Businesses // or any entity you're searching
-            .Where(b => b.BusinessName.Contains(query)) // Change to match your requirements
-            .Select(b => b.BusinessName)                // Returning names for simplicity
-            .Take(10)                           // Limit suggestions for performance
+        var suggestions = _context.Businesses 
+            .Where(b => b.BusinessName.ToLower().Contains(query.ToLower())) 
+            .Select(b => b.BusinessName)                
+            .Take(10)                           
             .ToList();
 
         return Ok(suggestions);
