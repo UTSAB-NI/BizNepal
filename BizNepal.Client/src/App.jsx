@@ -27,9 +27,8 @@ function App() {
   return (
     <>
       <ScrollToTop /> {/* Add this component to ensure scroll reset */}
-      <Header toggleTheme={toggleTheme} currentTheme={theme} />
+      <Header />
       <Outlet />
-
       {/* Back-to-top button */}
       {showScrollButton && (
         <button
@@ -40,9 +39,7 @@ function App() {
           <FaArrowUp />
         </button>
       )}
-
-      {/* <Footer /> */}
-
+      <Footer />
       <ToastContainer />
     </>
   );
