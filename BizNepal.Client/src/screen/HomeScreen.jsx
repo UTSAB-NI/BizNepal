@@ -22,6 +22,7 @@ const HomeScreen = () => {
 
       <HomeReviewCard reviews={reviewData} />
       <BusinessListingSection />
+      
     </div>
   );
 };
