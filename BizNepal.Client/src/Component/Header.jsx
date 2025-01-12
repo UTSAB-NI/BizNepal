@@ -9,8 +9,7 @@ import "../Customcss/header.css";
 import Searchbox from "./Searchbox";
 import ResponsiveSidebar from "./ResponsiveSidebarprofile";
 
-const Header = ({ toggleTheme, currentTheme }) => {
-  const themeIcon = currentTheme === "light" ? "🌙" : "🌞";
+const Header = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { userInfo } = useSelector((state) => state.auth);

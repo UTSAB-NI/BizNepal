@@ -108,41 +108,6 @@ namespace BizNepal.Server.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("BizNepal.Server.Models.Bookmark", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("BusinnessId")
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("CreatedBy")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("UpdatedBy")
-                        .HasColumnType("text");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("BusinnessId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Bookmarks");
-                });
-
             modelBuilder.Entity("BizNepal.Server.Models.Business", b =>
                 {
                     b.Property<Guid>("BusinessId")
@@ -475,25 +440,6 @@ namespace BizNepal.Server.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
-                });
-
-            modelBuilder.Entity("BizNepal.Server.Models.Bookmark", b =>
-                {
-                    b.HasOne("BizNepal.Server.Models.Business", "Business")
-                        .WithMany()
-                        .HasForeignKey("BusinnessId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("BizNepal.Server.Models.ApplicationUser", "ApplicationUser")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("ApplicationUser");
-
-                    b.Navigation("Business");
                 });
 
             modelBuilder.Entity("BizNepal.Server.Models.Business", b =>
