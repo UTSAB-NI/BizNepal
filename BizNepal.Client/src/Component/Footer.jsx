@@ -4,6 +4,34 @@ import "../Customcss/Footer.css";
 import { FaFacebook, FaTwitter, FaLinkedin, FaInstagram } from "react-icons/fa";
 
 const Footer = () => {
+  const currentYear = new Date().getFullYear();
+
+  const socialLinks = [
+    { icon: <FaFacebook />, url: "https://facebook.com/whybusinessthis" },
+    { icon: <FaTwitter />, url: "https://twitter.com/whybusinessthis" },
+    {
+      icon: <FaLinkedin />,
+      url: "https://linkedin.com/company/whybusinessthis",
+    },
+    { icon: <FaInstagram />, url: "https://instagram.com/whybusinessthis" },
+  ];
+
+  const quickLinks = [
+    { text: "About Us", to: "/about" },
+    { text: "FAQ", to: "/faq" },
+    { text: "Help", to: "/help" },
+  ];
+
+  const businessLinks = [
+    { text: "Add Your Business", to: "/businesslist" },
+    { text: "Advertising", url: "https://whybusinessthis.com/advertising" },
+    { text: "Pricing", url: "https://whybusinessthis.com/pricing" },
+    {
+      text: "Resources",
+      url: "https://whybusinessthis.com/business-resources",
+    },
+  ];
+
   return (
     <footer className="footer">
       <div className="container">
@@ -29,34 +57,16 @@ const Footer = () => {
               local businesses in your area.
             </p>
             <div className="footer-social-icons mt-4">
-              <a
-                href="https://facebook.com/whybusinessthis"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <FaFacebook />
-              </a>
-              <a
-                href="https://twitter.com/whybusinessthis"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <FaTwitter />
-              </a>
-              <a
-                href="https://linkedin.com/company/whybusinessthis"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <FaLinkedin />
-              </a>
-              <a
-                href="https://instagram.com/whybusinessthis"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <FaInstagram />
-              </a>
+              {socialLinks.map((link, index) => (
+                <a
+                  key={index}
+                  href={link.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {link.icon}
+                </a>
+              ))}
             </div>
           </div>
 
@@ -64,19 +74,11 @@ const Footer = () => {
           <div className="col-lg-2 col-md-4 mb-4">
             <h5 className="mb-4">Quick Links</h5>
             <ul className="list-unstyled">
-              <li className="mb-2">
-                <Link to="/about">About Us</Link>
-              </li>
-
-              {/* <li className="mb-2">
-                <a href="https://whybusinessthis.com/blog">Blog</a>
-              </li> */}
-              <li className="mb-2">
-                <Link to="/faq">FAQ</Link>
-              </li>
-              <li className="mb-2">
-                <Link to="/help">Help</Link>
-              </li>
+              {quickLinks.map((link, index) => (
+                <li key={index} className="mb-2">
+                  <Link to={link.to}>{link.text}</Link>
+                </li>
+              ))}
             </ul>
           </div>
 
@@ -84,47 +86,16 @@ const Footer = () => {
           <div className="col-lg-2 col-md-4 mb-4">
             <h5 className="mb-4">For Businesses</h5>
             <ul className="list-unstyled">
-              <li className="mb-2">
-                <a href="/businesslist">Add Your Business</a>
-              </li>
-              <li className="mb-2">
-                <a href="https://whybusinessthis.com/advertising">
-                  Advertising
-                </a>
-              </li>
-              <li className="mb-2">
-                <a href="https://whybusinessthis.com/pricing">Pricing</a>
-              </li>
-              <li className="mb-2">
-                <a href="https://whybusinessthis.com/business-resources">
-                  Resources
-                </a>
-              </li>
+              {businessLinks.map((link, index) => (
+                <li key={index} className="mb-2">
+                  {link.to ? (
+                    <Link to={link.to}>{link.text}</Link>
+                  ) : (
+                    <a href={link.url}>{link.text}</a>
+                  )}
+                </li>
+              ))}
             </ul>
-          </div>
-
-          {/* Newsletter Section */}
-          <div className="col-lg-4 col-md-4 mb-4">
-            <div className="footer-newsletter">
-              <h5 className="mb-4">Subscribe to Our Newsletter</h5>
-              <p>
-                Get the latest updates about local businesses and special
-                offers.
-              </p>
-              <form className="mt-3">
-                <div className="input-group mb-3">
-                  <input
-                    type="email"
-                    className="form-control"
-                    placeholder="Your email address"
-                    aria-label="Your email address"
-                  />
-                  <button className="btn btn-light" type="submit">
-                    Subscribe
-                  </button>
-                </div>
-              </form>
-            </div>
           </div>
         </div>
 
@@ -135,7 +106,7 @@ const Footer = () => {
         <div className="row align-items-center">
           <div className="col-md-6 text-center text-md-start mb-3 mb-md-0">
             <p className="mb-0">
-              © {new Date().getFullYear()} bizNepal. All rights reserved.
+              © {currentYear} bizNepal. All rights reserved.
             </p>
           </div>
           <div className="col-md-6 text-center text-md-end">

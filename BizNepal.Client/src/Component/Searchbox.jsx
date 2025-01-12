@@ -19,6 +19,7 @@ const Searchbox = () => {
           const response = await axios.get(
             `https://localhost:5000/api/Business/suggestions?query=${query}`
           );
+
           setSuggestions(response.data);
         } catch (error) {
           console.error("Error fetching suggestions", error);

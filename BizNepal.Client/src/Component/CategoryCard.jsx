@@ -3,10 +3,7 @@ import "../Customcss/categoryCard.css"; // Custom CSS for styling
 
 const API_BASE_URL = "https://localhost:5000";
 const CategoryCard = ({ iconPath, categoryName }) => {
-  //   console.log(iconPath);
-
   const imageUrl = `${API_BASE_URL}${iconPath}`;
-  // const imageUrl = "/images/1.png";
   console.log(imageUrl);
 
   return (

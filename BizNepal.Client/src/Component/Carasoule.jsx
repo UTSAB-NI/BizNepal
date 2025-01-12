@@ -11,11 +11,6 @@ const Carasoule = () => {
                   className="d-block w-100"
                   alt="..."
                 />
-                {/* <MDBCarouselCaption>
-                  <Link to="/register">
-                    <MDBBtn>Get Best Deals</MDBBtn>
-                  </Link>
-                </MDBCarouselCaption> */}
               </MDBCarouselItem>
 
               <MDBCarouselItem itemId={2}>
@@ -24,11 +19,6 @@ const Carasoule = () => {
                   className="d-block w-100"
                   alt="..."
                 />
-                {/* <MDBCarouselCaption>
-                  <Link to="/register">
-                    <MDBBtn>Get Best Deals</MDBBtn>
-                  </Link>
-                </MDBCarouselCaption> */}
               </MDBCarouselItem>
 
               <MDBCarouselItem itemId={3}>
@@ -37,11 +27,6 @@ const Carasoule = () => {
                   className="d-block w-100"
                   alt="..."
                 />
-                {/* <MDBCarouselCaption>
-                  <Link to="/register">
-                    <MDBBtn>Get Best Deals</MDBBtn>
-                  </Link>
-                </MDBCarouselCaption> */}
               </MDBCarouselItem>
             </MDBCarousel>
     </div>

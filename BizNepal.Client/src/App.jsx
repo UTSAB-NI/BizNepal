@@ -1,32 +1,46 @@
 import { useState, useEffect } from "react";
 import { Outlet } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
+import { FaArrowUp } from "react-icons/fa";
 // import 'react-toastify/dist/ReactToastify.css';
 import Header from "./Component/Header";
 import "./App.css";
 import Footer from "./Component/Footer";
 
 function App() {
-  // Dark mode
-  const [theme, setTheme] = useState(localStorage.getItem("theme") || "light");
+  // Back-to-top button visibility
+  const [showScrollButton, setShowScrollButton] = useState(false);
 
   useEffect(() => {
-    document.body.className = theme; // Ensure 'theme' is either 'light' or 'dark'
-    localStorage.setItem("theme", theme);
-  }, [theme]);
+    const handleScroll = () => {
+      setShowScrollButton(window.scrollY > 50);
+    };
 
-  const toggleTheme = () => {
-    console.log(`Current theme: ${theme}`); // Debugging
-    const newTheme = theme === "light" ? "dark" : "light";
-    console.log(`New theme: ${newTheme}`); // Debugging
-    setTheme(newTheme);
-  };
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
 
   return (
     <>
-      <Header toggleTheme={toggleTheme} currentTheme={theme} />
+      <Header />
       <Outlet />
-      <Footer />
+
+      {/* Back-to-top button */}
+      {showScrollButton && (
+        <button
+          className="dbtn btn-primary back-to-top btn-floating btn btn-danger"
+          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+          style={{ position: "fixed", bottom: "20px", right: "20px" }}
+        >
+          <FaArrowUp />
+        </button>
+      )}
+
+      {/* <Footer /> */}
+
       <ToastContainer />
     </>
   );
