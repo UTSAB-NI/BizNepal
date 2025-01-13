@@ -1,7 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { Alert, Row, Col, Button, Image, Container } from "react-bootstrap";
 import { useParams } from "react-router-dom";
-import { useGetbusinessByIdQuery } from "../slices/userApiSlices";
+import {
+  useGetbusinessByIdQuery,
+  useCreateBookmarkMutation,
+  // useGetBookmarkedQuery,
+  // useDeleteBookmarksMutation,
+} from "../slices/userApiSlices";
 import Loader from "../Component/Loader";
 import CreateReview from "../Component/CreateReview";
 import BusinessMap from "../Component/BusinessMap";
@@ -20,6 +25,11 @@ const GetBusinessByIdScreen = () => {
     refetch,
   } = useGetbusinessByIdQuery(businessid);
 
+  // const [
+  //   createBookmark,
+  //   { isLoading: BookmarkedCreateLoading, isError: createBookmarkError },
+  // ] = useCreateBookmarkMutation();
+
   useEffect(() => {
     if (isError) {
       setFeedback(
@@ -31,8 +41,15 @@ const GetBusinessByIdScreen = () => {
   const imageUrl = `${API_BASE_URL}${businessdatabyid?.businessImages[0]?.imageUrl}`;
   // const imageUrl = "/images/image.png";
 
-  const BookmarkController = (businessid) => {
+  const BookmarkController = async (businessid) => {
     localStorage.setItem("bookmark", businessid);
+    // const response = await createBookmark({ businessId: businessid });
+    // if (!response) {
+    //   setFeedback("Bookmark Added Failed");
+    //   console.log(response);
+    // }
+    setFeedback("Bookmark Added Successfully");
+    console.log("BookmarkController", businessid);
     window.location.reload();
   };
   return (

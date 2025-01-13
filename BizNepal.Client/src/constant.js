@@ -8,3 +8,4 @@ export const SEARCH_URL = "/api/Business/search";
 export const CATEGORIES_URL = "/api/Category";
 export const REVIEW_URL = "/api/Review";
 export const UPDATE_USER_URL = "/api/Account";
+export const BOOKMARK_URL = "/api/Bookmark";
