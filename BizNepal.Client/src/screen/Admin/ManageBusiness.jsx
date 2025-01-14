@@ -33,7 +33,7 @@ const ManageBusiness = () => {
     isError: businessError,
     refetch,
   } = useGetbusinessQuery();
-  // console.log("Business Data", allbusinessData);
+  console.log("Business Data", allbusinessData);
   // Delete business
   const [deletebusiness, { isLoading: isDeleting, isError: isDeleteError }] =
     useDeletebusinessMutation();
@@ -81,7 +81,9 @@ const ManageBusiness = () => {
 
         if (target.classList.contains("edit-btn")) {
           const businessid = target.getAttribute("data-id");
-          const business = allbusinessData.find((b) => b.businessId === businessid);
+          const business = allbusinessData.find(
+            (b) => b.businessId === businessid
+          );
           console.log(business);
           handleEditClick(business);
         }

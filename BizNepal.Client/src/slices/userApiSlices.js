@@ -6,9 +6,8 @@ import {
   CATEGORIES_URL,
   REVIEW_URL,
   UPDATE_USER_URL,
-  // BOOKMARK_URL,
+  BOOKMARK_URL,
 } from "../constant";
-import { build } from "vite";
 
 const userApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -203,26 +202,25 @@ const userApiSlice = apiSlice.injectEndpoints({
         body: data,
       }),
     }),
-
-  //   getBookmarked: builder.query({
-  //     query: () => ({
-  //       url: BOOKMARK_URL,
-  //       method: "GET",
-  //     }),
-  //   }),
-  //   createBookmark: builder.mutation({
-  //     query: (businessId) => ({
-  //       url: BOOKMARK_URL,
-  //       method: "POST",
-  //       body: businessId,
-  //     }),
-  //   }),
-  //   deleteBookmarks: builder.mutation({
-  //     query: (businessId) => ({
-  //       url: `${BOOKMARK_URL}/${businessId}`,
-  //       method:"DELETE"
-  //     }),
-  //   }),
+    //bookmark api
+    getBookmarked: builder.query({
+      query: () => ({
+        url: BOOKMARK_URL,
+        method: "GET",
+      }),
+    }),
+    createBookmark: builder.mutation({
+      query: (businessId) => ({
+        url: `${BOOKMARK_URL}?businessId=${businessId}`,
+        method: "POST",
+      }),
+    }),
+    deleteBookmarks: builder.mutation({
+      query: (businessId) => ({
+        url: `${BOOKMARK_URL}/${businessId}`,
+        method: "DELETE",
+      }),
+    }),
   }),
 });
 
@@ -249,7 +247,7 @@ export const {
   useUpdateUserMutation,
   useUpdateUserPasswordMutation,
   useGetcreatedbusinessByUserQuery,
-  // useCreateBookmarkMutation,
-  // useGetBookmarkedQuery,
-  // useDeleteBookmarksMutation
+  useGetBookmarkedQuery,
+  useCreateBookmarkMutation,
+  useDeleteBookmarksMutation,
 } = userApiSlice;

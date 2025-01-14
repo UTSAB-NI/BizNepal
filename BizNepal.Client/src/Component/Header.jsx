@@ -10,6 +10,8 @@ import "../Customcss/header.css";
 import Searchbox from "./Searchbox";
 import ResponsiveSidebar from "./ResponsiveSidebarprofile";
 
+import { useGetBookmarkedQuery } from "../slices/userApiSlices";
+
 const Header = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -22,14 +24,7 @@ const Header = () => {
     navigate("/");
   };
 
-  const bookmarkCount = useMemo(() => {
-    const bookmarkedItems = localStorage.getItem("bookmark");
-    if (bookmarkedItems) {
-      return bookmarkedItems.split(",").length;
-    }
-    setCartStatus(true);
-    return 0;
-  }, []);
+  const { data: bookmarkedData } = useGetBookmarkedQuery(); // Fetching bookmarked data
 
   return (
     <Navbar
@@ -72,24 +67,23 @@ const Header = () => {
                     size={20}
                     className={`${cartStatus ? "text-secondary" : "text-dark"}`}
                   />
-                  {bookmarkCount > 0 && (
-                    <span
-                      className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary"
-                      style={{
-                        fontSize: "0.65rem",
-                        marginTop: "7px",
-                        marginLeft: "-5px",
-                        minWidth: "16px",
-                        height: "16px",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        padding: "0 4px",
-                      }}
-                    >
-                      {bookmarkCount}
-                    </span>
-                  )}
+
+                  <span
+                    className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary"
+                    style={{
+                      fontSize: "0.65rem",
+                      marginTop: "7px",
+                      marginLeft: "-5px",
+                      minWidth: "16px",
+                      height: "16px",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      padding: "0 4px",
+                    }}
+                  >
+                    {bookmarkedData?.length}
+                  </span>
                 </Nav.Link>
                 <Nav.Link as={Link} to="/businesslist">
                   <button
