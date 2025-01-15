@@ -2,6 +2,9 @@ import React, { useState } from "react";
 import { Form, Button, Card, Row, Col, Alert } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+// Sentiment analysis API slices
+import { usePostSentimentMutation } from "../slices/sentimentApiSlices";
+// User API slices
 import {
   useCreateReviewMutation,
   useGetUserReviewQuery,
@@ -32,6 +35,7 @@ const StarRating = ({ rating, onClick, size = "fs-4", editable = true }) => {
 const CreateReview = ({ businessId }) => {
   const [feedback, setFeedback] = useState("");
   const [feedbackType, setFeedbackType] = useState("");
+  const [sentiment, setSentiment] = useState(null); // For sentiment analysis result
 
   const { userInfo: user } = useSelector((state) => state.auth);
   const navigate = useNavigate();
@@ -43,6 +47,19 @@ const CreateReview = ({ businessId }) => {
     isError: reviewError,
     refetch,
   } = useGetUserReviewQuery();
+
+  const [postSentiment] = usePostSentimentMutation();
+
+  const SentimentHandler = async (comment) => {
+    try {
+      const response = await postSentiment({ reviews: [comment] }).unwrap();
+      console.log("Sentiment response:", response);
+      setSentiment(response.sentiment); // Update sentiment state with response
+    } catch (error) {
+      console.error("Error fetching sentiment:", error);
+      setSentiment(null); // Clear sentiment if there's an error
+    }
+  };
 
   // Create review mutation
   const [createReview, { isLoading: createReviewLoading }] =
@@ -59,7 +76,10 @@ const CreateReview = ({ businessId }) => {
     }
 
     try {
-      const reviewData = { businessId, comment, rating };
+      // Handle the sentiment analysis before submitting the review
+      await SentimentHandler(comment);
+
+      const reviewData = { businessId, comment, rating, sentiment };
       const response = await createReview(reviewData).unwrap();
       refetch();
       setComment("");
@@ -76,6 +96,8 @@ const CreateReview = ({ businessId }) => {
   const filteredReviews = businessReviewData.filter(
     (review) => review.businessId === businessId
   );
+
+  console.log("filteredReviews", filteredReviews);
 
   return (
     <>

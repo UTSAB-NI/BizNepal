@@ -11,8 +11,6 @@ import DataTable from "datatables.net-react";
 import DT from "datatables.net-bs5";
 import "datatables.net-bs5/css/dataTables.bootstrap5.min.css";
 
-// DataTable.use(DT);
-
 const ManageBusiness = () => {
   const [feedback, setFeedback] = useState("");
   const [feedbackType, setFeedbackType] = useState("");
@@ -23,7 +21,6 @@ const ManageBusiness = () => {
   const [categoryName, setCategoryName] = useState("");
   const [categoryId, setCategoryId] = useState(""); // Store categoryId
   const [phoneNumber, setPhoneNumber] = useState("");
-
   const [website, setWebsite] = useState("");
 
   // Fetch business data
@@ -32,8 +29,12 @@ const ManageBusiness = () => {
     isLoading,
     isError: businessError,
     refetch,
-  } = useGetbusinessQuery();
-  console.log("Business Data", allbusinessData);
+  } = useGetbusinessQuery({
+    pageSize: 1000, // You can choose any page size here
+    pageNumber: 1, // Assuming you're loading all businesses at once
+    isAscending: true,
+  });
+
   // Delete business
   const [deletebusiness, { isLoading: isDeleting, isError: isDeleteError }] =
     useDeletebusinessMutation();
@@ -81,7 +82,7 @@ const ManageBusiness = () => {
 
         if (target.classList.contains("edit-btn")) {
           const businessid = target.getAttribute("data-id");
-          const business = allbusinessData.find(
+          const business = allbusinessData.items.find(
             (b) => b.businessId === businessid
           );
           console.log(business);
@@ -147,12 +148,6 @@ const ManageBusiness = () => {
       },
     },
     { title: "Phone", data: "phoneNumber" },
-    {
-      title: "Location",
-      data: function (row) {
-        return row.location ? row.location.locationId : "";
-      },
-    },
     { title: "Website", data: "website" },
     {
       title: "Actions",
@@ -182,14 +177,17 @@ const ManageBusiness = () => {
 
       {allbusinessData && (
         <DataTable
-          data={allbusinessData}
+          data={allbusinessData.items} // Pass all items directly
           columns={columns}
           options={{
             paging: true,
             searching: true,
             ordering: true,
             info: true,
+            pageLength: 10, 
+            lengthMenu: [5, 10, 25, 50], 
           }}
+          className="table table-striped table-bordered"
         />
       )}
 
@@ -254,15 +252,6 @@ const ManageBusiness = () => {
                 onChange={(e) => setPhoneNumber(e.target.value)}
               />
             </div>
-            {/* <div className="mb-3">
-              <label className="form-label">Location ID</label>
-              <input
-                type="text"
-                className="form-control"
-                value={location}
-                onChange={(e) => setLocation(e.target.value)}
-              />
-            </div> */}
             <div className="mb-3">
               <label className="form-label">Website</label>
               <input

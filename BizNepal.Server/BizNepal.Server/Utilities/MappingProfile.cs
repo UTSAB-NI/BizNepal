@@ -31,6 +31,13 @@ public class MappingProfile : Profile
 
         .ForMember(dest => dest.Reviews, opt => opt.MapFrom(src => src.Reviews));
 
+        CreateMap<Bookmark, BookmarkResponseDto>()
+        .ForMember(dest => dest.BusinessName, opt => opt.MapFrom(src => src.Business.BusinessName))
+        .ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.Business.Description))
+        .ForMember(dest => dest.Category, opt => opt.MapFrom(src => src.Business.Category.CategoryName))
+        .ForMember(dest => dest.BusinessImages, opt => opt.MapFrom(src => src.Business.BusinessImages));
+
+
         CreateMap<CreateCategoryDto, Category>().ReverseMap();
 
         CreateMap<BusinessImage, ImageResponseDto>()

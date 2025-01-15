@@ -20,13 +20,15 @@ const BookmarkedItemsScreen = () => {
     refetch: refetchBookmarks,
   } = useGetBookmarkedQuery();
 
+  console.log("bookmarkedData", bookmarkedData);
+
   //api for delete the bookmark
   const [deleteBookmarks] = useDeleteBookmarksMutation();
 
   // Function to handle removing a bookmark
-  const handleRemoveBookmark = async (businessId) => {
+  const handleRemoveBookmark = async (bookmarkId) => {
     try {
-      const response = await deleteBookmarks(businessId).unwrap(); //FIXME: Delete the bookmarked item
+      const response = await deleteBookmarks(bookmarkId).unwrap(); //FIXME: Delete the bookmarked item
       console.log("response", response);
       setFeedback(response?.message || "Bookmark removed successfully.");
       setFeedbackType("success");
@@ -62,45 +64,43 @@ const BookmarkedItemsScreen = () => {
         {!isBookmarkLoading && !isBookmarkError && (
           <>
             {bookmarkedData && bookmarkedData.length > 0 ? (
-              bookmarkedData.map((business) => (
-                <Col key={business.businessId} md={4} className="my-3">
-                  <Link
+              bookmarkedData.map((bookmark) => (
+                <Col key={bookmark.businessId} md={4} className="my-3">
+                  {/* <Link
                     to={`/business/${business.businessId}`}
                     className="text-decoration-none text-dark"
-                  >
+                  > */}
                   <Card className="h-100 shadow-sm">
                     <Card.Body>
                       <Row>
                         <Col md={9}>
-                          <Card.Title>{business.businessName}</Card.Title>
+                          <Card.Title>{bookmark.businessName}</Card.Title>
                           <Card.Text>
                             <Badge bg="primary">
-                              {business.category?.categoryName || "Category"}
+                              {bookmark.category || "Category"}
                             </Badge>
                           </Card.Text>
                           <Card.Text className="text-muted">
                             <span className="fas fa-map-marker-alt"></span>{" "}
-                            {business.address?.district || "Unknown District"},{" "}
-                            {business.address?.city || "Unknown City"}
+                            {bookmark.address?.district || "Unknown District"},{" "}
+                            {bookmark.address?.city || "Unknown City"}
                           </Card.Text>
                           <Card.Text className="text-muted">
                             <span className="fas fa-phone"></span>{" "}
-                            {business.phoneNumber || "Unknown Phone Number"}
+                            {bookmark.phoneNumber || "Unknown Phone Number"}
                           </Card.Text>
                         </Col>
                         <Col md={3} className="text-end">
                           <span
                             className="fa fa-trash text-danger cursor-pointer"
-                            onClick={() =>
-                              handleRemoveBookmark(business.businessId)
-                            }
+                            onClick={() => handleRemoveBookmark(bookmark?.id)}
                             title="Remove Bookmark"
                           ></span>
                         </Col>
                       </Row>
                     </Card.Body>
                   </Card>
-                  </Link>
+                  {/* </Link> */}
                 </Col>
               ))
             ) : (

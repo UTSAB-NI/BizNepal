@@ -54,7 +54,7 @@ namespace BizNepal.Server.Controllers
 
         // GET: api/Bookmark
         [HttpGet]
-        public async Task<ActionResult<List<BusinessResponseDto>>> GetBookmarks()
+        public async Task<ActionResult<List<BookmarkResponseDto>>> GetBookmarks()
         {
             var userId = User?.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
 
@@ -71,22 +71,18 @@ namespace BizNepal.Server.Controllers
                 .Include(c => c.Business)
                     .ThenInclude(b => b.BusinessImages)
                 .Where(x => x.UserId == userId)
-                .Select(c => c.Business)
                 .ToListAsync();
 
 
-
-            if (bookmarks == null)
+            if (!bookmarks.Any())
             {
-                return NotFound();
+                return NotFound("No bookmarks found for the user.");
             }
 
-            var businessDto= _mapper.Map<List<BusinessResponseDto>>(bookmarks);
+            var businessDto= _mapper.Map<List<BookmarkResponseDto>>(bookmarks);
+            return Ok(businessDto);
 
-            return businessDto;
         }
-
-
 
         
         [HttpPost]
@@ -102,7 +98,7 @@ namespace BizNepal.Server.Controllers
             var bookmark = new Bookmark
             {
                 UserId=userId,
-                BusinnessId= businessId,
+                BusinessId= businessId,
                 CreatedAt= DateTime.UtcNow,
                 CreatedBy=userId
                 
@@ -132,7 +128,10 @@ namespace BizNepal.Server.Controllers
             _context.Bookmarks.Remove(bookmark);
             await _context.SaveChangesAsync();
 
-            return NoContent();
+            return Ok(new
+            {
+                message = "Bookmark deleted successfully"
+            });
         }
 
         private bool BookmarkExists(Guid id)

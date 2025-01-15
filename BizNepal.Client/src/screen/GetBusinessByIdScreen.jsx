@@ -49,7 +49,9 @@ const GetBusinessByIdScreen = () => {
 
   useEffect(() => {
     if (bookmarkData) {
-      setBookmarkedBusinessID(bookmarkData?.map((bookmark) => bookmark.businessId));
+      setBookmarkedBusinessID(
+        bookmarkData?.map((bookmark) => bookmark.businessId)
+      );
     }
   }, [bookmarkData]);
 
