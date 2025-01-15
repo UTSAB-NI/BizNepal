@@ -10,6 +10,7 @@
   height: 40px;
   border: none;
   box-shadow: 0 4px 15px rgba(16, 16, 16, 0.179);
+  /* text-transform: capitalize; */
 }
 .search-box .btn {
   width: 40px;
