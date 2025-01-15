@@ -1,17 +1,17 @@
 import React, { useState } from "react";
 import { Button, Offcanvas } from "react-bootstrap";
-import AvatarImage from "./AvatarImage";
 import TokenDecode from "./TokenDecode";
 import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { Logout } from "../slices/authSlices";
 import { useNavigate } from "react-router-dom"; // Import useNavigate
+import { useGetUserByIdQuery } from "../slices/userApiSlices";
 
 import {
   FaUsers,
   FaSignOutAlt,
   FaQuestionCircle,
-  FaUserCircle 
+  FaUserCircle,
 } from "react-icons/fa";
 
 const ResponsiveSidebarProfile = () => {
@@ -32,15 +32,16 @@ const ResponsiveSidebarProfile = () => {
     navigate("/");
   };
 
-  const username = userInfo?.jwtToken
-    ? TokenDecode().userName(userInfo.jwtToken)
+  const Id = userInfo?.jwtToken
+    ? TokenDecode().userId(userInfo.jwtToken)
     : "Guest";
 
+  const { data: userData } = useGetUserByIdQuery(Id);
+  console.log("userData", userData);
   return (
     <div>
       {/* Open Sidebar Button (Avatar Image) */}
       <Button variant="link" onClick={toggleSidebar} className="p-0">
-        {/* <AvatarImage /> */}
         <FaUserCircle className="fs-2 text-dark" />
       </Button>
 
@@ -59,6 +60,7 @@ const ResponsiveSidebarProfile = () => {
         <Offcanvas.Header closeButton closeVariant="white"></Offcanvas.Header>
         <Offcanvas.Body>
           <ul className="list-unstyled m-0 p-0">
+            <span className="fs-2">{userData?.userName}</span>
             <li className="my-2">
               <Link
                 to="/profile"

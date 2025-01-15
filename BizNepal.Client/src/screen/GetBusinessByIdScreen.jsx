@@ -11,6 +11,7 @@ import CreateReview from "../Component/CreateReview";
 import BusinessMap from "../Component/BusinessMap";
 import BusinessReviewGraph from "../Component/BusinessReviewGraph";
 import "../Customcss/getbusinessbyid.css"; // Custom CSS for styling
+import SentimentMeter from "../Component/SentimentMeter"; // Import the SentimentMeter component
 
 const API_BASE_URL = "https://localhost:5000";
 
@@ -63,8 +64,6 @@ const GetBusinessByIdScreen = () => {
       const response = await createBookmark(businessid).unwrap();
       setFeedback(response?.message || "Bookmark Added Successfully");
       setFeedbackType("success");
-      // Update the bookmarked business ID state
-      setBookmarkedBusinessID((prevState) => [...prevState, businessid]);
       console.log("BookmarkControllersresponse", response);
     } catch (error) {
       console.log("Error", error);
@@ -91,19 +90,19 @@ const GetBusinessByIdScreen = () => {
           <div className="hero-section">
             <Image src={imageUrl} alt="Business" className="hero-image" />
             <div className="hero-overlay ">
+              <button
+                className="bookmark-button"
+                onClick={() => BookmarkController(businessid)}
+                disabled={BookmarkedBusinessID?.includes(businessid)}
+              >
+                <i className="fas fa-bookmark me-2"></i>
+                Bookmark
+              </button>
               <h1>{businessdatabyid.businessName}</h1>
               <div className="d-flex align-items-center mb-3">
                 <p className="mb-0 mx-2">
                   {businessdatabyid.category.categoryName}
                 </p>
-                <button
-                  className="bookmark-button"
-                  onClick={() => BookmarkController(businessid)}
-                  disabled={BookmarkedBusinessID?.includes(businessid)}
-                >
-                  <i className="fas fa-bookmark me-2"></i>
-                  Bookmark
-                </button>
               </div>
             </div>
           </div>
@@ -112,7 +111,10 @@ const GetBusinessByIdScreen = () => {
           <Row className="g-4">
             <Col md={4}>
               <div className="business-card p-4">
-                <h3 className="mb-4">Business Information</h3>
+                {/* About Business */}
+                <h3>About {businessdatabyid.businessName}</h3>
+                <p className="lead">{businessdatabyid.description}</p>
+                {/* <h3 className="mb-4">Business Information</h3> */}
 
                 {/* Location */}
                 <div className="info-row d-flex align-items-center mb-4">
@@ -176,67 +178,17 @@ const GetBusinessByIdScreen = () => {
             </Col>
 
             <Col md={8}>
-              <div className="business-card p-4">
-                {/* Map Container */}
-                <div className="map-container">
-                  <BusinessMap
-                    latitude={businessdatabyid.location.latitude}
-                    longitude={businessdatabyid.location.longitude}
-                  />
-                </div>
-
-                {/* About Business */}
-                <h3>About {businessdatabyid.businessName}</h3>
-                <p className="lead">{businessdatabyid.description}</p>
-              </div>
+              <SentimentMeter businessId={businessid} />
             </Col>
           </Row>
 
           {/* Sentiment Meter */}
-          <div className="sentiment-meter">
-            <h3 className="text-center mb-4">Customer Satisfaction Index</h3>
-            <Row className="g-4">
-              <Col md={4}>
-                <div className="stats-card">
-                  <div
-                    className="satisfaction-circle"
-                    style={{ "--percentage": "75%" }}
-                  >
-                    75%
-                  </div>
-                  <h4>Positive Reviews</h4>
-                  <p className="satisfaction-label">Customer Satisfaction</p>
-                </div>
-              </Col>
-              <Col md={4}>
-                <div className="stats-card">
-                  <div
-                    className="satisfaction-circle"
-                    style={{ "--percentage": "15%" }}
-                  >
-                    15%
-                  </div>
-                  <h4>Neutral Reviews</h4>
-                  <p className="satisfaction-label">Average Experience</p>
-                </div>
-              </Col>
-              <Col md={4}>
-                <div className="stats-card">
-                  <div
-                    className="satisfaction-circle"
-                    style={{ "--percentage": "10%" }}
-                  >
-                    10%
-                  </div>
-                  <h4>Areas to Improve</h4>
-                  <p className="satisfaction-label">
-                    Improvement Opportunities
-                  </p>
-                </div>
-              </Col>
-            </Row>
-          </div>
-
+          <>
+            {/* <BusinessMap
+                    latitude={businessdatabyid.location.latitude}
+                    longitude={businessdatabyid.location.longitude}
+                  /> */}
+          </>
           {/* Reviews and Analytics */}
           <Row className="g-4">
             <Col md={6}>
