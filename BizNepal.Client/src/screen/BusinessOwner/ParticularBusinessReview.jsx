@@ -6,7 +6,7 @@ import {
 } from "../../slices/userApiSlices";
 import { Container, Card, Row, Col, ProgressBar, Form } from "react-bootstrap";
 import { FaStar, FaCheck, FaReply } from "react-icons/fa";
-import "../../Customcss/ParticularBusinessReview.css";
+import "../../Customcss/particularbusinessreview.css";
 
 const ParticularBusinessReview = () => {
   const { id: selectedBusinessId } = useParams();

@@ -11,7 +11,7 @@ import { useGetAllCategoriesQuery } from "../slices/userApiSlices";
 
 import districtofNepal from "../data/Districtofnepal";
 
-import "../Customcss/BusinessList.css";
+import "../Customcss/Businesslist.css";
 
 const MyLocationMarker = ({ text }) => (
   <div>
