@@ -188,6 +188,9 @@
 
   .bookmark-button {
     /* background: white; */
+    position:absolute;
+    right: 20px;
+    bottom: 20px;
     color: rgb(22, 21, 21);
     border: none;
     padding: 5px 10px;

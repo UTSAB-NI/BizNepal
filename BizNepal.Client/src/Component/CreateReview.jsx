@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Form, Button, Card, Row, Col, Alert } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+// User API slices
 import {
   useCreateReviewMutation,
   useGetUserReviewQuery,
@@ -32,6 +33,7 @@ const StarRating = ({ rating, onClick, size = "fs-4", editable = true }) => {
 const CreateReview = ({ businessId }) => {
   const [feedback, setFeedback] = useState("");
   const [feedbackType, setFeedbackType] = useState("");
+  const [sentiment, setSentiment] = useState(null); // For sentiment analysis result
 
   const { userInfo: user } = useSelector((state) => state.auth);
   const navigate = useNavigate();
@@ -59,9 +61,11 @@ const CreateReview = ({ businessId }) => {
     }
 
     try {
-      const reviewData = { businessId, comment, rating };
+      // Handle the sentiment analysis before submitting the review
+
+      const reviewData = { businessId, comment, rating, sentiment };
       const response = await createReview(reviewData).unwrap();
-      refetch();
+      window.location.reload();
       setComment("");
       setRating(1);
       setFeedback("Review submitted successfully!");
@@ -76,6 +80,8 @@ const CreateReview = ({ businessId }) => {
   const filteredReviews = businessReviewData.filter(
     (review) => review.businessId === businessId
   );
+
+  console.log("filteredReviews", filteredReviews);
 
   return (
     <>

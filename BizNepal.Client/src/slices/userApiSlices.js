@@ -6,6 +6,7 @@ import {
   CATEGORIES_URL,
   REVIEW_URL,
   UPDATE_USER_URL,
+  BOOKMARK_URL,
 } from "../constant";
 
 const userApiSlice = apiSlice.injectEndpoints({
@@ -201,6 +202,25 @@ const userApiSlice = apiSlice.injectEndpoints({
         body: data,
       }),
     }),
+    //bookmark api
+    getBookmarked: builder.query({
+      query: () => ({
+        url: BOOKMARK_URL,
+        method: "GET",
+      }),
+    }),
+    createBookmark: builder.mutation({
+      query: (businessId) => ({
+        url: `${BOOKMARK_URL}?businessId=${businessId}`,
+        method: "POST",
+      }),
+    }),
+    deleteBookmarks: builder.mutation({
+      query: (businessId) => ({
+        url: `${BOOKMARK_URL}/${businessId}`,
+        method: "DELETE",
+      }),
+    }),
   }),
 });
 
@@ -227,4 +247,7 @@ export const {
   useUpdateUserMutation,
   useUpdateUserPasswordMutation,
   useGetcreatedbusinessByUserQuery,
+  useGetBookmarkedQuery,
+  useCreateBookmarkMutation,
+  useDeleteBookmarksMutation,
 } = userApiSlice;

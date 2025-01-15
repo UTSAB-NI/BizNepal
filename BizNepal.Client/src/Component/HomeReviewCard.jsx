@@ -93,7 +93,7 @@ const ReviewCard = ({ reviews }) => {
                       <Row>
                         <Col xs={12}>
                           <p className="review-text">
-                            {review.comment || "No comment provided."}
+                            {review.comment.split(" ").slice(0, 10).join(" ") }
                           </p>
                         </Col>
                         <small className="review-date">

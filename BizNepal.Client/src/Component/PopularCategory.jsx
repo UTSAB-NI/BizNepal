@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useGetAllCategoriesQuery } from "../slices/userApiSlices.js";
-import "../Customcss/PopularCategory.css";
+import "../Customcss/popularCategory.css";
 import CategoryCard from "./CategoryCard.jsx";
 
 const PopularCategory = () => {

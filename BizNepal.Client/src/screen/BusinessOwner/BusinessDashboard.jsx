@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useMemo } from "react";
+import React, { useEffect, useRef, useMemo, useState } from "react";
 import { Container, Row, Col, Card, Image } from "react-bootstrap";
 import { FaStar, FaArrowLeft, FaSmile, FaMeh, FaFrown } from "react-icons/fa";
 import { Chart, registerables } from "chart.js";
@@ -28,6 +28,7 @@ const BusinessDashboard = () => {
     isLoading: businessLoading,
     error: businessError,
   } = useGetcreatedbusinessByUserQuery(userId);
+  console.log(businessData);
   const {
     data: reviewData,
     isLoading: reviewLoading,
@@ -61,15 +62,6 @@ const BusinessDashboard = () => {
   const averageRating =
     businessData?.map((b) => b.overallRating).reduce((a, b) => a + b, 0) /
     totalBusinesses;
-  console.log(businessData);
-  console.log(averageRating);
-
-  // Sentiment analysis (example data)
-  const sentimentData = {
-    positive: 75,
-    neutral: 15,
-    negative: 10,
-  };
 
   // Render stars based on rating
   const renderStars = (rating) => {
@@ -77,81 +69,6 @@ const BusinessDashboard = () => {
       <FaStar key={i} className={i < rating ? "star-filled" : "star-empty"} />
     ));
   };
-
-  // Refs for Chart.js canvases
-  const reviewChartRef = useRef(null);
-  const sentimentChartRef = useRef(null);
-
-  // Initialize charts
-  useEffect(() => {
-    if (!businessLoading && !reviewLoading) {
-      // Destroy existing charts to avoid memory leaks
-      if (reviewChartRef.current) reviewChartRef.current.destroy();
-      if (sentimentChartRef.current) sentimentChartRef.current.destroy();
-
-      // Review Trends Chart
-      const reviewCtx = document.getElementById("reviewChart").getContext("2d");
-      reviewChartRef.current = new Chart(reviewCtx, {
-        type: "line",
-        data: {
-          labels: reviewDates,
-          datasets: [
-            {
-              label: "Monthly Reviews",
-              data: reviewCountsArray,
-              borderColor: "#4a90e2",
-              tension: 0.3,
-              fill: true,
-              backgroundColor: "rgba(74, 144, 226, 0.1)",
-            },
-          ],
-        },
-        options: {
-          responsive: true,
-          plugins: {
-            legend: {
-              position: "top",
-            },
-          },
-          scales: {
-            y: {
-              beginAtZero: true,
-            },
-          },
-        },
-      });
-
-      // Sentiment Analysis Chart
-      const sentimentCtx = document
-        .getElementById("sentimentChart")
-        .getContext("2d");
-      sentimentChartRef.current = new Chart(sentimentCtx, {
-        type: "doughnut",
-        data: {
-          labels: ["Positive", "Neutral", "Negative"],
-          datasets: [
-            {
-              data: [
-                sentimentData.positive,
-                sentimentData.neutral,
-                sentimentData.negative,
-              ],
-              backgroundColor: ["#28a745", "#ffc107", "#dc3545"],
-            },
-          ],
-        },
-        options: {
-          responsive: true,
-          plugins: {
-            legend: {
-              position: "bottom",
-            },
-          },
-        },
-      });
-    }
-  }, [businessLoading, reviewLoading, reviewDates, reviewCountsArray]);
-
   // Handle loading and errors
   if (businessLoading || reviewLoading) return <div>Loading...</div>;
   if (businessError || reviewError)
@@ -219,32 +136,6 @@ const BusinessDashboard = () => {
             grapheader="Monthly Reviews"
           />
         </div>
-
-        {/* Sentiment Analysis Section */}
-        <Row className="mb-4">
-          <Col xs={12}>
-            <Card>
-              <Card.Body>
-                <h4>Sentiment Analysis</h4>
-                <div className="d-flex mb-3">
-                  <span className="sentiment-badge sentiment-positive">
-                    <FaSmile className="me-2" />
-                    {sentimentData.positive}% Positive
-                  </span>
-                  <span className="sentiment-badge sentiment-neutral">
-                    <FaMeh className="me-2" />
-                    {sentimentData.neutral}% Neutral
-                  </span>
-                  <span className="sentiment-badge sentiment-negative">
-                    <FaFrown className="me-2" />
-                    {sentimentData.negative}% Negative
-                  </span>
-                </div>
-                <canvas id="sentimentChart"></canvas>
-              </Card.Body>
-            </Card>
-          </Col>
-        </Row>
       </Container>
     </div>
   );

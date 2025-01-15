@@ -1,17 +1,9 @@
 import React from "react";
-
 import { MDBContainer, MDBRow, MDBCol, MDBCard } from "mdb-react-ui-kit";
 import { Link } from "react-router-dom";
-
 import CategoryCard from "./CategoryCard.jsx";
 import { useGetAllCategoriesQuery } from "../slices/userApiSlices.js";
 import { useEffect } from "react";
-// import { useParams } from "react-router-dom";
-
-// import { useSearchByCategoryQuery } from "../slices/categoryApiSlices";
-// Fetch users using RTK Query
-// import Categorydata from "../data/Category.js"
-
 const CategoryList = () => {
   const {
     data: Categorydata,

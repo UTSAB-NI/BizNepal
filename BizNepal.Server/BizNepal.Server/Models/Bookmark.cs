@@ -1,4 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BizNepal.Server.Models
 {
@@ -10,8 +10,8 @@ namespace BizNepal.Server.Models
         [ForeignKey("UserId")]
         public ApplicationUser ApplicationUser { get; set; }
 
-        public Guid BusinnessId { get; set; }
-        [ForeignKey("BusinnessId")]
+        public Guid BusinessId { get; set; }
+        [ForeignKey("BusinessId")]
         public Business Business { get; set; }
 
     }

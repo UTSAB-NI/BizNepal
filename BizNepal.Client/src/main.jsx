@@ -23,7 +23,7 @@ import HomeScreen from "./screen/HomeScreen.jsx";
 import LoginScreen from "./screen/LoginScreen.jsx";
 import RegisterScreen from "./screen/RegisterScreen.jsx";
 import BusinessResult from "./screen/BusinessResult.jsx";
-import SearchScreen from "./screen/SearchScreen.jsx";
+// import SearchScreen from "./screen/SearchScreen.jsx";
 import UserprofileScreen from "./screen/UserprofileScreen.jsx";
 import GetBusinessByIdScreen from "./screen/GetBusinessByIdScreen.jsx";
 import HelpScreen from "./screen/HelpScreen.jsx";
