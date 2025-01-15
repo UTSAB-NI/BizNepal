@@ -1,7 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Alert, Row, Col, Button, Image, Container } from "react-bootstrap";
 import { useParams } from "react-router-dom";
-import { useGetbusinessByIdQuery } from "../slices/userApiSlices";
+import {
+  useGetbusinessByIdQuery,
+  useGetBookmarkedQuery,
+  useCreateBookmarkMutation,
+} from "../slices/userApiSlices";
 import Loader from "../Component/Loader";
 import CreateReview from "../Component/CreateReview";
 import BusinessMap from "../Component/BusinessMap";
@@ -12,6 +16,7 @@ const API_BASE_URL = "https://localhost:5000";
 
 const GetBusinessByIdScreen = () => {
   const [Feedback, setFeedback] = useState(false);
+  const [FeedbackType, setFeedbackType] = useState();
   const { id: businessid } = useParams();
   const {
     data: businessdatabyid,
@@ -19,6 +24,20 @@ const GetBusinessByIdScreen = () => {
     isError,
     refetch,
   } = useGetbusinessByIdQuery(businessid);
+
+  const [
+    createBookmark,
+    { isLoading: bookmarkLoading, isError: bookmarkError },
+  ] = useCreateBookmarkMutation(); // Bookmark Mutation Function from API Slice to create Bookmark
+
+  const { data: bookmarkData } = useGetBookmarkedQuery(); // Bookmark Query Function from API Slice to get Bookmarked Data
+
+  const [BookmarkedBusinessID, setBookmarkedBusinessID] = useState(
+    bookmarkData?.map((bookmark) => bookmark.businessId)
+  );
+
+  console.log("BookmarkedBusinessID", BookmarkedBusinessID);
+  console.log(BookmarkedBusinessID?.includes(businessid));
 
   useEffect(() => {
     if (isError) {
@@ -28,18 +47,41 @@ const GetBusinessByIdScreen = () => {
     }
   }, [isError, businessdatabyid]);
 
+  useEffect(() => {
+    if (bookmarkData) {
+      setBookmarkedBusinessID(
+        bookmarkData?.map((bookmark) => bookmark.businessId)
+      );
+    }
+  }, [bookmarkData]);
+
   const imageUrl = `${API_BASE_URL}${businessdatabyid?.businessImages[0]?.imageUrl}`;
   // const imageUrl = "/images/image.png";
 
-  const BookmarkController = (businessid) => {
-    localStorage.setItem("bookmark", businessid);
-    window.location.reload();
+  const BookmarkController = async (businessid) => {
+    try {
+      const response = await createBookmark(businessid).unwrap();
+      setFeedback(response?.message || "Bookmark Added Successfully");
+      setFeedbackType("success");
+      // Update the bookmarked business ID state
+      setBookmarkedBusinessID((prevState) => [...prevState, businessid]);
+      console.log("BookmarkControllersresponse", response);
+    } catch (error) {
+      console.log("Error", error);
+      setFeedback("Bookmark Added Failed");
+      setFeedbackType("danger");
+    }
   };
+
   return (
     <Container className="business-container">
       {isLoading && <Loader />}
       {Feedback && (
-        <Alert variant="danger" onClose={() => setFeedback("")} dismissible>
+        <Alert
+          variant={FeedbackType}
+          onClose={() => setFeedback("")}
+          dismissible
+        >
           {Feedback}
         </Alert>
       )}
@@ -55,14 +97,9 @@ const GetBusinessByIdScreen = () => {
                   {businessdatabyid.category.categoryName}
                 </p>
                 <button
-                  // className={`${
-                  //   businessid === localStorage.getItem("bookmark")
-                  //     ? "bookmark-button"
-                  //     : "bookmark-button"
-                  // }
-                  // `}
                   className="bookmark-button"
                   onClick={() => BookmarkController(businessid)}
+                  disabled={BookmarkedBusinessID?.includes(businessid)}
                 >
                   <i className="fas fa-bookmark me-2"></i>
                   Bookmark

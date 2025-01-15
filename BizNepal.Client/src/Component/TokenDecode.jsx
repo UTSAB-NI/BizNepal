@@ -13,7 +13,6 @@ const TokenDecode = () => {
     const claimUserName = decode[username];
 
     const name = claimUserName.split("@");
-    console.log(name);
     return name[0];
   };
 

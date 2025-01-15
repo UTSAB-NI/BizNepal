@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using BizNepal.Server.Data;
 using BizNepal.Server.Models;
 using BizNepal.Server.Models.DTO;

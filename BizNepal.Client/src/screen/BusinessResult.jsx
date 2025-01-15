@@ -24,7 +24,7 @@ const BusinessResult = () => {
   const searchParams = new URLSearchParams(search);
   const querySearch = searchParams.get("search") || "";
 
-  const [categoryData, setCategoryData] = useState([]); // To store the final filtered data
+  const [BusinessData, setBusinessData] = useState([]); // To store the final filtered data
   const [filters, setFilters] = useState({
     ratings: [],
     District: "",
@@ -81,7 +81,7 @@ const BusinessResult = () => {
       });
 
       console.log("Filtered Data:", filteredData);
-      setCategoryData(filteredData);
+      setBusinessData(filteredData);
       setLoading(false); // Stop loading once filtering is done
     }
   }, [paginatedBusinessData, filters, searchQuery]);
@@ -132,11 +132,11 @@ const BusinessResult = () => {
       );
     }
 
-    if (!categoryData || categoryData.length === 0) {
+    if (!BusinessData || BusinessData.length === 0) {
       return <p className="text-center text-muted">No businesses found.</p>;
     }
 
-    return categoryData.map((business, index) => (
+    return BusinessData.map((business, index) => (
       <Card className="mb-3 business-card shadow" key={index}>
         <Link
           to={`/business/${business.businessId}`}
