@@ -2,8 +2,6 @@ import React, { useState } from "react";
 import { Form, Button, Card, Row, Col, Alert } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-// Sentiment analysis API slices
-import { usePostSentimentMutation } from "../slices/sentimentApiSlices";
 // User API slices
 import {
   useCreateReviewMutation,
@@ -48,19 +46,6 @@ const CreateReview = ({ businessId }) => {
     refetch,
   } = useGetUserReviewQuery();
 
-  const [postSentiment] = usePostSentimentMutation();
-
-  const SentimentHandler = async (comment) => {
-    try {
-      const response = await postSentiment({ reviews: [comment] }).unwrap();
-      console.log("Sentiment response:", response);
-      setSentiment(response.sentiment); // Update sentiment state with response
-    } catch (error) {
-      console.error("Error fetching sentiment:", error);
-      setSentiment(null); // Clear sentiment if there's an error
-    }
-  };
-
   // Create review mutation
   const [createReview, { isLoading: createReviewLoading }] =
     useCreateReviewMutation();
@@ -77,11 +62,10 @@ const CreateReview = ({ businessId }) => {
 
     try {
       // Handle the sentiment analysis before submitting the review
-      await SentimentHandler(comment);
 
       const reviewData = { businessId, comment, rating, sentiment };
       const response = await createReview(reviewData).unwrap();
-      refetch();
+      window.location.reload();
       setComment("");
       setRating(1);
       setFeedback("Review submitted successfully!");
