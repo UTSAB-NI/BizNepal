@@ -132,15 +132,15 @@ public class BusinessController : ControllerBase
         var ipAddress = HttpContext.Connection.RemoteIpAddress?.ToString();
         var userAgent = HttpContext.Request.Headers["User-Agent"].ToString();
 
-        // Check if the same IP visited this business within the last 24 hours
-        var lastDayVisit = await _context.PageVisits
-            .Where(v => v.BusinessId == businessId &&
-                   v.VisitorIp == ipAddress &&
-                   v.VisitDateTime > DateTime.UtcNow.AddHours(-24))
-            .FirstOrDefaultAsync();
+        //// Check if the same IP visited this business within the last 24 hours
+        //var lastDayVisit = await _context.PageVisits
+        //    .Where(v => v.BusinessId == businessId &&
+        //           v.VisitorIp == ipAddress &&
+        //           v.VisitDateTime > DateTime.UtcNow.AddHours(-24))
+        //    .FirstOrDefaultAsync();
 
-        if (lastDayVisit == null)
-        {
+        //if (lastDayVisit == null)
+        //{
             // Insert new visit record
             var visit = new PageVisit
             {
@@ -157,7 +157,7 @@ public class BusinessController : ControllerBase
             business.TotalVisits++;
 
             await _context.SaveChangesAsync();
-        }
+        //}
 
         var businessDto = _mapper.Map<BusinessResponseDto>(business);
 
