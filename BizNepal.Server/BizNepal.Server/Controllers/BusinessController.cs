@@ -109,31 +109,64 @@ public class BusinessController : ControllerBase
     [HttpGet("{businessId}", Order = 3)]
     public async Task<IActionResult> GetById(Guid businessId)
     {
-        if(businessId == Guid.Empty)
+        if (businessId == Guid.Empty)
         {
             return NotFound($"{businessId} not found");
         }
 
-        var business = await _context.Businesses.Include(b => b.Location)
-                                          .Include(b => b.Category)
-                                          .Include(c => c.Reviews)
-                                          .Include(c=>c.Address)
-                                          .Include(c => c.BusinessImages)
-                                          .FirstAsync(m => m.BusinessId == businessId);
+        var business = await _context.Businesses
+        .Include(b => b.Location)
+        .Include(b => b.Category)
+        .Include(c => c.Reviews)
+        .Include(c => c.Address)
+        .Include(c => c.BusinessImages)
+        .Include(c => c.PageVisits)
+        .FirstOrDefaultAsync(m => m.BusinessId == businessId);
 
         if (business == null)
         {
             return NotFound("No business found");
         }
 
-        var businessDto= _mapper.Map<BusinessResponseDto>(business);
+        // Track the visit
+        var ipAddress = HttpContext.Connection.RemoteIpAddress?.ToString();
+        var userAgent = HttpContext.Request.Headers["User-Agent"].ToString();
 
+        //// Check if the same IP visited this business within the last 24 hours
+        //var lastDayVisit = await _context.PageVisits
+        //    .Where(v => v.BusinessId == businessId &&
+        //           v.VisitorIp == ipAddress &&
+        //           v.VisitDateTime > DateTime.UtcNow.AddHours(-24))
+        //    .FirstOrDefaultAsync();
+
+        //if (lastDayVisit == null)
+        //{
+            // Insert new visit record
+            var visit = new PageVisit
+            {
+                BusinessId = businessId,
+                VisitorIp = ipAddress,
+                VisitDateTime = DateTime.UtcNow,
+                UserAgent=userAgent
+                
+            };
+
+            _context.PageVisits.Add(visit);
+
+            // Increment the TotalVisits count for the business
+            business.TotalVisits++;
+
+            await _context.SaveChangesAsync();
+        //}
+
+        var businessDto = _mapper.Map<BusinessResponseDto>(business);
 
         return Ok(businessDto);
+
     }
 
     #endregion
-    
+
     #region Create Business
 
     [HttpPost("Create", Order = 4)]
@@ -623,5 +656,42 @@ public class BusinessController : ControllerBase
 
     }
 
+    [HttpGet("{businessId}/analytics")]
+    public async Task<IActionResult> GetBusinessAnalytics(Guid businessId)
+    {
+        if (businessId == Guid.Empty)
+        {
+            return BadRequest("Invalid business ID.");
+        }
+
+        var analytics = new
+        {
+            TotalVisits = await _context.PageVisits.CountAsync(v => v.BusinessId == businessId),
+            UniqueVisitors = await _context.PageVisits
+                .Where(v => v.BusinessId == businessId)
+                .Select(v => v.VisitorIp)
+                .Distinct()
+                .CountAsync(),
+            TodayVisits = await _context.PageVisits
+                .Where(v => v.BusinessId == businessId && v.VisitDateTime.Date == DateTime.UtcNow.Date)
+                .CountAsync(),
+            VisitsByDate = await _context.PageVisits
+                .Where(v => v.BusinessId == businessId)
+                .GroupBy(v => v.VisitDateTime.Date)
+                .Select(g => new { Date = g.Key, Count = g.Count() })
+                .ToListAsync(),
+            VisitorsLast24Hours = await _context.PageVisits
+                .Where(v => v.BusinessId == businessId && v.VisitDateTime > DateTime.UtcNow.AddHours(-24))
+                .CountAsync(),
+            DeviceStats = await _context.PageVisits
+                .Where(v => v.BusinessId == businessId)
+                .GroupBy(v => v.UserAgent)
+                .Select(g => new { UserAgent = g.Key, Count = g.Count() })
+                .OrderByDescending(x => x.Count)
+                .ToListAsync()
+        };
+
+        return Ok(analytics);
+    }
 
 }

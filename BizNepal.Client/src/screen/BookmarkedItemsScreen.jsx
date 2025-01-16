@@ -12,15 +12,12 @@ const BookmarkedItemsScreen = () => {
   const [Feedback, setFeedback] = useState(false);
   const [FeedbackType, setFeedbackType] = useState(false);
 
-  // API call to fetch bookmarked businesses
   const {
     data: bookmarkedData,
     isLoading: isBookmarkLoading,
     error: isBookmarkError,
     refetch: refetchBookmarks,
   } = useGetBookmarkedQuery();
-
-  console.log("bookmarkedData", bookmarkedData);
 
   useEffect(() => {
     refetchBookmarks();
@@ -31,15 +28,12 @@ const BookmarkedItemsScreen = () => {
     }
   }, [isBookmarkError, refetchBookmarks]);
 
-  // API for deleting the bookmark
   const [deleteBookmarks] = useDeleteBookmarksMutation();
 
-  // Function to handle removing a bookmark
   const handleRemoveBookmark = async (bookmarkId) => {
     try {
-      const response = await deleteBookmarks(bookmarkId).unwrap(); // Delete the bookmarked item
+      const response = await deleteBookmarks(bookmarkId).unwrap();
       window.location.reload();
-      console.log("response", response);
       setFeedback(response?.message || "Bookmark removed successfully.");
       setFeedbackType("success");
       refetchBookmarks();
@@ -50,77 +44,92 @@ const BookmarkedItemsScreen = () => {
   };
 
   return (
-    <Container>
-      <Row>
-        {/* Loader */}
-        {isBookmarkLoading && (
-          <Col className="text-center">
-            <Loader />
-          </Col>
-        )}
+    // Added min-height to ensure content fills viewport
+    <div
+      style={{
+        minHeight: "100vh",
+        display: "flex",
+        flexDirection: "column",
+      }}
+    >
+      {/* Main content wrapper with flex-grow */}
+      <div style={{ flex: "1 0 auto" }}>
+        <Container>
+          <Row>
+            {isBookmarkLoading && (
+              <Col className="text-center">
+                <Loader />
+              </Col>
+            )}
 
-        {/* Error */}
-        {isBookmarkError && (
-          <Alert
-            variant={FeedbackType}
-            onClose={() => setFeedback("")}
-            dismissible
-          >
-            {Feedback}
-          </Alert>
-        )}
+            {isBookmarkError && (
+              <Alert
+                variant={FeedbackType}
+                onClose={() => setFeedback("")}
+                dismissible
+              >
+                {Feedback}
+              </Alert>
+            )}
 
-        {/* Bookmarked Items */}
-        {!isBookmarkLoading && !isBookmarkError && (
-          <>
-            {bookmarkedData && bookmarkedData.length > 0
-              ? bookmarkedData.map((bookmark) => (
-                  <Col key={bookmark.businessId} md={4} className="my-3">
-                    <Card className="h-100 shadow-sm">
-                      <Card.Body>
-                        <Row>
-                          <Col md={9}>
-                            {/* Link to business page */}
-                            <Link
-                              to={`/business/${bookmark.businessId}`}
-                              className="text-decoration-none text-dark"
-                            >
-                              <Card.Title>{bookmark.businessName}</Card.Title>
-                              <Card.Text>
-                                <Badge bg="primary">
-                                  {bookmark.category || "Category"}
-                                </Badge>
-                              </Card.Text>
-                              <Card.Text className="text-muted">
-                                <span className="fas fa-map-marker-alt"></span>{" "}
-                                {bookmark.address?.district ||
-                                  "Unknown District"}
-                                , {bookmark.address?.city || "Unknown City"}
-                              </Card.Text>
-                              <Card.Text className="text-muted">
-                                <span className="fas fa-phone"></span>{" "}
-                                {bookmark.phoneNumber || "Unknown Phone Number"}
-                              </Card.Text>
-                            </Link>
-                          </Col>
-                          <Col md={3} className="text-end">
-                            {/* Delete button */}
-                            <span
-                              className="fa fa-trash text-danger cursor-pointer"
-                              onClick={() => handleRemoveBookmark(bookmark?.id)}
-                              title="Remove Bookmark"
-                            ></span>
-                          </Col>
-                        </Row>
-                      </Card.Body>
-                    </Card>
+            {!isBookmarkLoading && !isBookmarkError && (
+              <>
+                {bookmarkedData && bookmarkedData.length > 0 ? (
+                  bookmarkedData.map((bookmark) => (
+                    <Col key={bookmark.businessId} md={4} className="my-3">
+                      <Card className="h-100 shadow-sm">
+                        <Card.Body>
+                          <Row>
+                            <Col md={9}>
+                              <Link
+                                to={`/business/${bookmark.businessId}`}
+                                className="text-decoration-none text-dark"
+                              >
+                                <Card.Title>{bookmark.businessName}</Card.Title>
+                                <Card.Text>
+                                  <Badge bg="primary">
+                                    {bookmark.category || "Category"}
+                                  </Badge>
+                                </Card.Text>
+                                <Card.Text className="text-muted">
+                                  <span className="fas fa-map-marker-alt"></span>{" "}
+                                  {bookmark.address?.district ||
+                                    "Unknown District"}
+                                  , {bookmark.address?.city || "Unknown City"}
+                                </Card.Text>
+                                <Card.Text className="text-muted">
+                                  <span className="fas fa-phone"></span>{" "}
+                                  {bookmark.phoneNumber ||
+                                    "Unknown Phone Number"}
+                                </Card.Text>
+                              </Link>
+                            </Col>
+                            <Col md={3} className="text-end">
+                              <span
+                                className="fa fa-trash text-danger cursor-pointer"
+                                onClick={() =>
+                                  handleRemoveBookmark(bookmark?.id)
+                                }
+                                title="Remove Bookmark"
+                              ></span>
+                            </Col>
+                          </Row>
+                        </Card.Body>
+                      </Card>
+                    </Col>
+                  ))
+                ) : (
+                  <Col className="text-center py-5">
+                    <p>No bookmarked items found.</p>
                   </Col>
-                ))
-              : ""}
-          </>
-        )}
-      </Row>
-    </Container>
+                )}
+              </>
+            )}
+          </Row>
+        </Container>
+      </div>
+      {/* Footer will now stick to bottom */}
+    </div>
   );
 };
 
