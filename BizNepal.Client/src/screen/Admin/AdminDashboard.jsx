@@ -20,7 +20,12 @@ const AdminDashboard = () => {
     data: business,
     isLoading: isBusinessLoading,
     isError: isBusinessError,
-  } = useGetbusinessQuery();
+  } = useGetbusinessQuery({
+    pageSize: 1000, // You can choose any page size here
+    pageNumber: 1, // Assuming you're loading all businesses at once
+    isAscending: true,
+  });
+  console.log(business);
   const {
     data: categories,
     isLoading: isCategoriesLoading,
@@ -39,7 +44,7 @@ const AdminDashboard = () => {
     }
   }, [users, business, categories]);
 
-  const NoOfBusiess = business?.length;
+  const NoOfBusiess = business?.items?.length;
   // console.log(NoOfBusiess);
   const NoOfUsers = users?.length;
   const NoOfCategories = categories?.length;
@@ -48,7 +53,7 @@ const AdminDashboard = () => {
   //group business by date
   const businessCountByDate = {};
 
-  business?.forEach((business) => {
+  business?.items?.forEach((business) => {
     const date = new Date(business.createdAt).toLocaleDateString();
     businessCountByDate[date] = (businessCountByDate[date] || 0) + 1;
   });
@@ -60,7 +65,7 @@ const AdminDashboard = () => {
   //data for pie chart
   const businessByCategory = {};
 
-  business?.forEach((business) => {
+  business?.items?.forEach((business) => {
     const category = business.category.categoryName;
     businessByCategory[category] = (businessByCategory[category] || 0) + 1;
   });
@@ -68,14 +73,12 @@ const AdminDashboard = () => {
   //Extract Category names and counts
   const Business_categories = Object.values(businessByCategory);
   const Business_counts = Object.keys(businessByCategory);
-  // console.log(Business_categories);
-  // console.log(Business_counts);
 
   //users data for line graph
   //group users by date
   const userCountByDate = {};
 
-  users?.forEach((user) =>{
+  users?.forEach((user) => {
     const date = new Date(user.createdAt).toLocaleDateString();
     userCountByDate[date] = (userCountByDate[date] || 0) + 1;
   });
@@ -132,7 +135,11 @@ const AdminDashboard = () => {
             {/* // LineGraph component for business */}
             <div className="col-md-6">
               <h2>Business Created Per day</h2>
-              <LineChartComponent data={counts} labels={dates} grapheader="Business created per day" />
+              <LineChartComponent
+                data={counts}
+                labels={dates}
+                grapheader="Business created per day"
+              />
             </div>
           </div>
 
@@ -148,7 +155,11 @@ const AdminDashboard = () => {
             {/* // LineGraph component for users */}
             <div className="col-md-6">
               <h2>User Created Per day</h2>
-              <LineChartComponent data={noof_users} labels={users_dates} grapheader="User created per day" />
+              <LineChartComponent
+                data={noof_users}
+                labels={users_dates}
+                grapheader="User created per day"
+              />
             </div>
           </div>
         </div>

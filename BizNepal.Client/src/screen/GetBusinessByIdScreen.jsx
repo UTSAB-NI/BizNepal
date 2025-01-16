@@ -5,6 +5,7 @@ import {
   useGetbusinessByIdQuery,
   useGetBookmarkedQuery,
   useCreateBookmarkMutation,
+  useBusinessAnalyticsQuery,
 } from "../slices/userApiSlices";
 import Loader from "../Component/Loader";
 import CreateReview from "../Component/CreateReview";
@@ -12,6 +13,7 @@ import BusinessMap from "../Component/BusinessMap";
 import BusinessReviewGraph from "../Component/BusinessReviewGraph";
 import "../Customcss/getbusinessbyid.css"; // Custom CSS for styling
 import SentimentMeter from "../Component/SentimentMeter"; // Import the SentimentMeter component
+import LineChartComponent from "../Component/Admin/LineGraph"; // Import the LineChartComponent component
 
 const API_BASE_URL = "https://localhost:5000";
 
@@ -26,6 +28,20 @@ const GetBusinessByIdScreen = () => {
     refetch,
   } = useGetbusinessByIdQuery(businessid);
 
+  const {
+    data: businessAnalyticsData,
+    isLoading: analyticsLoading,
+    isError: analyticsError,
+  } = useBusinessAnalyticsQuery(businessid);
+
+  console.log("businessAnalyticsData", businessAnalyticsData);
+
+  const date = businessAnalyticsData?.visitsByDate.map((data) =>
+    new Date(data.date).toLocaleDateString("en-CA")
+  );
+  const visits = businessAnalyticsData?.visitsByDate.map((data) => data.count);
+  console.log("date", date);
+  console.log("visits", visits);
   const [
     createBookmark,
     { isLoading: bookmarkLoading, isError: bookmarkError },
@@ -36,9 +52,6 @@ const GetBusinessByIdScreen = () => {
   const [BookmarkedBusinessID, setBookmarkedBusinessID] = useState(
     bookmarkData?.map((bookmark) => bookmark.businessId)
   );
-
-  console.log("BookmarkedBusinessID", BookmarkedBusinessID);
-  console.log(BookmarkedBusinessID?.includes(businessid));
 
   useEffect(() => {
     if (isError) {
@@ -64,9 +77,7 @@ const GetBusinessByIdScreen = () => {
       const response = await createBookmark(businessid).unwrap();
       setFeedback(response?.message || "Bookmark Added Successfully");
       setFeedbackType("success");
-      console.log("BookmarkControllersresponse", response);
     } catch (error) {
-      console.log("Error", error);
       setFeedback("Bookmark Added Failed");
       setFeedbackType("danger");
     }
@@ -160,7 +171,17 @@ const GetBusinessByIdScreen = () => {
                     </a>
                   </div>
                 </div>
-
+                <div className="info-row d-flex align-items-center mb-4">
+                  <div className="info-icon">
+                    <i className="fas fa-eye"></i>
+                  </div>
+                  <div>
+                    <small className="text-muted">Views</small>
+                    <div className="fw-bold">
+                      {businessdatabyid.totalVisits}
+                    </div>
+                  </div>
+                </div>
                 {/* Get Directions Button */}
                 <Button
                   className="action-button w-100"
@@ -192,20 +213,29 @@ const GetBusinessByIdScreen = () => {
           {/* Reviews and Analytics */}
           <Row className="g-4">
             <Col md={6}>
-              <div className="review-section">
-                <h3>Share Your Experience</h3>
-                <div className="review-form">
-                  <CreateReview businessId={businessdatabyid.businessId} />
-                </div>
-              </div>
-            </Col>
-            <Col md={6}>
+              {" "}
               <div className="review-section">
                 <h3>Review Analytics</h3>
                 <BusinessReviewGraph reviews={businessdatabyid.reviews} />
               </div>
             </Col>
+            <Col md={6}>
+              <div className="review-section">
+                <LineChartComponent
+                  data={visits}
+                  labels={date}
+                  grapheader=" Vist By date"
+                />
+              </div>
+            </Col>
           </Row>
+          {/* // Review Section */}
+          <div className="review-section">
+            <h3>Share Your Experience</h3>
+            <div className="review-form">
+              <CreateReview businessId={businessdatabyid.businessId} />
+            </div>
+          </div>
         </>
       )}
     </Container>

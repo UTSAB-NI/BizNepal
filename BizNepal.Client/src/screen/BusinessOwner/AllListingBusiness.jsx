@@ -133,22 +133,11 @@ const AllListingBusiness = () => {
               <p className="mb-0">Total Listings</p>
             </div>
           </div>
-          <div className="col-md-3">
-            <div className="stats-box bg-success bg-opacity-10">
-              <h3>{business?.length || 0}</h3>
-              <p className="mb-0">Active Listings</p>
-            </div>
-          </div>
+
           <div className="col-md-3">
             <div className="stats-box bg-warning bg-opacity-10">
               <h3>{totalReviews}</h3>
               <p className="mb-0">Review</p>
-            </div>
-          </div>
-          <div className="col-md-3">
-            <div className="stats-box bg-danger bg-opacity-10">
-              <h3>2</h3>
-              <p className="mb-0">Inactive</p>
             </div>
           </div>
         </div>
@@ -225,7 +214,7 @@ const AllListingBusiness = () => {
                   <div className="row text-center">
                     <div className="col-4">
                       <h6>Views</h6>
-                      <p className="mb-0">1,234</p>
+                      <p className="mb-0">{business.totalVisits}</p>
                     </div>
                     <div className="col-4">
                       <h6>Reviews</h6>

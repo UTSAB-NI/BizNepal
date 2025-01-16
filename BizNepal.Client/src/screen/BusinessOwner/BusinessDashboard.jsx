@@ -5,6 +5,7 @@ import { Chart, registerables } from "chart.js";
 import {
   useGetcreatedbusinessByUserQuery,
   useGetUserReviewQuery,
+  useBusinessAnalyticsQuery,
 } from "../../slices/userApiSlices";
 import { useSelector } from "react-redux";
 import TokenDecode from "../../Component/TokenDecode";
@@ -12,11 +13,6 @@ import Loader from "../../Component/Loader";
 import Error from "../../Component/Error";
 import "../../Customcss/businessDashboard.css";
 import LineChartComponent from "../../Component/Admin/LineGraph";
-
-// Register Chart.js components
-Chart.register(...registerables);
-
-const API_BASE_URL = "https://localhost:5000"; // for image URL in localhost 5000 port number
 
 const BusinessDashboard = () => {
   const { userInfo } = useSelector((state) => state.auth);
@@ -30,31 +26,21 @@ const BusinessDashboard = () => {
     isLoading: businessLoading,
     error: businessError,
   } = useGetcreatedbusinessByUserQuery(userId);
-  console.log(businessData);
+  // console.log(businessData);
   const {
     data: reviewData,
     isLoading: reviewLoading,
     error: reviewError,
   } = useGetUserReviewQuery();
 
-  // Calculate review counts by date
-  const reviewCounts = useMemo(() => {
-    const counts = {};
-    businessData?.reviews?.forEach((review) => {
-      const date = new Date(review.createdAt).toLocaleDateString();
-      counts[date] = (counts[date] || 0) + 1;
-    });
-    return counts;
-  }, [businessData]);
+  const reviewcountByDate = {};
 
-  const reviewDates = useMemo(
-    () => Object.keys(reviewCounts).sort(),
-    [reviewCounts]
-  );
-  const reviewCountsArray = useMemo(
-    () => reviewDates.map((date) => reviewCounts[date]),
-    [reviewDates, reviewCounts]
-  );
+  businessData?.forEach((business) => {
+    const date = new Date(business.createdAt).toLocaleDateString();
+    reviewcountByDate[date] = (reviewcountByDate[date] || 0) + 1;
+  });
+  const dates = Object.keys(reviewcountByDate).sort();
+  const counts = dates.map((date) => reviewcountByDate[date]);
 
   // Calculate total businesses, reviews, and average rating
   const totalBusinesses = businessData?.length || 0;
@@ -133,12 +119,11 @@ const BusinessDashboard = () => {
         </Row>
 
         {/* Review Graph */}
-        <div className="graph-container mt-3">
+        <div className="graph-container">
           <h4>Review Trends</h4>
-          <canvas id="reviewChart"></canvas>
           <LineChartComponent
-            data={reviewCountsArray}
-            labels={reviewDates}
+            data={counts}
+            labels={dates}
             grapheader="Monthly Reviews"
           />
         </div>
