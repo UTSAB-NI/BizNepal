@@ -81,7 +81,6 @@ const AllListingBusiness = () => {
   const [editBusiness] = useEditBusinessMutation();
   const handleEditBusiness = async () => {
     try {
-      // Simulate edit operation
       const response = await editBusiness({
         businessId: editbusinessId,
         businessName,
@@ -89,13 +88,14 @@ const AllListingBusiness = () => {
         categoryId,
         phoneNumber,
         website,
-      });
+      }).unwrap();
 
       console.log(response);
       setFeedbackType("success");
       setFeedback("Business updated successfully!");
-      refetch();
+      refetch(); // Refetch business data
     } catch (error) {
+      console.error("Error updating business:", error);
       setFeedbackType("danger");
       setFeedback("Failed to update business. Please try again.");
     } finally {
@@ -338,13 +338,6 @@ const getCategoryColor = (category) => {
     default:
       return "primary";
   }
-};
-
-const getStatusColor = (rating) => {
-  if (rating === null) return "text-warning";
-  if (rating >= 4) return "text-success";
-  if (rating >= 2) return "text-warning";
-  return "text-danger";
 };
 
 export default AllListingBusiness;
