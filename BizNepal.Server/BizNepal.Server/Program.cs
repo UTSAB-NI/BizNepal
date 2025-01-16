@@ -10,6 +10,8 @@ using System.Text;
 using BizNepal.Server.Utilities;
 using BizNepal.Server.Helper;
 using BizNepal.Server.DatabaseSeeder;
+using BizNepal.Server.Interface;
+using BizNepal.Server.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -113,6 +115,9 @@ builder.Services.AddAuthentication(x =>
             }
 
 );
+
+builder.Services.AddScoped<IEmailService, EmailService>();
+
 
 builder.Services.AddAuthorization();
 builder.Services.AddHttpClient();
