@@ -155,34 +155,6 @@
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
 }
 
-.graph-container h4 {
-  font-size: 1.25rem;
-  margin-bottom: 1rem;
-}
-
-/* Sentiment Badges */
-.sentiment-badge {
-  padding: 5px 15px;
-  border-radius: 20px;
-  font-size: 0.9rem;
-  margin-right: 10px;
-}
-
-.sentiment-positive {
-  background-color: #28a745;
-  color: white;
-}
-
-.sentiment-neutral {
-  background-color: #ffc107;
-  color: black;
-}
-
-.sentiment-negative {
-  background-color: #dc3545;
-  color: white;
-}
-
 /* Responsive Design */
 @media (max-width: 768px) {
   .dashboard-header h1 {
@@ -195,11 +167,6 @@
 
   .graph-container h4 {
     font-size: 1rem;
-  }
-
-  .sentiment-badge {
-    font-size: 0.8rem;
-    padding: 5px 10px;
   }
 }
 
@@ -216,29 +183,6 @@
   margin-bottom: 1rem;
 }
 
-/* Sentiment Badges */
-.sentiment-badge {
-  padding: 5px 15px;
-  border-radius: 20px;
-  font-size: 0.9rem;
-  margin-right: 10px;
-}
-
-.sentiment-positive {
-  background-color: #28a745;
-  color: white;
-}
-
-.sentiment-neutral {
-  background-color: #ffc107;
-  color: black;
-}
-
-.sentiment-negative {
-  background-color: #dc3545;
-  color: white;
-}
-
 /* Responsive Design */
 @media (max-width: 768px) {
   .dashboard-header h1 {
@@ -252,10 +196,4 @@
   .graph-container h4 {
     font-size: 1rem;
   }
-
-  .sentiment-badge {
-    font-size: 0.8rem;
-    padding: 5px 10px;
-  }
 }
-

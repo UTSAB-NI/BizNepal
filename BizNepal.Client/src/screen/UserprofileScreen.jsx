@@ -83,7 +83,7 @@ const ProfilePage = () => {
       (review) => review.userId === userId
     );
     return userReviews?.map((review, index) => (
-      <Card key={index} className="review-card">
+      <Card key={index} className="user-review-card">
         <Row>
           <Col xs={2} className="text-center">
             <Image
@@ -203,24 +203,10 @@ const ProfilePage = () => {
         <Col md={9}>
           <Card className="main-content">
             <Card.Body>
-              <Tabs
-                activeKey={activeTab}
-                onSelect={setActiveTab}
-                className="mb-3"
-              >
-                <Tab eventKey="posts" title="Posts">
-                  <div>Posts will be dynamically loaded here</div>
-                </Tab>
-                <Tab eventKey="about" title="About">
-                  <p>{user?.bio || "Loading bio..."}</p>
-                </Tab>
-                <Tab eventKey="services" title="Services">
-                  <div>Services will be dynamically loaded here</div>
-                </Tab>
-                <Tab eventKey="review" title="Reviewed">
-                  {renderReviews()}
-                </Tab>
-              </Tabs>
+              <Card.Title>
+                <h2>Reviewed Business</h2>
+              </Card.Title>
+              {renderReviews()}
             </Card.Body>
           </Card>
         </Col>

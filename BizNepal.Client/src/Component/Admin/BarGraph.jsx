@@ -1,13 +1,36 @@
 import React, { useEffect, useState } from "react";
 import { Bar } from "react-chartjs-2";
-import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from "chart.js";
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+} from "chart.js";
 import { useGetbusinessQuery } from "../../slices/userApiSlices";
 
 // Registering necessary Chart.js components
-ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend
+);
 
 const BusinessBarGraph = () => {
-  const { data: businesses, isLoading, isError } = useGetbusinessQuery();
+  const {
+    data: businesses,
+    isLoading,
+    isError,
+  } = useGetbusinessQuery({
+    pageSize: 1000, // You can choose any page size here
+    pageNumber: 1, // Assuming you're loading all businesses at once
+    isAscending: true,
+  });
   const [chartData, setChartData] = useState({
     labels: [], // Years will be stored here
     datasets: [
@@ -22,11 +45,11 @@ const BusinessBarGraph = () => {
   });
 
   useEffect(() => {
-   if(!businesses || isLoading || isError) return;
+    if (!businesses || isLoading || isError) return;
     // Process the business data to count businesses by year
     const businessCountByYear = {};
 
-    businesses.forEach((business) => {
+    businesses?.items?.forEach((business) => {
       const year = new Date(business.createdAt).getFullYear();
       businessCountByYear[year] = (businessCountByYear[year] || 0) + 1;
     });
@@ -52,7 +75,15 @@ const BusinessBarGraph = () => {
       {isLoading ? (
         <p>Loading...</p>
       ) : (
-        <Bar data={chartData} options={{ responsive: true, plugins: { title: { display: true, text: 'Businesses Created Per Year' } } }} />
+        <Bar
+          data={chartData}
+          options={{
+            responsive: true,
+            plugins: {
+              title: { display: true, text: "Businesses Created Per Year" },
+            },
+          }}
+        />
       )}
     </div>
   );

@@ -156,25 +156,27 @@ const CreateReview = ({ businessId }) => {
                 Error fetching reviews. Please try again later.
               </div>
             ) : filteredReviews.length > 0 ? (
-              filteredReviews.map((review) => (
-                <Card key={review.reviewId} className="mb-3 p-3">
-                  <div className="d-flex justify-content-between align-items-center">
-                    <div className="d-flex align-items-center gap-2">
-                      <FaUserCircle className="fs-4 text-muted" />
-                      <strong>{review.createdBy}</strong>
-                      <span className="text-muted ms-2">
-                        {new Date(review.createdAt).toLocaleDateString()}
-                      </span>
+              filteredReviews.map((review) => {
+                return (
+                  <Card key={review.reviewId} className="mb-3 p-3">
+                    <div className="d-flex justify-content-between align-items-center">
+                      <div className="d-flex align-items-center gap-2">
+                        <FaUserCircle className="fs-4 text-muted" />
+                        {/* <strong>{userdata?.userName}</strong> */}
+                        <span className="text-muted ms-2">
+                          {new Date(review.createdAt).toLocaleDateString()}
+                        </span>
+                      </div>
+                      <StarRating
+                        rating={review.rating}
+                        size="fs-6"
+                        editable={false}
+                      />
                     </div>
-                    <StarRating
-                      rating={review.rating}
-                      size="fs-6"
-                      editable={false}
-                    />
-                  </div>
-                  <p className="mt-2">{review.comment}</p>
-                </Card>
-              ))
+                    <p className="mt-2">{review.comment}</p>
+                  </Card>
+                );
+              })
             ) : (
               <div className="text-center text-muted">No reviews available</div>
             )}

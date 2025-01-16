@@ -81,7 +81,6 @@ const AllListingBusiness = () => {
   const [editBusiness] = useEditBusinessMutation();
   const handleEditBusiness = async () => {
     try {
-      // Simulate edit operation
       const response = await editBusiness({
         businessId: editbusinessId,
         businessName,
@@ -89,13 +88,14 @@ const AllListingBusiness = () => {
         categoryId,
         phoneNumber,
         website,
-      });
+      }).unwrap();
 
       console.log(response);
       setFeedbackType("success");
       setFeedback("Business updated successfully!");
-      refetch();
+      refetch(); // Refetch business data
     } catch (error) {
+      console.error("Error updating business:", error);
       setFeedbackType("danger");
       setFeedback("Failed to update business. Please try again.");
     } finally {
@@ -133,22 +133,11 @@ const AllListingBusiness = () => {
               <p className="mb-0">Total Listings</p>
             </div>
           </div>
-          <div className="col-md-3">
-            <div className="stats-box bg-success bg-opacity-10">
-              <h3>{business?.length || 0}</h3>
-              <p className="mb-0">Active Listings</p>
-            </div>
-          </div>
+
           <div className="col-md-3">
             <div className="stats-box bg-warning bg-opacity-10">
               <h3>{totalReviews}</h3>
               <p className="mb-0">Review</p>
-            </div>
-          </div>
-          <div className="col-md-3">
-            <div className="stats-box bg-danger bg-opacity-10">
-              <h3>2</h3>
-              <p className="mb-0">Inactive</p>
             </div>
           </div>
         </div>
@@ -225,7 +214,7 @@ const AllListingBusiness = () => {
                   <div className="row text-center">
                     <div className="col-4">
                       <h6>Views</h6>
-                      <p className="mb-0">1,234</p>
+                      <p className="mb-0">{business.totalVisits}</p>
                     </div>
                     <div className="col-4">
                       <h6>Reviews</h6>
@@ -338,13 +327,6 @@ const getCategoryColor = (category) => {
     default:
       return "primary";
   }
-};
-
-const getStatusColor = (rating) => {
-  if (rating === null) return "text-warning";
-  if (rating >= 4) return "text-success";
-  if (rating >= 2) return "text-warning";
-  return "text-danger";
 };
 
 export default AllListingBusiness;
