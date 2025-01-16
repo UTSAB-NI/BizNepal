@@ -664,6 +664,19 @@ public class BusinessController : ControllerBase
             return BadRequest("Invalid business ID.");
         }
 
+
+        var nepalTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Nepal Standard Time");
+
+        var visitsByDate = await _context.PageVisits
+            .Where(v => v.BusinessId == businessId)
+            .ToListAsync(); // Fetch data from the database
+
+        var groupedVisitsByDate = visitsByDate
+            .GroupBy(v => TimeZoneInfo.ConvertTimeFromUtc(v.VisitDateTime, nepalTimeZone).Date) // Perform grouping on the client
+            .Select(g => new { Date = g.Key, Count = g.Count() })
+            .OrderBy(x => x.Date)
+            .ToList();
+
         var analytics = new
         {
             TotalVisits = await _context.PageVisits.CountAsync(v => v.BusinessId == businessId),
@@ -675,11 +688,7 @@ public class BusinessController : ControllerBase
             TodayVisits = await _context.PageVisits
                 .Where(v => v.BusinessId == businessId && v.VisitDateTime.Date == DateTime.UtcNow.Date)
                 .CountAsync(),
-            VisitsByDate = await _context.PageVisits
-                .Where(v => v.BusinessId == businessId)
-                .GroupBy(v => v.VisitDateTime.Date)
-                .Select(g => new { Date = g.Key, Count = g.Count() })
-                .ToListAsync(),
+            VisitsByDate = groupedVisitsByDate,
             VisitorsLast24Hours = await _context.PageVisits
                 .Where(v => v.BusinessId == businessId && v.VisitDateTime > DateTime.UtcNow.AddHours(-24))
                 .CountAsync(),
