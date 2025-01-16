@@ -9,6 +9,7 @@ using System.Net.Http;
 using System.Security.Claims;
 using System.Text;
 using System.Text.Json;
+using System.Xml.Linq;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace BizNepal.Server.Controllers;
@@ -553,12 +554,22 @@ public class BusinessController : ControllerBase
     [HttpPost("predict")]
     public async Task<IActionResult> PredictOverallSentiment(Guid businessId)
     {
-        var url = "http://localhost:8000/predict-sentiment"; 
+        var url = "http://localhost:8000/predict-sentiment";
 
-        var reviews = _context.Reviews.Where(c => c.BusinessId == businessId).ToList();
-        var comments = reviews.Select(c => c.Comment).ToList();  
+        var reviews = await _context.Reviews.Where(c => c.BusinessId == businessId)
+            .Select(x => x.Comment)
+            .ToListAsync();
 
-        var reviewInput = new { reviews = comments };
+        if(reviews.Count == 0)
+        {
+            return NotFound(new
+            {
+                message="No review for the business!"
+            });
+        }
+
+        var reviewInput = new { reviews = reviews };
+
         var content = new StringContent(JsonSerializer.Serialize(reviewInput), Encoding.UTF8, "application/json");
 
         try
