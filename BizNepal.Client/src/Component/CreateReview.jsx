@@ -6,7 +6,6 @@ import { useNavigate } from "react-router-dom";
 import {
   useCreateReviewMutation,
   useGetUserReviewQuery,
-  useGetUserByIdQuery,
 } from "../slices/userApiSlices";
 import { FaStar, FaUserCircle } from "react-icons/fa"; // Adding icons for better visualization
 import "../Customcss/CreateReview.css"; // Custom CSS for styling
@@ -158,14 +157,12 @@ const CreateReview = ({ businessId }) => {
               </div>
             ) : filteredReviews.length > 0 ? (
               filteredReviews.map((review) => {
-                const { data: userdata } = useGetUserByIdQuery(review.userId);
-                console.log("userdata", userdata);
                 return (
                   <Card key={review.reviewId} className="mb-3 p-3">
                     <div className="d-flex justify-content-between align-items-center">
                       <div className="d-flex align-items-center gap-2">
                         <FaUserCircle className="fs-4 text-muted" />
-                        <strong>{userdata?.userName}</strong>
+                        {/* <strong>{userdata?.userName}</strong> */}
                         <span className="text-muted ms-2">
                           {new Date(review.createdAt).toLocaleDateString()}
                         </span>

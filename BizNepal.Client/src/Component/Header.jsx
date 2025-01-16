@@ -18,12 +18,6 @@ const Header = () => {
   const { userInfo } = useSelector((state) => state.auth);
   const [cartStatus, setCartStatus] = useState(false);
 
-  const logouthandler = () => {
-    localStorage.removeItem("userInfo");
-    dispatch(Logout());
-    navigate("/");
-  };
-
   const { data: bookmarkedData } = useGetBookmarkedQuery(); // Fetching bookmarked data
 
   return (

@@ -18,9 +18,10 @@ import LineChartComponent from "../Component/Admin/LineGraph"; // Import the Lin
 const API_BASE_URL = "https://localhost:5000";
 
 const GetBusinessByIdScreen = () => {
-  const [Feedback, setFeedback] = useState(false);
-  const [FeedbackType, setFeedbackType] = useState();
+  const [feedback, setFeedback] = useState(false);
+  const [feedbackType, setFeedbackType] = useState();
   const { id: businessid } = useParams();
+
   const {
     data: businessdatabyid,
     isLoading,
@@ -34,45 +35,35 @@ const GetBusinessByIdScreen = () => {
     isError: analyticsError,
   } = useBusinessAnalyticsQuery(businessid);
 
-  console.log("businessAnalyticsData", businessAnalyticsData);
-
-  const date = businessAnalyticsData?.visitsByDate.map((data) =>
-    new Date(data.date).toLocaleDateString("en-CA")
-  );
-  const visits = businessAnalyticsData?.visitsByDate.map((data) => data.count);
-  console.log("date", date);
-  console.log("visits", visits);
   const [
     createBookmark,
     { isLoading: bookmarkLoading, isError: bookmarkError },
-  ] = useCreateBookmarkMutation(); // Bookmark Mutation Function from API Slice to create Bookmark
+  ] = useCreateBookmarkMutation();
 
-  const { data: bookmarkData } = useGetBookmarkedQuery(); // Bookmark Query Function from API Slice to get Bookmarked Data
+  const { data: bookmarkData } = useGetBookmarkedQuery();
 
-  const [BookmarkedBusinessID, setBookmarkedBusinessID] = useState(
-    bookmarkData?.map((bookmark) => bookmark.businessId)
-  );
+  const [bookmarkedBusinessID, setBookmarkedBusinessID] = useState([]);
+
+  useEffect(() => {
+    if (bookmarkData) {
+      setBookmarkedBusinessID(
+        bookmarkData.map((bookmark) => bookmark.businessId)
+      );
+    }
+  }, [bookmarkData]);
 
   useEffect(() => {
     if (isError) {
       setFeedback(
         businessdatabyid?.message || "An error occurred. Please try again later"
       );
+      setFeedbackType("danger");
     }
   }, [isError, businessdatabyid]);
 
-  useEffect(() => {
-    if (bookmarkData) {
-      setBookmarkedBusinessID(
-        bookmarkData?.map((bookmark) => bookmark.businessId)
-      );
-    }
-  }, [bookmarkData]);
-
   const imageUrl = `${API_BASE_URL}${businessdatabyid?.businessImages[0]?.imageUrl}`;
-  // const imageUrl = "/images/image.png";
 
-  const BookmarkController = async (businessid) => {
+  const handleBookmark = async (businessid) => {
     try {
       const response = await createBookmark(businessid).unwrap();
       setFeedback(response?.message || "Bookmark Added Successfully");
@@ -83,28 +74,38 @@ const GetBusinessByIdScreen = () => {
     }
   };
 
+  if (isLoading || analyticsLoading) {
+    return <Loader />;
+  }
+
+  if (isError || analyticsError) {
+    return (
+      <Alert variant="danger">An error occurred. Please try again later.</Alert>
+    );
+  }
+
   return (
     <Container className="business-container">
-      {isLoading && <Loader />}
-      {Feedback && (
+      {feedback && (
         <Alert
-          variant={FeedbackType}
+          variant={feedbackType}
           onClose={() => setFeedback("")}
           dismissible
         >
-          {Feedback}
+          {feedback}
         </Alert>
       )}
+
       {businessdatabyid && (
         <>
           {/* Hero Section */}
           <div className="hero-section">
             <Image src={imageUrl} alt="Business" className="hero-image" />
-            <div className="hero-overlay ">
+            <div className="hero-overlay">
               <button
                 className="bookmark-button"
-                onClick={() => BookmarkController(businessid)}
-                disabled={BookmarkedBusinessID?.includes(businessid)}
+                onClick={() => handleBookmark(businessid)}
+                disabled={bookmarkedBusinessID.includes(businessid)}
               >
                 <i className="fas fa-bookmark me-2"></i>
                 Bookmark
@@ -122,10 +123,8 @@ const GetBusinessByIdScreen = () => {
           <Row className="g-4">
             <Col md={4}>
               <div className="business-card p-4">
-                {/* About Business */}
                 <h3>About {businessdatabyid.businessName}</h3>
                 <p className="lead">{businessdatabyid.description}</p>
-                {/* <h3 className="mb-4">Business Information</h3> */}
 
                 {/* Location */}
                 <div className="info-row d-flex align-items-center mb-4">
@@ -171,6 +170,8 @@ const GetBusinessByIdScreen = () => {
                     </a>
                   </div>
                 </div>
+
+                {/* Views */}
                 <div className="info-row d-flex align-items-center mb-4">
                   <div className="info-icon">
                     <i className="fas fa-eye"></i>
@@ -182,6 +183,7 @@ const GetBusinessByIdScreen = () => {
                     </div>
                   </div>
                 </div>
+
                 {/* Get Directions Button */}
                 <Button
                   className="action-button w-100"
@@ -203,17 +205,9 @@ const GetBusinessByIdScreen = () => {
             </Col>
           </Row>
 
-          {/* Sentiment Meter */}
-          <>
-            {/* <BusinessMap
-                    latitude={businessdatabyid.location.latitude}
-                    longitude={businessdatabyid.location.longitude}
-                  /> */}
-          </>
           {/* Reviews and Analytics */}
           <Row className="g-4">
             <Col md={6}>
-              {" "}
               <div className="review-section">
                 <h3>Review Analytics</h3>
                 <BusinessReviewGraph reviews={businessdatabyid.reviews} />
@@ -222,14 +216,19 @@ const GetBusinessByIdScreen = () => {
             <Col md={6}>
               <div className="review-section">
                 <LineChartComponent
-                  data={visits}
-                  labels={date}
-                  grapheader=" Vist By date"
+                  data={businessAnalyticsData?.visitsByDate.map(
+                    (data) => data.count
+                  )}
+                  labels={businessAnalyticsData?.visitsByDate.map((data) =>
+                    new Date(data.date).toLocaleDateString("en-CA")
+                  )}
+                  grapheader="Visits By Date"
                 />
               </div>
             </Col>
           </Row>
-          {/* // Review Section */}
+
+          {/* Review Section */}
           <div className="review-section">
             <h3>Share Your Experience</h3>
             <div className="review-form">
