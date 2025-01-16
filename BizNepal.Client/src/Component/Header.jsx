@@ -61,7 +61,7 @@ const Header = () => {
                 <Nav.Link
                   as={Link}
                   to="/bookmark"
-                  className="position-relative mx-3"
+                  className={`position-relative mx-3  `}
                 >
                   <BsBookmarkFill
                     size={20}
@@ -82,7 +82,7 @@ const Header = () => {
                       padding: "0 4px",
                     }}
                   >
-                    {bookmarkedData?.length}
+                    {bookmarkedData?.length > 0 ? bookmarkedData.length : 0}
                   </span>
                 </Nav.Link>
                 <Nav.Link as={Link} to="/businesslist">
