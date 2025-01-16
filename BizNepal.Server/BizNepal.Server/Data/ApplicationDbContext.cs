@@ -18,9 +18,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     public DbSet<BusinessImage> BusinessImages { get; set; }
     public DbSet<Address> Addresses { get; set; }
     public DbSet<Bookmark> Bookmarks { get; set; }
-
-
-
+    public DbSet<PageVisit> PageVisits { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
