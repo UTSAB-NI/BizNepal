@@ -2,7 +2,6 @@
 
 public class BusinessResponseDto
 {
-   
         public Guid BusinessId { get; set; }
         public string BusinessName { get; set; }
         public string Description { get; set; }
@@ -15,9 +14,9 @@ public class BusinessResponseDto
 
         public CategoryResponseDto Category { get; set; }
 
-    public decimal? OverallRating { get; set; }
+        public decimal? OverallRating { get; set; }
 
-    public string UserId { get; set; }
+        public string UserId { get; set; }
 
         public List<Review> Reviews { get; set; }
 
@@ -28,5 +27,5 @@ public class BusinessResponseDto
 
         public DateTime? UpdatedAt { get; set; }
         public string? UpdatedBy { get; set; }
-
+        public int TotalVisits { get; set; }
 }
