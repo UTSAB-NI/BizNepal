@@ -8,6 +8,8 @@ import {
 } from "../../slices/userApiSlices";
 import { useSelector } from "react-redux";
 import TokenDecode from "../../Component/TokenDecode";
+import Loader from "../../Component/Loader";
+import Error from "../../Component/Error";
 import "../../Customcss/businessDashboard.css";
 import LineChartComponent from "../../Component/Admin/LineGraph";
 
@@ -70,9 +72,13 @@ const BusinessDashboard = () => {
     ));
   };
   // Handle loading and errors
-  if (businessLoading || reviewLoading) return <div>Loading...</div>;
-  if (businessError || reviewError)
-    return <div>Error: {businessError?.message || reviewError?.message}</div>;
+  {
+    businessLoading && <Loader />;
+  }
+
+  if (businessError) {
+    return <Error message={businessError} variant="danger" />;
+  }
 
   return (
     <div>
