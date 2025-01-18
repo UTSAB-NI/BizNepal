@@ -37,57 +37,70 @@ public class BusinessController : ControllerBase
                                        string? category = null,
                                        int pageNumber = 1,
                                        string? sortColumn = null,
-                                       bool isAscending = true)
+                                       bool isAscending = true,
+                                       string? latitude = null,
+                                       string? longitude = null,
+                                       double radiusInKm = 2
+                                       )
     {
         // searchTerm to lower case
         var searchTermToLower = searchTerm?.Trim().ToLower();
 
-        var businesses =  _context.Businesses.Include(c => c.Location)
+        var businesses =await _context.Businesses.Include(c => c.Location)
                                                   .Include(c => c.Category)
                                                   .Include(c => c.Reviews)
                                                   .Include(c => c.BusinessImages)
                                                   .Include(b => b.Address)
-                                                  .AsQueryable();
+                                                  .ToListAsync();
 
         // filtering based on category if category is passed to api
         if (!string.IsNullOrWhiteSpace(category))
         {
 
-            businesses = businesses.Where(b => b.Category.CategoryName.ToLower()==category.ToLower());
+            businesses = businesses.Where(b => b.Category.CategoryName.ToLower()==category.ToLower()).ToList();
         }
 
         // search based no businessname if businessName is passed to api
         if (!string.IsNullOrWhiteSpace(searchTermToLower))
         {
 
-            businesses = businesses.Where(b => b.BusinessName.ToLower().Contains(searchTermToLower)); 
+            businesses = businesses.Where(b => b.BusinessName.ToLower().Contains(searchTermToLower)).ToList(); 
+        }
+
+        if (latitude != null && longitude!=null)
+        {
+            double userLatitude = double.Parse(latitude);
+            double userLongitude = double.Parse(longitude);
+
+            businesses = businesses.Where(b =>
+                b.Location != null &&
+                GetDistanceInKm(userLatitude, userLongitude, double.Parse(b.Location.Latitude), double.Parse(b.Location.Longitude)) <= radiusInKm).ToList();
         }
 
         //sorting based on passed column of business table
-        if (!string.IsNullOrEmpty(sortColumn))
-        {
-            var sorting = isAscending ? "ascending" : "descending";
+        //if (!string.IsNullOrEmpty(sortColumn))
+        //{
+        //    var sorting = isAscending ? "ascending" : "descending";
 
-            var businessProperty = typeof(Business).GetProperty(sortColumn);
+        //    var businessProperty = typeof(Business).GetProperty(sortColumn);
 
-            if (businessProperty != null && businessProperty.PropertyType == typeof(string))
-            {
-                businesses = businesses.OrderBy($"{sortColumn}.ToLower() {sorting}");
-            }
-            else
-            {
-                businesses = businesses.OrderBy($"{sortColumn} {sorting}");
-            }
-        }
+        //    if (businessProperty != null && businessProperty.PropertyType == typeof(string))
+        //    {
+        //        businesses = businesses.OrderBy($"{sortColumn}.ToLower() {sorting}").ToList();
+        //    }
+        //    else
+        //    {
+        //        businesses = businesses.OrderBy($"{sortColumn} {sorting}");
+        //    }
+        //}
 
         // Execute the query to count total business
-        var businessCount = await businesses.CountAsync();
+        var businessCount = businesses.Count;
         
         var totalPages = (int)Math.Ceiling(businessCount / (double)pageSize);
 
-        var paginatedBook = await businesses.Skip((pageNumber - 1) * pageSize)
-                                     .Take(pageSize)
-                                     .ToListAsync();
+        var paginatedBook = businesses.Skip((pageNumber - 1) * pageSize)
+                                     .Take(pageSize);
 
         var businessResponseList = _mapper.Map<List<BusinessResponseDto>>(paginatedBook);
 
@@ -103,6 +116,28 @@ public class BusinessController : ControllerBase
     }
 
     #endregion
+
+    // Haversine formula to calculate distance in kilometers
+    private static double GetDistanceInKm(double lat1, double lon1, double lat2, double lon2)
+    {
+        const double EarthRadius = 6371; // Earth's radius in kilometers
+
+        var dLat = DegreesToRadians(lat2 - lat1);
+        var dLon = DegreesToRadians(lon2 - lon1);
+
+        var a = Math.Sin(dLat / 2) * Math.Sin(dLat / 2) +
+                Math.Cos(DegreesToRadians(lat1)) * Math.Cos(DegreesToRadians(lat2)) *
+                Math.Sin(dLon / 2) * Math.Sin(dLon / 2);
+
+        var c = 2 * Math.Atan2(Math.Sqrt(a), Math.Sqrt(1 - a));
+        return EarthRadius * c;
+    }
+
+    // Helper method to convert degrees to radians
+    private static double DegreesToRadians(double degrees)
+    {
+        return degrees * (Math.PI / 180);
+    }
 
     #region Get Business by Id
 
