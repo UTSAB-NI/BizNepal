@@ -30,7 +30,7 @@ const BusinessResult = () => {
     District: "",
     City: "",
   });
-  const [searchQuery, setSearchQuery] = useState(querySearch);
+  const [searchQuery, setSearchQuery] = useState("");
   const [feedback, setFeedback] = useState("");
   const [pageNumber, setPageNumber] = useState(1); // Track the current page
   const [pageSize, setPageSize] = useState(10); // Page size
@@ -177,9 +177,7 @@ const BusinessResult = () => {
           </Card.Body>
         </Link>
         <div className="d-flex justify-content-between m-3">
-          <Link to={`/business/${business.businessId}`}>
-            <Button>View Details</Button>
-          </Link>
+          <Link to={`/business/${business.businessId}`}></Link>
         </div>
       </Card>
     ));

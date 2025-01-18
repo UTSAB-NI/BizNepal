@@ -5,15 +5,22 @@ using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using Microsoft.EntityFrameworkCore;
 using AutoMapper;
+using BizNepal.Server.Services;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
+using BizNepal.Server.Interface;
+using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace BizNepal.Server.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class ReviewController(ApplicationDbContext context, IMapper mapper) : ControllerBase
+public class ReviewController(ApplicationDbContext context, IMapper mapper, IEmailService emailService) : ControllerBase
 {
     private readonly ApplicationDbContext _context = context;
+    private readonly IEmailService _emailService = emailService;
     private readonly IMapper _mapper = mapper;
+
 
     #region Create Review
     [HttpPost("Create")]
@@ -49,10 +56,53 @@ public class ReviewController(ApplicationDbContext context, IMapper mapper) : Co
 
         await UpdateBusinessRating(BusinessId);
 
+        
+         var business = await _context.Businesses.FindAsync(BusinessId);
+        if (business != null)
+        {
+            string to = $"{business.CreatedBy}"; 
+            string subject = "New Review Submitted for Your Business";
+            string body = $@"
+            <h2>New Review for {business.BusinessName}</h2>
+            <p><strong>Rating:</strong> {addReviewDto.Rating}</p>
+            <p><strong>Comment:</strong> {addReviewDto.Comment}</p>
+            <p><strong>Submitted by:</strong> {currentUserEmail}</p>
+            <p>Check it out on your dashboard!</p>
+            ";
+
+            await _emailService.SendEmailAsync(to, subject, body);
+        }
+
         return Ok(review);
     }
 
     #endregion
+
+    [HttpGet("send-mail")]
+    public async Task<IActionResult> SendMail()
+    {
+
+        string to = "utsabsingh170@gmail.com";
+        string subject = "New Review Submitted for Your Business";
+        string body = $@"
+            <h2>New Review for /h2>
+            <p><strong>Rating:</strong> </p>
+            <p><strong>Comment:</strong> </p>
+            <p><strong>Submitted by:</strong></p>
+            <p>Check it out on your dashboard!</p>
+            ";
+        try
+        {
+            await _emailService.SendEmailAsync(to, subject, body);
+            return Ok("Mail send successfully");
+
+        }
+        catch (Exception e)
+        {
+            return NotFound(e.Message);
+        }
+    }
+
 
     #region GetAll Reiview
     [HttpGet]

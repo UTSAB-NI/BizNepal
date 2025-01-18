@@ -2,8 +2,6 @@ import React, { useState } from "react";
 import { Form, Button, Card, Row, Col, Alert } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-// Sentiment analysis API slices
-import { usePostSentimentMutation } from "../slices/sentimentApiSlices";
 // User API slices
 import {
   useCreateReviewMutation,
@@ -48,19 +46,6 @@ const CreateReview = ({ businessId }) => {
     refetch,
   } = useGetUserReviewQuery();
 
-  const [postSentiment] = usePostSentimentMutation();
-
-  const SentimentHandler = async (comment) => {
-    try {
-      const response = await postSentiment({ reviews: [comment] }).unwrap();
-      console.log("Sentiment response:", response);
-      setSentiment(response.sentiment); // Update sentiment state with response
-    } catch (error) {
-      console.error("Error fetching sentiment:", error);
-      setSentiment(null); // Clear sentiment if there's an error
-    }
-  };
-
   // Create review mutation
   const [createReview, { isLoading: createReviewLoading }] =
     useCreateReviewMutation();
@@ -77,11 +62,10 @@ const CreateReview = ({ businessId }) => {
 
     try {
       // Handle the sentiment analysis before submitting the review
-      await SentimentHandler(comment);
 
       const reviewData = { businessId, comment, rating, sentiment };
       const response = await createReview(reviewData).unwrap();
-      refetch();
+      window.location.reload();
       setComment("");
       setRating(1);
       setFeedback("Review submitted successfully!");
@@ -172,25 +156,27 @@ const CreateReview = ({ businessId }) => {
                 Error fetching reviews. Please try again later.
               </div>
             ) : filteredReviews.length > 0 ? (
-              filteredReviews.map((review) => (
-                <Card key={review.reviewId} className="mb-3 p-3">
-                  <div className="d-flex justify-content-between align-items-center">
-                    <div className="d-flex align-items-center gap-2">
-                      <FaUserCircle className="fs-4 text-muted" />
-                      <strong>{review.createdBy}</strong>
-                      <span className="text-muted ms-2">
-                        {new Date(review.createdAt).toLocaleDateString()}
-                      </span>
+              filteredReviews.map((review) => {
+                return (
+                  <Card key={review.reviewId} className="mb-3 p-3">
+                    <div className="d-flex justify-content-between align-items-center">
+                      <div className="d-flex align-items-center gap-2">
+                        <FaUserCircle className="fs-4 text-muted" />
+                        {/* <strong>{userdata?.userName}</strong> */}
+                        <span className="text-muted ms-2">
+                          {new Date(review.createdAt).toLocaleDateString()}
+                        </span>
+                      </div>
+                      <StarRating
+                        rating={review.rating}
+                        size="fs-6"
+                        editable={false}
+                      />
                     </div>
-                    <StarRating
-                      rating={review.rating}
-                      size="fs-6"
-                      editable={false}
-                    />
-                  </div>
-                  <p className="mt-2">{review.comment}</p>
-                </Card>
-              ))
+                    <p className="mt-2">{review.comment}</p>
+                  </Card>
+                );
+              })
             ) : (
               <div className="text-center text-muted">No reviews available</div>
             )}

@@ -45,5 +45,9 @@ public class Business : AuditModel
     [JsonIgnore]
     public ICollection<Review>? Reviews { get; set; } =new List<Review>();
 
+    [JsonIgnore]
+    public ICollection<PageVisit> PageVisits { get; set; }
+    public int TotalVisits { get; set; }
+
 
 }

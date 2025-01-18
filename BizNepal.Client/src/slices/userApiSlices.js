@@ -221,6 +221,12 @@ const userApiSlice = apiSlice.injectEndpoints({
         method: "DELETE",
       }),
     }),
+    businessAnalytics: builder.query({
+      query: (businessId) => ({
+        url: `${BUSINESS_URL}/${businessId}/analytics`,
+        method: "GET",
+      }),
+    }),
   }),
 });
 
@@ -250,4 +256,5 @@ export const {
   useGetBookmarkedQuery,
   useCreateBookmarkMutation,
   useDeleteBookmarksMutation,
+  useBusinessAnalyticsQuery,
 } = userApiSlice;

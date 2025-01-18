@@ -5,19 +5,23 @@ import {
   useGetbusinessByIdQuery,
   useGetBookmarkedQuery,
   useCreateBookmarkMutation,
+  useBusinessAnalyticsQuery,
 } from "../slices/userApiSlices";
 import Loader from "../Component/Loader";
 import CreateReview from "../Component/CreateReview";
 import BusinessMap from "../Component/BusinessMap";
 import BusinessReviewGraph from "../Component/BusinessReviewGraph";
 import "../Customcss/getbusinessbyid.css"; // Custom CSS for styling
+import SentimentMeter from "../Component/SentimentMeter"; // Import the SentimentMeter component
+import LineChartComponent from "../Component/Admin/LineGraph"; // Import the LineChartComponent component
 
 const API_BASE_URL = "https://localhost:5000";
 
 const GetBusinessByIdScreen = () => {
-  const [Feedback, setFeedback] = useState(false);
-  const [FeedbackType, setFeedbackType] = useState();
+  const [feedback, setFeedback] = useState(false);
+  const [feedbackType, setFeedbackType] = useState();
   const { id: businessid } = useParams();
+
   const {
     data: businessdatabyid,
     isLoading,
@@ -25,85 +29,92 @@ const GetBusinessByIdScreen = () => {
     refetch,
   } = useGetbusinessByIdQuery(businessid);
 
+  const {
+    data: businessAnalyticsData,
+    isLoading: analyticsLoading,
+    isError: analyticsError,
+  } = useBusinessAnalyticsQuery(businessid);
+
   const [
     createBookmark,
     { isLoading: bookmarkLoading, isError: bookmarkError },
-  ] = useCreateBookmarkMutation(); // Bookmark Mutation Function from API Slice to create Bookmark
+  ] = useCreateBookmarkMutation();
 
-  const { data: bookmarkData } = useGetBookmarkedQuery(); // Bookmark Query Function from API Slice to get Bookmarked Data
+  const { data: bookmarkData } = useGetBookmarkedQuery();
 
-  const [BookmarkedBusinessID, setBookmarkedBusinessID] = useState(
-    bookmarkData?.map((bookmark) => bookmark.businessId)
-  );
+  const [bookmarkedBusinessID, setBookmarkedBusinessID] = useState([]);
 
-  console.log("BookmarkedBusinessID", BookmarkedBusinessID);
-  console.log(BookmarkedBusinessID?.includes(businessid));
+  useEffect(() => {
+    if (bookmarkData) {
+      setBookmarkedBusinessID(
+        bookmarkData.map((bookmark) => bookmark.businessId)
+      );
+    }
+  }, [bookmarkData]);
 
   useEffect(() => {
     if (isError) {
       setFeedback(
         businessdatabyid?.message || "An error occurred. Please try again later"
       );
+      setFeedbackType("danger");
     }
   }, [isError, businessdatabyid]);
 
-  useEffect(() => {
-    if (bookmarkData) {
-      setBookmarkedBusinessID(
-        bookmarkData?.map((bookmark) => bookmark.businessId)
-      );
-    }
-  }, [bookmarkData]);
-
   const imageUrl = `${API_BASE_URL}${businessdatabyid?.businessImages[0]?.imageUrl}`;
-  // const imageUrl = "/images/image.png";
 
-  const BookmarkController = async (businessid) => {
+  const handleBookmark = async (businessid) => {
     try {
       const response = await createBookmark(businessid).unwrap();
       setFeedback(response?.message || "Bookmark Added Successfully");
       setFeedbackType("success");
-      // Update the bookmarked business ID state
-      setBookmarkedBusinessID((prevState) => [...prevState, businessid]);
-      console.log("BookmarkControllersresponse", response);
     } catch (error) {
-      console.log("Error", error);
       setFeedback("Bookmark Added Failed");
       setFeedbackType("danger");
     }
   };
 
+  if (isLoading || analyticsLoading) {
+    return <Loader />;
+  }
+
+  if (isError || analyticsError) {
+    return (
+      <Alert variant="danger">An error occurred. Please try again later.</Alert>
+    );
+  }
+
   return (
     <Container className="business-container">
-      {isLoading && <Loader />}
-      {Feedback && (
+      {feedback && (
         <Alert
-          variant={FeedbackType}
+          variant={feedbackType}
           onClose={() => setFeedback("")}
           dismissible
         >
-          {Feedback}
+          {feedback}
         </Alert>
       )}
+
       {businessdatabyid && (
         <>
           {/* Hero Section */}
           <div className="hero-section">
             <Image src={imageUrl} alt="Business" className="hero-image" />
-            <div className="hero-overlay ">
+            <div className="hero-overlay">
+              <button
+                className="bookmark-button"
+                onClick={() => handleBookmark(businessid)}
+                disabled={bookmarkedBusinessID.includes(businessid)}
+              >
+                <i className="fas fa-bookmark me-2"></i>
+                Bookmark
+              </button>
               <h1>{businessdatabyid.businessName}</h1>
               <div className="d-flex align-items-center mb-3">
                 <p className="mb-0 mx-2">
                   {businessdatabyid.category.categoryName}
                 </p>
-                <button
-                  className="bookmark-button"
-                  onClick={() => BookmarkController(businessid)}
-                  disabled={BookmarkedBusinessID?.includes(businessid)}
-                >
-                  <i className="fas fa-bookmark me-2"></i>
-                  Bookmark
-                </button>
               </div>
             </div>
           </div>
@@ -112,7 +123,8 @@ const GetBusinessByIdScreen = () => {
           <Row className="g-4">
             <Col md={4}>
               <div className="business-card p-4">
-                <h3 className="mb-4">Business Information</h3>
+                <h3>About {businessdatabyid.businessName}</h3>
+                <p className="lead">{businessdatabyid.description}</p>
 
                 {/* Location */}
                 <div className="info-row d-flex align-items-center mb-4">
@@ -159,6 +171,19 @@ const GetBusinessByIdScreen = () => {
                   </div>
                 </div>
 
+                {/* Views */}
+                <div className="info-row d-flex align-items-center mb-4">
+                  <div className="info-icon">
+                    <i className="fas fa-eye"></i>
+                  </div>
+                  <div>
+                    <small className="text-muted">Views</small>
+                    <div className="fw-bold">
+                      {businessdatabyid.totalVisits}
+                    </div>
+                  </div>
+                </div>
+
                 {/* Get Directions Button */}
                 <Button
                   className="action-button w-100"
@@ -176,84 +201,40 @@ const GetBusinessByIdScreen = () => {
             </Col>
 
             <Col md={8}>
-              <div className="business-card p-4">
-                {/* Map Container */}
-                <div className="map-container">
-                  <BusinessMap
-                    latitude={businessdatabyid.location.latitude}
-                    longitude={businessdatabyid.location.longitude}
-                  />
-                </div>
-
-                {/* About Business */}
-                <h3>About {businessdatabyid.businessName}</h3>
-                <p className="lead">{businessdatabyid.description}</p>
-              </div>
+              <SentimentMeter businessId={businessid} />
             </Col>
           </Row>
 
-          {/* Sentiment Meter */}
-          <div className="sentiment-meter">
-            <h3 className="text-center mb-4">Customer Satisfaction Index</h3>
-            <Row className="g-4">
-              <Col md={4}>
-                <div className="stats-card">
-                  <div
-                    className="satisfaction-circle"
-                    style={{ "--percentage": "75%" }}
-                  >
-                    75%
-                  </div>
-                  <h4>Positive Reviews</h4>
-                  <p className="satisfaction-label">Customer Satisfaction</p>
-                </div>
-              </Col>
-              <Col md={4}>
-                <div className="stats-card">
-                  <div
-                    className="satisfaction-circle"
-                    style={{ "--percentage": "15%" }}
-                  >
-                    15%
-                  </div>
-                  <h4>Neutral Reviews</h4>
-                  <p className="satisfaction-label">Average Experience</p>
-                </div>
-              </Col>
-              <Col md={4}>
-                <div className="stats-card">
-                  <div
-                    className="satisfaction-circle"
-                    style={{ "--percentage": "10%" }}
-                  >
-                    10%
-                  </div>
-                  <h4>Areas to Improve</h4>
-                  <p className="satisfaction-label">
-                    Improvement Opportunities
-                  </p>
-                </div>
-              </Col>
-            </Row>
-          </div>
-
           {/* Reviews and Analytics */}
           <Row className="g-4">
-            <Col md={6}>
-              <div className="review-section">
-                <h3>Share Your Experience</h3>
-                <div className="review-form">
-                  <CreateReview businessId={businessdatabyid.businessId} />
-                </div>
-              </div>
-            </Col>
             <Col md={6}>
               <div className="review-section">
                 <h3>Review Analytics</h3>
                 <BusinessReviewGraph reviews={businessdatabyid.reviews} />
               </div>
             </Col>
+            <Col md={6}>
+              <div className="review-section">
+                <LineChartComponent
+                  data={businessAnalyticsData?.visitsByDate.map(
+                    (data) => data.count
+                  )}
+                  labels={businessAnalyticsData?.visitsByDate.map((data) =>
+                    new Date(data.date).toLocaleDateString("en-CA")
+                  )}
+                  grapheader="Visits By Date"
+                />
+              </div>
+            </Col>
           </Row>
+
+          {/* Review Section */}
+          <div className="review-section">
+            <h3>Share Your Experience</h3>
+            <div className="review-form">
+              <CreateReview businessId={businessdatabyid.businessId} />
+            </div>
+          </div>
         </>
       )}
     </Container>
