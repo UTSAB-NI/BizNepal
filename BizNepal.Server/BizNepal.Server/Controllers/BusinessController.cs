@@ -40,7 +40,7 @@ public class BusinessController : ControllerBase
                                        bool isAscending = true,
                                        string? latitude = null,
                                        string? longitude = null,
-                                       double radiusInKm = 2
+                                       double? radiusInKm = null
                                        )
     {
         // searchTerm to lower case
@@ -67,7 +67,7 @@ public class BusinessController : ControllerBase
             businesses = businesses.Where(b => b.BusinessName.ToLower().Contains(searchTermToLower)).ToList(); 
         }
 
-        if (latitude != null && longitude!=null)
+        if (!string.IsNullOrEmpty(latitude) && !string.IsNullOrEmpty(longitude))
         {
             double userLatitude = double.Parse(latitude);
             double userLongitude = double.Parse(longitude);
