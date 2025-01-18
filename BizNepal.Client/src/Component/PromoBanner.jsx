@@ -1,7 +1,7 @@
 import React from "react";
 
 import { MDBContainer } from "mdb-react-ui-kit";
-import Carasoule from "./Carasoule";
+// import Carasoule from "./Carasoule";
 import PromoVideo from "./PromoVideo";
 import "../Customcss/PromoBanner.css";
 
