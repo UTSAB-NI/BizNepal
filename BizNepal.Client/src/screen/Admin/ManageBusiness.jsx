@@ -69,7 +69,6 @@ const ManageBusiness = () => {
           if (confirmDelete) {
             try {
               const res = await deletebusiness(businessid);
-              console.log(res);
               setFeedback("Business deleted successfully");
               setFeedbackType("success");
               refetch();
@@ -85,7 +84,6 @@ const ManageBusiness = () => {
           const business = allbusinessData.items.find(
             (b) => b.businessId === businessid
           );
-          console.log(business);
           handleEditClick(business);
         }
       };
@@ -121,7 +119,6 @@ const ManageBusiness = () => {
         website,
       });
 
-      console.log(res);
       if (res.error) {
         setFeedback("Failed to update business");
         setFeedbackType("danger");

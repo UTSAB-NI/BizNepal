@@ -49,7 +49,6 @@ const EditProfile = () => {
 
   const handleProfileUpdate = async (event) => {
     event.preventDefault();
-    console.log(formData);
 
     try {
       const res = await updateUser({ ...formData }).unwrap();

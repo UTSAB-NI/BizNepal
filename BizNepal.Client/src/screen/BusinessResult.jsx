@@ -49,8 +49,6 @@ const BusinessResult = () => {
     isAscending: true,
   });
 
-  console.log("API Response:", paginatedBusinessData);
-
   useEffect(() => {
     if (paginatedBusinessData && paginatedBusinessData.items) {
       const filteredData = paginatedBusinessData.items.filter((item) => {
@@ -80,7 +78,6 @@ const BusinessResult = () => {
         return matchesSearch && matchesRating && matchesDistrict && matchesCity;
       });
 
-      console.log("Filtered Data:", filteredData);
       setBusinessData(filteredData);
       setLoading(false); // Stop loading once filtering is done
     }

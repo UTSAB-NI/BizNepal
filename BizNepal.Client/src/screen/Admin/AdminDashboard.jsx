@@ -25,7 +25,6 @@ const AdminDashboard = () => {
     pageNumber: 1, // Assuming you're loading all businesses at once
     isAscending: true,
   });
-  console.log(business);
   const {
     data: categories,
     isLoading: isCategoriesLoading,
@@ -85,7 +84,6 @@ const AdminDashboard = () => {
 
   //store the date and count in separate arrays
   const users_dates = Object.keys(userCountByDate).sort();
-  console.log(users_dates);
   const noof_users = users_dates.map((date) => userCountByDate[date]);
 
   return (

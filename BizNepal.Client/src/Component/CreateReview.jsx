@@ -81,8 +81,6 @@ const CreateReview = ({ businessId }) => {
     (review) => review.businessId === businessId
   );
 
-  console.log("filteredReviews", filteredReviews);
-
   return (
     <>
       {/* Review Form */}

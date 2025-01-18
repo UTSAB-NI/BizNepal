@@ -37,7 +37,6 @@ const ResponsiveSidebarProfile = () => {
     : "Guest";
 
   const { data: userData } = useGetUserByIdQuery(Id);
-  console.log("userData", userData);
   return (
     <div>
       {/* Open Sidebar Button (Avatar Image) */}

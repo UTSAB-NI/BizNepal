@@ -21,13 +21,11 @@ const AllReview = () => {
     error: reviewError,
     isLoading: reviewLoading,
   } = useGetcreatedbusinessByUserQuery(userId);
-  console.log("createdBusiness", createdBusiness);
 
   const businessReview = createdBusiness?.map(
     (business) => business?.reviews
   );
   
-  console.log("businessReview", businessReview);
 
   const {
     data: userReview,

@@ -28,7 +28,6 @@ const AllUser = () => {
 
   // Fetch users using RTK Query
   const { data, error, isLoading, refetch } = useGetAlluserQuery();
-  console.log(data);
 
   // Delete mutation
   const [deleteUser, { isLoading: deleteLoading }] =

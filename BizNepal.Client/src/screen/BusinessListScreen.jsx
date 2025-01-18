@@ -111,11 +111,11 @@ const BusinessListScreen = () => {
       formData.append("Images", image);
     });
 
-    console.log("Form Data: " + formData);
+
     // Debugging
-    for (let pair of formData.entries()) {
-      console.log(pair[0] + ": " + pair[1]);
-    }
+    // for (let pair of formData.entries()) {
+    //   console.log(pair[0] + ": " + pair[1]);
+    // }
 
     try {
       const response = await listbusiness(formData).unwrap();

@@ -51,7 +51,6 @@ const ProfilePage = () => {
   const [userType, setUserType] = useState("general");
   const [activeTab, setActiveTab] = useState("posts");
 
-  console.log("User Data", userData);
   useEffect(() => {
     if (userData) {
       setUser(userData);

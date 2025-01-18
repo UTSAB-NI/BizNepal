@@ -4,8 +4,6 @@ import "../Customcss/categoryCard.css"; // Custom CSS for styling
 const API_BASE_URL = "https://localhost:5000";
 const CategoryCard = ({ iconPath, categoryName }) => {
   const imageUrl = `${API_BASE_URL}${iconPath}`;
-  console.log(imageUrl);
-
   return (
     <div className="category-card">
       <div className="category-icon-container">

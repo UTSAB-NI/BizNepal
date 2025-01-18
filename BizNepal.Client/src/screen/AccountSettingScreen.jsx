@@ -30,7 +30,6 @@ const AccountSettings = () => {
       currentPassword,
       newPassword,
     };
-    console.log(formdata);
     // Basic validation
     if (newPassword !== confirmPassword) {
       setFeedback("New passwords do not match");

@@ -36,7 +36,6 @@ const GeneralUser = () => {
 
   // console.log(data);
   const GeneralUser = data?.filter((user) => user.roles[0] === "GeneralUser");
-  console.log(GeneralUser);
 
   useEffect(() => {
     const table = document.querySelector("table");

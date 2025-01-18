@@ -120,7 +120,6 @@ const ManageCategory = () => {
     if (iconImage) {
       formData.append("iconImage", iconImage); // Attach the new image if it's provided
     }
-    console.log(formData);
     try {
       await editCategory({ categoryId: selectedCategoryId, data: formData }); // Assuming mutation can handle FormData
       setFeedback("Category updated successfully!");

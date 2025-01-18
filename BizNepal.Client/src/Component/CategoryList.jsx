@@ -19,9 +19,6 @@ const CategoryList = () => {
   if (isLoading) return <p>Loading categories...</p>;
   if (error) return <p>Error loading categories</p>;
 
-  // console.log(data);
-  console.log(Categorydata);
-
   return (
     <div>
       <MDBContainer

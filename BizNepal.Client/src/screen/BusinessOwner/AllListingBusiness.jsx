@@ -90,7 +90,6 @@ const AllListingBusiness = () => {
         website,
       }).unwrap();
 
-      console.log(response);
       setFeedbackType("success");
       setFeedback("Business updated successfully!");
       refetch(); // Refetch business data

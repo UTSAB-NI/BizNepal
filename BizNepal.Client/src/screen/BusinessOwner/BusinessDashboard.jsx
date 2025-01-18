@@ -26,7 +26,6 @@ const BusinessDashboard = () => {
     isLoading: businessLoading,
     error: businessError,
   } = useGetcreatedbusinessByUserQuery(userId);
-  // console.log(businessData);
   const {
     data: reviewData,
     isLoading: reviewLoading,

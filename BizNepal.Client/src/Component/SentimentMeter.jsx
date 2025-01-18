@@ -5,7 +5,6 @@ import Loader from "./Loader";
 import Error from "./Error";
 
 const SentimentMeter = ({ businessId }) => {
-  console.log("businessId", businessId);
   const [sentimentData, setSentimentData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -69,11 +68,8 @@ const SentimentMeter = ({ businessId }) => {
           ? 50
           : 0;
       updateMeter(sentimentValue);
-      console.log("sentiment", sentimentValue);
     }
   }, [sentimentData]);
-
-  console.log("sentimentData", sentimentData);
 
   return (
     <div className="sentiment-container">
