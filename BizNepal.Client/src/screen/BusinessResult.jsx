@@ -17,39 +17,44 @@ import {
   useGetAllCategoriesQuery,
 } from "../slices/userApiSlices";
 import districtofNepal from "../data/Districtofnepal";
-import GetNearbyBusiness from "../Component/GetNearbyBusiness";
 import "../Customcss/Test.css";
 
 const API_BASE_URL = "https://localhost:5000";
 
 const BusinessResult = () => {
-  const { category: categoryParam } = useParams(); // Renamed to avoid conflict with state
+  const { category: categoryParam } = useParams();
   const { search } = useLocation();
   const searchParams = new URLSearchParams(search);
   const querySearch = searchParams.get("search") || "";
 
-  const [BusinessData, setBusinessData] = useState([]); // To store the final filtered data
+  const [BusinessData, setBusinessData] = useState([]);
   const [filters, setFilters] = useState({
     ratings: [],
+    search: querySearch,
     District: "",
-    City: "",
-    category: categoryParam || "", // Add category to filters
+    category: categoryParam || "",
+    latitude: "",
+    longitude: "",
+    radiusInKm: "",
   });
-  const [searchQuery, setSearchQuery] = useState("");
+  console.log("Filters", filters);
   const [feedback, setFeedback] = useState("");
-  const [pageNumber, setPageNumber] = useState(1); // Track the current page
-  const [pageSize, setPageSize] = useState(10); // Page size
-  const [loading, setLoading] = useState(false); // Loading state
-  const [userLocation, setUserLocation] = useState({ lat: null, lng: null }); // Store user's location
-  const [distance, setDistance] = useState(""); // Distance filter
+  const [pageNumber, setPageNumber] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
+  const [loading, setLoading] = useState(false);
+  const [shouldSendLocation, setShouldSendLocation] = useState(false); // New state to control location sending
 
-  // Request user's location on component mount
+  // Fetch user's location on component mount but don't use it until the user searches
   useEffect(() => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
           const { latitude, longitude } = position.coords;
-          setUserLocation({ lat: latitude, lng: longitude });
+          setFilters((prevFilters) => ({
+            ...prevFilters,
+            latitude,
+            longitude,
+          }));
         },
         (error) => {
           console.error("Error fetching location:", error);
@@ -63,97 +68,38 @@ const BusinessResult = () => {
     }
   }, []);
 
-  console.log("userLat", userLocation.lat);
-  console.log("userLng", userLocation.lng);
-
-  // Call useGetbusinessQuery with updated query parameters
+  // API query, only send location if shouldSendLocation is true
   const {
     data: paginatedBusinessData,
     error,
     isLoading,
-    refetch, // Function to manually refetch data
+    refetch,
   } = useGetbusinessQuery({
-    category: filters.category || "", // Use category from filters
-    searchTerm: querySearch || "",
+    category: filters.category,
+    searchTerm: filters.search,
     pageSize,
     pageNumber,
     isAscending: true,
-    latitude: userLocation.lat, // Add latitude
-    longitude: userLocation.lng, // Add longitude
-    radiusInKm: distance || "", // Add distance
+    latitude: shouldSendLocation ? filters.latitude : "",
+    longitude: shouldSendLocation ? filters.longitude : "",
+    radiusInKm: filters.radiusInKm,
+    district: filters.District,
+    ratings: filters.ratings,
   });
-
-  const {
-    data: categoryData,
-    error: categoryError,
-    isLoading: categoryLoading,
-  } = useGetAllCategoriesQuery();
-
-  useEffect(() => {
-    if (paginatedBusinessData && paginatedBusinessData.items) {
-      const filteredData = paginatedBusinessData.items.filter((item) => {
-        const matchesSearch = searchQuery
-          ? item.businessName?.toLowerCase().includes(searchQuery.toLowerCase())
-          : true;
-
-        const matchesRating =
-          filters.ratings.length > 0
-            ? filters.ratings.some(
-                (rating) => Math.floor(item.overallRating) === Number(rating)
-              )
-            : true;
-
-        const matchesDistrict = filters.District
-          ? item.address?.district
-              ?.toLowerCase()
-              .includes(filters.District.toLowerCase())
-          : true;
-
-        const matchesCity = filters.City
-          ? item.address?.city
-              ?.toLowerCase()
-              .includes(filters.City.toLowerCase())
-          : true;
-
-        const matchesCategory = filters.category
-          ? item.category?.categoryName
-              ?.toLowerCase()
-              .includes(filters.category.toLowerCase())
-          : true;
-
-        return (
-          matchesSearch &&
-          matchesRating &&
-          matchesDistrict &&
-          matchesCity &&
-          matchesCategory
-        );
-      });
-      setBusinessData(filteredData);
-      setLoading(false); // Stop loading once filtering is done
-    }
-  }, [paginatedBusinessData, filters, searchQuery]);
-
-  // Handle page size change
-  const handlePageSizeChange = (event) => {
-    setPageSize(Number(event.target.value));
-    setPageNumber(1); // Reset to page 1 when page size changes
+  console.log("Data", paginatedBusinessData);
+  const { data: categoryData } = useGetAllCategoriesQuery();
+  const submitFilters = (e) => {
+    const { name, value } = e.target;
+    setFilters((prevFilters) => ({
+      ...prevFilters,
+      [name]: value,
+    }));
   };
 
-  // Handle page number change
-  const handlePageNumberChange = (page) => {
-    setPageNumber(page);
+  const handleSearch = () => {
+    setShouldSendLocation(true); // Enable sending location
+    refetch(); // Manually trigger the API query
   };
-
-  // Clear all filters
-  const clearFilters = () => {
-    setFilters({ ratings: [], District: "", City: "", category: "" });
-    setSearchQuery("");
-    setDistance("");
-    setPageNumber(1);
-  };
-
-  // Toggle rating filter
   const toggleRating = (rating) => {
     setFilters((prevFilters) => {
       const updatedRatings = prevFilters.ratings.includes(rating)
@@ -162,23 +108,21 @@ const BusinessResult = () => {
       return { ...prevFilters, ratings: updatedRatings };
     });
   };
-
-  // Handle category filter change
-  const handleCategoryChange = (e) => {
-    setFilters({ ...filters, category: e.target.value });
+  const clearFilters = () => {
+    setFilters({
+      ratings: [],
+      District: "",
+      category: "",
+      latitude: "",
+      longitude: "",
+      radiusInKm: "",
+      search: "",
+    });
+    setPageNumber(1);
+    setShouldSendLocation(false); // Disable sending location
+    refetch();
   };
 
-  // Handle distance filter change
-  const handleDistanceChange = (e) => {
-    setDistance(e.target.value);
-  };
-
-  // Handle manual API call
-  const handleSearch = () => {
-    refetch(); // Manually refetch data with updated query parameters
-  };
-
-  // Render businesses
   const renderBusinesses = () => {
     if (isLoading || loading) {
       return (
@@ -195,11 +139,11 @@ const BusinessResult = () => {
       );
     }
 
-    if (!BusinessData || BusinessData.length === 0) {
-      return <p className="text-center text-muted">No businesses found.</p>;
-    }
+    // if (!BusinessData || BusinessData.length === 0) {
+    //   return <p className="text-center text-muted">No businesses found.</p>;
+    // }
 
-    return BusinessData.map((business, index) => (
+    return paginatedBusinessData?.items?.map((business, index) => (
       <Card className="mb-3 business-card shadow" key={index}>
         <Link
           to={`/business/${business.businessId}`}
@@ -239,20 +183,14 @@ const BusinessResult = () => {
             </div>
           </Card.Body>
         </Link>
-        <div className="d-flex justify-content-between m-3">
-          <Link to={`/business/${business.businessId}`}></Link>
-        </div>
       </Card>
     ));
   };
-
-  // Render pagination with page size dropdown
   const renderPagination = () => {
     const totalItems = paginatedBusinessData?.totalCount || 0;
     const totalPages =
       paginatedBusinessData?.totalPage || Math.ceil(totalItems / pageSize);
 
-    // Do not render pagination if there's only one page or no data
     if (totalPages <= 1 || totalItems === 0) {
       return null;
     }
@@ -264,23 +202,24 @@ const BusinessResult = () => {
 
     return (
       <div className="d-flex flex-column align-items-center mt-4">
-        {/* Pagination Controls */}
         <Pagination className="mb-3">
           <Pagination.Prev
-            onClick={() => handlePageNumberChange(pageNumber - 1)}
+            onClick={() => setPageNumber((prev) => Math.max(prev - 1, 1))}
             disabled={pageNumber === 1}
           />
           {pageNumbers.map((page) => (
             <Pagination.Item
               key={page}
               active={page === pageNumber}
-              onClick={() => handlePageNumberChange(page)}
+              onClick={() => setPageNumber(page)}
             >
               {page}
             </Pagination.Item>
           ))}
           <Pagination.Next
-            onClick={() => handlePageNumberChange(pageNumber + 1)}
+            onClick={() =>
+              setPageNumber((prev) => Math.min(prev + 1, totalPages))
+            }
             disabled={pageNumber === totalPages}
           />
         </Pagination>
@@ -294,22 +233,23 @@ const BusinessResult = () => {
         <Col md={3} className="filter-section">
           <Card className="filter-card shadow">
             <h3 className="m-3 filter-head">Filter Businesses</h3>
+
             <Form.Group>
               <Form.Control
                 type="text"
+                name="search"
                 placeholder="Search businesses..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
+                value={filters.search}
+                onChange={submitFilters}
               />
             </Form.Group>
 
             <Form.Group className="mt-3">
               <Form.Label>District</Form.Label>
               <Form.Select
+                name="District"
                 value={filters.District}
-                onChange={(e) =>
-                  setFilters({ ...filters, District: e.target.value })
-                }
+                onChange={submitFilters}
               >
                 <option value="">All Districts</option>
                 {districtofNepal.map((district, index) => (
@@ -323,8 +263,9 @@ const BusinessResult = () => {
             <Form.Group className="mt-3">
               <Form.Label>Category</Form.Label>
               <Form.Select
+                name="category"
                 value={filters.category}
-                onChange={handleCategoryChange}
+                onChange={submitFilters}
               >
                 <option value="">All Categories</option>
                 {categoryData?.map((category, index) => (
@@ -339,17 +280,14 @@ const BusinessResult = () => {
               <Form.Label>Distance (km)</Form.Label>
               <Form.Control
                 type="number"
+                name="radiusInKm"
                 placeholder="Enter distance"
-                value={distance}
-                onChange={handleDistanceChange}
+                value={filters.radiusInKm}
+                onChange={submitFilters}
                 min={1}
                 max={5}
               />
             </Form.Group>
-
-            {/* Pass user's location to GetNearbyBusiness */}
-            {/* <GetNearbyBusiness lat={userLocation.lat} lng={userLocation.lng} /> */}
-
             <Form.Group className="mt-3">
               <Form.Label>Rating</Form.Label>
               <div className="d-flex flex-wrap">
@@ -369,25 +307,16 @@ const BusinessResult = () => {
                 ))}
               </div>
             </Form.Group>
-
-            <Button variant="danger" className="mt-3" onClick={clearFilters}>
-              Clear Filters
-            </Button>
-
-            {/* Button to manually trigger API call */}
             <Button variant="primary" className="mt-3" onClick={handleSearch}>
               Search
+            </Button>
+            <Button variant="danger" className="mt-3" onClick={clearFilters}>
+              Clear Filters
             </Button>
           </Card>
         </Col>
 
-        {/* rendering business data  */}
         <Col md={9} className="business-section">
-          <h2 className="mb-4">
-            {filters.category || querySearch
-              ? `${filters.category || "All"} Businesses`
-              : "Businesses"}
-          </h2>
           <div className="d-flex flex-wrap">{renderBusinesses()}</div>
           {renderPagination()}
         </Col>

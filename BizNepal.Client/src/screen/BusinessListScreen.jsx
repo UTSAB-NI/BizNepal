@@ -122,7 +122,6 @@ const BusinessListScreen = () => {
       if (response?.message) {
         setFeedback("Business Added Successfully");
         setFeedbackType("success");
-        navigate("/");
       } else {
         setFeedback("Unexpected response from server.");
         setFeedbackType("warning");
