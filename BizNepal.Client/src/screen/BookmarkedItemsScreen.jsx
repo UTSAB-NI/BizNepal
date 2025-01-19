@@ -67,6 +67,7 @@ const BookmarkedItemsScreen = () => {
                 variant={FeedbackType}
                 onClose={() => setFeedback("")}
                 dismissible
+                className="my-3"
               >
                 {Feedback}
               </Alert>

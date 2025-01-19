@@ -163,7 +163,7 @@ const BusinessResult = () => {
             <Badge bg="info" className="mb-3">
               {business.category?.categoryName || "Unknown Category"}
             </Badge>
-            <p>{business.address?.city || "Unknown City"}</p>
+            <p>{business.address?.district || "Unknown City"}</p>
             <div className="d-flex flex-wrap">
               {Array.from({ length: 5 }, (_, i) => i + 1).map((star) => (
                 <span
