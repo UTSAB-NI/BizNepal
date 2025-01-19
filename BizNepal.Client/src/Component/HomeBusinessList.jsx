@@ -21,7 +21,7 @@ const BusinessListingSection = () => {
         <Col md={6} className="d-flex justify-content-center">
           <div style={{ position: "relative" }}>
             <img
-              src="https://via.placeholder.com/150x300.png?text=Phone+1"
+              src="/images/phone.jpg"
               alt="Phone 1"
               style={{
                 height: "350px",
@@ -32,7 +32,7 @@ const BusinessListingSection = () => {
               }}
             />
             <img
-              src="https://via.placeholder.com/150x300.png?text=Phone+2"
+              src="/images/phone.jpg"
               alt="Phone 2"
               style={{
                 height: "350px",

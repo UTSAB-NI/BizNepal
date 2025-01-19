@@ -1,5 +1,5 @@
 // Desc: BusinessListScreen component to add business details
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Container, Form, Button, Row, Col, Alert } from "react-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
 import { setLocation } from "../slices/getlocationSclies";
@@ -9,6 +9,7 @@ import { useGetAllCategoriesQuery } from "../slices/userApiSlices";
 import districtofNepal from "../data/Districtofnepal";
 
 import "../Customcss/Businesslist.css";
+import { use } from "react";
 
 const MyLocationMarker = ({ text }) => (
   <div>
@@ -29,8 +30,7 @@ const BusinessListScreen = () => {
   const [website, setWebsite] = useState("");
   const [phoneNumber, setPhone] = useState("");
   const [categoryName, setCategoryName] = useState("");
-  const [categoryId, setCategoryId] = useState(""); // Store categoryId
-
+  const [categoryId, setCategoryId] = useState("");
   const [Feedback, setFeedback] = useState("");
   const [FeedbackType, setFeedbackType] = useState("");
   const [images, setImages] = useState([]);
@@ -39,7 +39,7 @@ const BusinessListScreen = () => {
   const { location } = useSelector((state) => state.currentlocation);
   const { userInfo } = useSelector((state) => state.auth);
 
-  const dispatch = useDispatch(); 
+  const dispatch = useDispatch();
 
   // Fetching listbusiness mutation
   const [
@@ -144,6 +144,12 @@ const BusinessListScreen = () => {
       dispatch(setLocation({ lat, lng }));
     }
   };
+
+  //if errro scrolling to top
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [businesslisterror, Feedback]);
+
   return (
     <div className="businesslist">
       <div className="header">
