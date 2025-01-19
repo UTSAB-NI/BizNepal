@@ -29,7 +29,7 @@ const BusinessResult = () => {
   const querySearch = searchParams.get("search") || "";
 
   const [filters, setFilters] = useState({
-    ratings: [],
+    ratings: "",
     search: querySearch,
     District: "",
     category: categoryParam || "",
@@ -101,16 +101,14 @@ const BusinessResult = () => {
     refetch(); // Manually trigger the API query
   };
   const toggleRating = (rating) => {
-    setFilters((prevFilters) => {
-      const updatedRatings = prevFilters.ratings.includes(rating)
-        ? prevFilters.ratings.filter((r) => r !== rating)
-        : [...prevFilters.ratings, rating];
-      return { ...prevFilters, ratings: updatedRatings };
-    });
+    setFilters((prevFilters) => ({
+      ...prevFilters,
+      ratings: prevFilters.ratings === String(rating) ? "" : String(rating),
+    }));
   };
   const clearFilters = () => {
     setFilters({
-      ratings: [],
+      ratings: "",
       District: "",
       category: "",
       latitude: "",
@@ -297,10 +295,10 @@ const BusinessResult = () => {
                 {[1, 2, 3, 4, 5].map((rating) => (
                   <Badge
                     key={rating}
-                    bg={filters.ratings.includes(rating) ? "primary" : ""}
+                    bg={filters.ratings === String(rating) ? "primary" : ""}
                     onClick={() => toggleRating(rating)}
                     className={`me-2 m-1 pe-auto cursor-pointer border ${
-                      filters.ratings.includes(rating)
+                      filters.ratings === String(rating)
                         ? "text-white"
                         : "text-dark"
                     }`}
@@ -310,6 +308,7 @@ const BusinessResult = () => {
                 ))}
               </div>
             </Form.Group>
+
             <Button variant="primary" className="mt-3" onClick={handleSearch}>
               Search
             </Button>

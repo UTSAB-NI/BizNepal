@@ -8,7 +8,7 @@ const SentimentMeter = ({ businessId }) => {
   console.log("businessId", businessId);
   const [sentimentData, setSentimentData] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [feedback, setFeedback] = useState(null);
 
   const getSentiment = async () => {
     try {
@@ -24,8 +24,8 @@ const SentimentMeter = ({ businessId }) => {
         config
       );
       setSentimentData(data);
-    } catch (err) {
-      setError("Failed to fetch sentiment data");
+    } catch (error) {
+      setFeedback(error?.response?.data?.message);
     } finally {
       setLoading(false);
     }
@@ -80,7 +80,7 @@ const SentimentMeter = ({ businessId }) => {
       <h1>Business Sentiment Meter</h1>
 
       {loading && <Loader />}
-      {error && <Error message={error} variant="danger" />}
+      {feedback && <Error message={feedback} variant="danger" />}
 
       {sentimentData && (
         <div className="row my-3">
