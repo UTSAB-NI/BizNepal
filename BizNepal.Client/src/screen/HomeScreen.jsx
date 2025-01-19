@@ -23,7 +23,6 @@ const HomeScreen = () => {
       <InfoBar reviews={reviewData} business={businessData?.items} />
       <PopularCategory />
       <CategoryList />
-
       <HomeReviewCard reviews={reviewData} />
       <BusinessListingSection />
     </div>

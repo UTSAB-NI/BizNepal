@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Container } from "mdb-react-ui-kit";
+import { Container } from "react-bootstrap";
 // import Carasoule from "./Carasoule";
 import PromoVideo from "./PromoVideo";
 import "../Customcss/PromoBanner.css";

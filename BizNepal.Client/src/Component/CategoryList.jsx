@@ -1,5 +1,5 @@
 import React from "react";
-import { MDBContainer, MDBRow, MDBCol, MDBCard } from "mdb-react-ui-kit";
+import { Container, Row, Col, Card } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import CategoryCard from "./CategoryCard.jsx";
 import { useGetAllCategoriesQuery } from "../slices/userApiSlices.js";
@@ -24,7 +24,7 @@ const CategoryList = () => {
 
   return (
     <div>
-      <MDBContainer
+      <Container
         className="landingpage-category-container"
         style={{ marginTop: "100px", marginBottom: "100px" }}
         id="category"
@@ -35,19 +35,19 @@ const CategoryList = () => {
           {" "}
           Discover local businesses and services across various categories
         </p>
-        <MDBRow className="">
+        <Row className="">
           {Categorydata.map((c, index) => (
-            <MDBCol key={c.id} xs={6} sm={4} md={3} lg={2} className="mb-4">
-              <Link to={`/category/${c.categoryName}`}>
+            <Col key={c.id} xs={6} sm={4} md={3} lg={2} className="mb-4">
+              <Link to={`/category/${c.categoryName}`} className="text-decoration-none">
                 <CategoryCard
                   iconPath={c.iconPath}
                   categoryName={c.categoryName}
                 />
               </Link>
-            </MDBCol>
+            </Col>
           ))}
-        </MDBRow>
-      </MDBContainer>
+        </Row>
+      </Container>
     </div>
   );
 };

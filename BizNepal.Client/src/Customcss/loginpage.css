@@ -1,7 +1,9 @@
 /* General Styling */
 .login-container {
-  background-color: #f8f9fa;
+  /* background-color: #f8f9fa; */
   font-family: "Poppins", sans-serif;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  width: 100%;
 }
 
 .login-form-section {
@@ -9,6 +11,7 @@
   padding: 30px;
   border-radius: 10px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  /* border: 2px solid red; */
 }
 
 .login-info-section {
@@ -29,7 +32,7 @@
 .password-toggle-btn {
   position: absolute;
   right: 10px;
-  top: 50%;
+  top: 75%;
   transform: translateY(-50%);
   background: none;
   border: none;
