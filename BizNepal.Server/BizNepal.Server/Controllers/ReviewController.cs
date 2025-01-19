@@ -57,7 +57,7 @@ public class ReviewController(ApplicationDbContext context, IMapper mapper, IEma
         await UpdateBusinessRating(BusinessId);
 
         
-         var business = await _context.Businesses.FindAsync(BusinessId);
+        var business = await _context.Businesses.FindAsync(BusinessId);
         if (business != null)
         {
             string to = $"{business.CreatedBy}"; 
@@ -70,7 +70,14 @@ public class ReviewController(ApplicationDbContext context, IMapper mapper, IEma
             <p>Check it out on your dashboard!</p>
             ";
 
-            await _emailService.SendEmailAsync(to, subject, body);
+            try
+            {
+                await _emailService.SendEmailAsync(to, subject, body);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Failed to send email: {ex.Message}");
+            }
         }
 
         return Ok(review);

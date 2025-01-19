@@ -31,7 +31,7 @@ public class BusinessController : ControllerBase
 
     #region Get all Businesses
 
-    [HttpGet(Order =2)]
+    [HttpGet(Order = 2)]
     public async Task<ActionResult<PaginatedResponse<BusinessResponseDto>>> GetAll(int pageSize = 50,
                                        string? searchTerm = null,
                                        string? category = null,
@@ -40,13 +40,15 @@ public class BusinessController : ControllerBase
                                        bool isAscending = true,
                                        string? latitude = null,
                                        string? longitude = null,
-                                       double? radiusInKm = null
+                                       double? radiusInKm = null,
+                                       string? district = null,
+                                       string? ratings = null
                                        )
     {
         // searchTerm to lower case
         var searchTermToLower = searchTerm?.Trim().ToLower();
 
-        var businesses =await _context.Businesses.Include(c => c.Location)
+        var businesses = await _context.Businesses.Include(c => c.Location)
                                                   .Include(c => c.Category)
                                                   .Include(c => c.Reviews)
                                                   .Include(c => c.BusinessImages)
@@ -56,15 +58,24 @@ public class BusinessController : ControllerBase
         // filtering based on category if category is passed to api
         if (!string.IsNullOrWhiteSpace(category))
         {
-
-            businesses = businesses.Where(b => b.Category.CategoryName.ToLower()==category.ToLower()).ToList();
+            businesses = businesses.Where(b => b.Category.CategoryName.ToLower() == category.ToLower()).ToList();
         }
 
         // search based no businessname if businessName is passed to api
         if (!string.IsNullOrWhiteSpace(searchTermToLower))
         {
+            businesses = businesses.Where(b => b.BusinessName.ToLower().Contains(searchTermToLower)).ToList();
+        }
 
-            businesses = businesses.Where(b => b.BusinessName.ToLower().Contains(searchTermToLower)).ToList(); 
+        if (!string.IsNullOrWhiteSpace(district))
+        {
+            businesses = businesses.Where(b => b.Address != null && b.Address.District.ToLower() == district.ToLower()).ToList();
+        }
+
+        if (!string.IsNullOrWhiteSpace(ratings) && double.TryParse(ratings, out double parsedRating))
+        {
+            businesses = businesses.Where(b => b.OverallRating.HasValue &&
+                (double)b.OverallRating == parsedRating).ToList();
         }
 
         if (!string.IsNullOrEmpty(latitude) && !string.IsNullOrEmpty(longitude))
@@ -77,26 +88,9 @@ public class BusinessController : ControllerBase
                 GetDistanceInKm(userLatitude, userLongitude, double.Parse(b.Location.Latitude), double.Parse(b.Location.Longitude)) <= radiusInKm).ToList();
         }
 
-        //sorting based on passed column of business table
-        //if (!string.IsNullOrEmpty(sortColumn))
-        //{
-        //    var sorting = isAscending ? "ascending" : "descending";
-
-        //    var businessProperty = typeof(Business).GetProperty(sortColumn);
-
-        //    if (businessProperty != null && businessProperty.PropertyType == typeof(string))
-        //    {
-        //        businesses = businesses.OrderBy($"{sortColumn}.ToLower() {sorting}").ToList();
-        //    }
-        //    else
-        //    {
-        //        businesses = businesses.OrderBy($"{sortColumn} {sorting}");
-        //    }
-        //}
-
         // Execute the query to count total business
         var businessCount = businesses.Count;
-        
+
         var totalPages = (int)Math.Ceiling(businessCount / (double)pageSize);
 
         var paginatedBook = businesses.Skip((pageNumber - 1) * pageSize)
@@ -114,6 +108,95 @@ public class BusinessController : ControllerBase
 
         return Ok(result);
     }
+
+    #region Get all Businesses
+
+    //[HttpGet(Order = 2)]
+    //public async Task<ActionResult<PaginatedResponse<BusinessResponseDto>>> GetAll(int pageSize = 50,
+    //                                    string? searchTerm = null,
+    //                                    string? category = null,
+    //                                    int pageNumber = 1,
+    //                                    string? sortColumn = null,
+    //                                    bool isAscending = true,
+    //                                    string? latitude = null,
+    //                                    string? longitude = null,
+    //                                    double? radiusInKm = null,
+    //                                    string? district = null,
+    //                                    string? ratings = null)
+    //{
+    //    // Initialize the query with basic includes
+    //    IQueryable<Business> businessesQuery = _context.Businesses.Include(c => c.Location)
+    //                                                              .Include(c => c.Category)
+    //                                                              .Include(c => c.Reviews)
+    //                                                              .Include(c => c.BusinessImages)
+    //                                                              .Include(b => b.Address);
+
+    //    // Apply filters dynamically
+    //    if (!string.IsNullOrWhiteSpace(category))
+    //    {
+    //        businessesQuery = businessesQuery.Where(b => b.Category.CategoryName.ToLower() == category.ToLower());
+    //    }
+
+    //    if (!string.IsNullOrWhiteSpace(searchTerm))
+    //    {
+    //        var searchTermToLower = searchTerm.Trim().ToLower();
+    //        businessesQuery = businessesQuery.Where(b => b.BusinessName.ToLower().Contains(searchTermToLower));
+    //    }
+
+    //    if (!string.IsNullOrWhiteSpace(district))
+    //    {
+    //        businessesQuery = businessesQuery.Where(b => b.Address != null && b.Address.District.ToLower() == district.ToLower());
+    //    }
+
+    //    if (!string.IsNullOrWhiteSpace(ratings) && double.TryParse(ratings, out double parsedRating))
+    //    {
+    //        businessesQuery = businessesQuery.Where(b => b.OverallRating.HasValue && (double)b.OverallRating == parsedRating);
+    //    }
+
+    //    if (!string.IsNullOrEmpty(latitude) && !string.IsNullOrEmpty(longitude) && radiusInKm.HasValue)
+    //    {
+    //        double userLatitude = double.Parse(latitude);
+    //        double userLongitude = double.Parse(longitude);
+
+    //        var businessesList = await businessesQuery.ToListAsync(); // Fetch data first
+    //        businessesList = businessesList.Where(b => b.Location != null &&
+    //            GetDistanceInKm(userLatitude, userLongitude, double.Parse(b.Location.Latitude), double.Parse(b.Location.Longitude)) <= radiusInKm.Value).ToList();
+
+    //        businessesQuery = businessesList.AsQueryable(); // Convert back to IQueryable for further use
+    //    }
+
+    //    // Sorting (if required)
+    //    if (!string.IsNullOrEmpty(sortColumn))
+    //    {
+    //        var sorting = isAscending ? "ascending" : "descending";
+    //        businessesQuery = businessesQuery.OrderBy($"{sortColumn} {sorting}");
+    //    }
+
+    //    // Count total businesses after all filtering
+    //    var businessCount = await businessesQuery.CountAsync();
+
+    //    // Paginate the result
+    //    var totalPages = (int)Math.Ceiling(businessCount / (double)pageSize);
+
+    //    var paginatedBusinesses = await businessesQuery.Skip((pageNumber - 1) * pageSize)
+    //                                                   .Take(pageSize)
+    //                                                   .ToListAsync();
+
+    //    var businessResponseList = _mapper.Map<List<BusinessResponseDto>>(paginatedBusinesses);
+
+    //    // Return paginated response
+    //    var result = new PaginatedResponse<BusinessResponseDto>
+    //    {
+    //        TotalCount = businessCount,
+    //        TotalPage = totalPages,
+    //        Items = businessResponseList
+    //    };
+
+    //    return Ok(result);
+    //}
+
+    #endregion
+
 
     #endregion
 
@@ -167,15 +250,15 @@ public class BusinessController : ControllerBase
         var ipAddress = HttpContext.Connection.RemoteIpAddress?.ToString();
         var userAgent = HttpContext.Request.Headers["User-Agent"].ToString();
 
-        //// Check if the same IP visited this business within the last 24 hours
-        //var lastDayVisit = await _context.PageVisits
-        //    .Where(v => v.BusinessId == businessId &&
-        //           v.VisitorIp == ipAddress &&
-        //           v.VisitDateTime > DateTime.UtcNow.AddHours(-24))
-        //    .FirstOrDefaultAsync();
+        // Check if the same IP visited this business within the last 24 hours
+        var lastDayVisit = await _context.PageVisits
+            .Where(v => v.BusinessId == businessId &&
+                   v.VisitorIp == ipAddress &&
+                   v.VisitDateTime > DateTime.UtcNow.AddHours(-24))
+            .FirstOrDefaultAsync();
 
-        //if (lastDayVisit == null)
-        //{
+        if (lastDayVisit == null)
+        {
             // Insert new visit record
             var visit = new PageVisit
             {
@@ -192,7 +275,7 @@ public class BusinessController : ControllerBase
             business.TotalVisits++;
 
             await _context.SaveChangesAsync();
-        //}
+        }
 
         var businessDto = _mapper.Map<BusinessResponseDto>(business);
 
@@ -340,8 +423,7 @@ public class BusinessController : ControllerBase
 
     [HttpPut("{id}", Order = 5)]
     public async Task<IActionResult> Update(Guid id,[FromBody] UpdateBusinessDto input)
-  {
-
+    {
         var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
         if (string.IsNullOrEmpty(userId))
