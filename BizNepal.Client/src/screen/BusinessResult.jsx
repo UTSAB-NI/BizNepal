@@ -31,7 +31,7 @@ const BusinessResult = () => {
   const [filters, setFilters] = useState({
     ratings: "",
     search: querySearch,
-    District: "",
+    district: "",
     category: categoryParam || "",
     latitude: "",
     longitude: "",

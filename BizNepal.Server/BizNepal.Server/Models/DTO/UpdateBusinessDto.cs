@@ -7,5 +7,5 @@ public class UpdateBusinessDto
     public string Website { get; set; }
     public string PhoneNumber { get; set; }
     public Guid CategoryId { get; set; }
-
+    public List<IFormFile>? Images { get; set; }
 }
