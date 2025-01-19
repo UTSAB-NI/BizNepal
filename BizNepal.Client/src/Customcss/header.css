@@ -7,6 +7,20 @@
 .navbar-brand {
   /* border: 2px solid red; */
 }
+basic-navbar-nav{
+  border: 2px solid red;
+}
+navbar-toggler-icon{
+  color: black;
+  z-index: 1000;
+}
+.navbar-toggler {
+  border: none;
+  padding: 0.25rem 0.75rem;
+  outline: none;
+  box-shadow: none;
+  color: black;
+}
 .navbar-menu-section {
   /* border: 2px solid red; */
   max-width: 800px;
@@ -14,7 +28,7 @@
 }
 
 .navbar-button-section {
-  /* border: 2px solid red; */
+  /* border: 2px solid red;   */
   max-width: 450px;
   width: 100%;
   display: flex;

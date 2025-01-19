@@ -1,6 +1,6 @@
 import React from "react";
 
-import { MDBContainer } from "mdb-react-ui-kit";
+import { Container } from "mdb-react-ui-kit";
 // import Carasoule from "./Carasoule";
 import PromoVideo from "./PromoVideo";
 import "../Customcss/PromoBanner.css";
@@ -8,7 +8,7 @@ import "../Customcss/PromoBanner.css";
 const PromoBanner = () => {
   return (
     <>
-      <MDBContainer fluid className="hero">
+      <Container fluid className="hero">
         <div className="content">
           <div className="header">
             <h2>Find the Perfect Business</h2>
@@ -22,7 +22,7 @@ const PromoBanner = () => {
             {/* <Searchbox /> */}
           </div>
         </div>
-      </MDBContainer>
+      </Container>
     </>
   );
 };

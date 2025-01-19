@@ -12,9 +12,9 @@ import { Provider } from "react-redux";
 import Store from "./Store.js";
 
 import "react-toastify/dist/ReactToastify.css";
-import "mdb-react-ui-kit/dist/css/mdb.min.css";
+// import "mdb-react-ui-kit/dist/css/mdb.min.css";
 import "@fortawesome/fontawesome-free/css/all.min.css";
-// import "bootstrap/dist/css/bootstrap.min.css"; //bootstrap
+import "bootstrap/dist/css/bootstrap.min.css"; //bootstrap
 import "datatables.net-bs5/css/dataTables.bootstrap5.min.css"; //datatable
 // import "font-awesome/css/font-awesome.min.css"; //font-awesome
 

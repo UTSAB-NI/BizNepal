@@ -9,8 +9,8 @@ const PopularCategory = () => {
   const navigate = useNavigate();
 
   const popularCategories = categories?.filter((category) =>
-    ["Restaurant", "Gym", "Salon", "School"].includes(category?.categoryName)
-  ) || ["Restaurant", "Gym", "Salon", "Spa"];
+    ["Resturent", "Gym", "Electronic", "School"].includes(category?.categoryName)
+  ) || ["Resturent", "Gym", "Electronic", "School"];
 
   const handleCategoryClick = (categoryName) => {
     navigate(`/category/${categoryName}`);
