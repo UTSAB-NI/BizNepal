@@ -119,12 +119,6 @@ const LoginScreen = () => {
             </Button>
           </Form>
 
-          <div className="text-center mb-3">
-            <Link to="/forgotpassword" className="text-muted">
-              Forgot Password?
-            </Link>
-          </div>
-
           <div className="text-center">
             <p className="mb-0 text-muted">Don't have an account?</p>
             <Link to="/register" className="text-primary">

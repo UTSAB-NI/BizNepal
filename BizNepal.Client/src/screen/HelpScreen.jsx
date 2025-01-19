@@ -110,45 +110,6 @@ const HelpScreen = () => {
           </Card>
         </Col>
       </Row>
-
-      {/* Feedback Form Section */}
-      <Row className="mb-4">
-        <Col md={12}>
-          <h2>
-            <FaEnvelope /> Feedback & Suggestions
-          </h2>
-          <Card>
-            <Card.Body>
-              <Form onSubmit={handleFeedbackSubmit}>
-                <Form.Group className="mb-3" controlId="feedbackName">
-                  <Form.Label>Your Name</Form.Label>
-                  <Form.Control type="text" placeholder="Enter your name" />
-                </Form.Group>
-                <Form.Group className="mb-3" controlId="feedbackEmail">
-                  <Form.Label>Email Address</Form.Label>
-                  <Form.Control
-                    type="email"
-                    placeholder="Enter your email"
-                    required
-                  />
-                </Form.Group>
-                <Form.Group className="mb-3" controlId="feedbackMessage">
-                  <Form.Label>Message</Form.Label>
-                  <Form.Control
-                    as="textarea"
-                    rows={4}
-                    placeholder="Enter your feedback or issue"
-                    required
-                  />
-                </Form.Group>
-                <Button variant="primary" type="submit">
-                  Submit Feedback
-                </Button>
-              </Form>
-            </Card.Body>
-          </Card>
-        </Col>
-      </Row>
     </Container>
   );
 };

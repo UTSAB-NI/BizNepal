@@ -26,7 +26,7 @@ const BookmarkedItemsScreen = () => {
       setFeedback(isBookmarkError?.data || "Failed to fetch bookmarked items.");
       setFeedbackType("danger");
     }
-  }, [isBookmarkError, refetchBookmarks]);
+  }, [isBookmarkError, bookmarkedData, refetchBookmarks]);
 
   const [deleteBookmarks] = useDeleteBookmarksMutation();
 
