@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { RiAdminFill } from "react-icons/ri";
@@ -18,7 +18,14 @@ const Header = () => {
   const { userInfo } = useSelector((state) => state.auth);
   const [cartStatus, setCartStatus] = useState(false);
 
-  const { data: bookmarkedData } = useGetBookmarkedQuery(); // Fetching bookmarked data
+  const { data: bookmarkedData, refetch } = useGetBookmarkedQuery(); // Fetching bookmarked data
+
+  useMemo(() => {
+    // Checking if bookmarked data is available
+    if (bookmarkedData) {
+      setCartStatus(true);
+    }
+  }, [bookmarkedData]);
 
   return (
     <Navbar
@@ -56,7 +63,7 @@ const Header = () => {
                 >
                   <BsBookmarkFill
                     size={20}
-                    className={`${cartStatus ? "text-secondary" : "text-dark"}`}
+                    className={`${cartStatus ? "text-dark" : "text-secondary"}`}
                   />
 
                   <span
@@ -99,7 +106,11 @@ const Header = () => {
                     variant="danger"
                     className="btn-business-dashboard mx-2 nav-btn"
                   >
-                    <a href="/business" target="_blank" className="text-white text-decoration-none">
+                    <a
+                      href="/business"
+                      target="_blank"
+                      className="text-white text-decoration-none"
+                    >
                       <MdSpaceDashboard
                         className="admin-icon"
                         style={{ marginRight: "8px" }}

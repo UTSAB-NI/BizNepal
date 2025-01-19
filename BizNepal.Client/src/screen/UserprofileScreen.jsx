@@ -49,13 +49,17 @@ const ProfilePage = () => {
 
   const [user, setUser] = useState(null);
   const [userType, setUserType] = useState("general");
-  const [activeTab, setActiveTab] = useState("posts");
 
-  console.log("User Data", userData);
   useEffect(() => {
     if (userData) {
       setUser(userData);
-      setUserType(userInfo.role === "BusinessOwner" ? "business" : "general");
+      setUserType(
+        userInfo.role === "BusinessOwner"
+          ? "business"
+          : userInfo.role === "Admin"
+          ? "admin"
+          : "general"
+      );
     } else if (userError) {
       console.error(userError);
     }
@@ -69,12 +73,22 @@ const ProfilePage = () => {
 
   const renderBadge = () => (
     <Badge
-      bg={userType === "business" ? "success" : "warning"}
+      bg={
+        userType === "business"
+          ? "success"
+          : userType === "admin"
+          ? "secondary"
+          : "warning"
+      }
       className={`profile-type text-light ${
         userType === "business" ? "type-business" : "type-user"
       }`}
     >
-      {userType === "business" ? "Business Account" : "General User"}
+      {userType === "business"
+        ? "Business Account"
+        : userType === "admin"
+        ? "Admin"
+        : "General User"}
     </Badge>
   );
 

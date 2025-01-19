@@ -44,13 +44,13 @@ const GetBusinessByIdScreen = () => {
 
   const [bookmarkedBusinessID, setBookmarkedBusinessID] = useState([]);
 
-  useEffect(() => {
-    if (bookmarkData) {
-      setBookmarkedBusinessID(
-        bookmarkData.map((bookmark) => bookmark.businessId)
-      );
-    }
-  }, [bookmarkData]);
+  // useEffect(() => {
+  //   if (bookmarkData) {
+  //     setBookmarkedBusinessID(
+  //       bookmarkData.map((bookmark) => bookmark.businessId)
+  //     );
+  //   }
+  // }, [bookmarkData]);
 
   useEffect(() => {
     if (isError) {
@@ -68,6 +68,7 @@ const GetBusinessByIdScreen = () => {
       const response = await createBookmark(businessid).unwrap();
       setFeedback(response?.message || "Bookmark Added Successfully");
       setFeedbackType("success");
+      // window.location.reload();
     } catch (error) {
       setFeedback("Bookmark Added Failed");
       setFeedbackType("danger");
@@ -105,7 +106,7 @@ const GetBusinessByIdScreen = () => {
               <button
                 className="bookmark-button"
                 onClick={() => handleBookmark(businessid)}
-                disabled={bookmarkedBusinessID.includes(businessid)}
+                disabled={bookmarkLoading}
               >
                 <i className="fas fa-bookmark me-2"></i>
                 Bookmark
