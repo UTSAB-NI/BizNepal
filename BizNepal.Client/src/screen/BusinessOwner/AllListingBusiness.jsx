@@ -4,6 +4,7 @@ import {
   useGetbusinessByIdQuery,
   useGetcreatedbusinessByUserQuery,
   useEditBusinessMutation,
+  useDeletebusinessMutation,
 } from "../../slices/userApiSlices";
 import { useSelector } from "react-redux";
 import TokenDecode from "../../Component/TokenDecode";
@@ -102,7 +103,18 @@ const AllListingBusiness = () => {
       setShowEdit(false);
     }
   };
+  // Delete business
+  const [deletebusiness, { isLoading: isDeleting, isError: isDeleteError }] =
+    useDeletebusinessMutation();
 
+  const handleDeletebusiness = async (businessId) => {
+    try {
+      await deletebusiness(businessId).unwrap();
+      refetch();
+    } catch (error) {
+      console.error("Failed to delete business:", error);
+    }
+  };
   // Placeholder for categories (replace with actual data)
   const categories = [
     { categoryId: 1, categoryName: "Restaurant" },
@@ -205,6 +217,9 @@ const AllListingBusiness = () => {
                       <button
                         className="action-btn btn btn-light"
                         title="Delete"
+                        onClick={() =>
+                          handleDeletebusiness(business.businessId)
+                        }
                       >
                         <i className="fas fa-trash text-danger"></i>
                       </button>
