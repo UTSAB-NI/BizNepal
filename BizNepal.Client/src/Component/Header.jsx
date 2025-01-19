@@ -99,7 +99,7 @@ const Header = () => {
                     variant="danger"
                     className="btn-business-dashboard mx-2 nav-btn"
                   >
-                    <a href="/business" target="_blank" className="text-white">
+                    <a href="/business" target="_blank" className="text-white text-decoration-none">
                       <MdSpaceDashboard
                         className="admin-icon"
                         style={{ marginRight: "8px" }}

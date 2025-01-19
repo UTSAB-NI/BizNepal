@@ -27,12 +27,30 @@ const RegisterScreen = () => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
-
+  const regex = /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/;
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const validatePassword = () => {
+    if (!username || !email || !password || !confirmPassword) {
+      setFeedback("Please fill all the required fields");
+      return false;
+    }
+
     if (password !== confirmPassword) {
       setFeedback("Passwords do not match");
       return false;
     }
+    if (!emailRegex.test(email)) {
+      setFeedback("Please enter a valid email address");
+      return false;
+    }
+
+    if (!regex.test(password)) {
+      setFeedback(
+        "Password must contain at least 6 characters, 1 uppercase letter, 1 number, and 1 special character"
+      );
+      return false;
+    }
+
     return true;
   };
 
@@ -150,22 +168,6 @@ const RegisterScreen = () => {
             {showPassword ? <FaEyeSlash /> : <FaEye />}
           </button>
         </Form.Group>
-
-        {/* <Form.Group controlId="role" className="mb-4">
-          <Form.Label>Role</Form.Label>
-          <Form.Control
-            as="select"
-            name="role"
-            value={formData?.role}
-            onChange={handleChange}
-            required
-          >
-            <option value="">Select Role</option>
-            <option value="Admin">Admin</option>
-            <option value="GeneralUser">GeneralUser</option>
-            <option value="BusinessOwner">BusinessOwner</option>
-          </Form.Control>
-        </Form.Group> */}
         <Button
           variant="primary"
           type="submit"

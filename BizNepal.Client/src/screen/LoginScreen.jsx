@@ -4,13 +4,14 @@ import { toast } from "react-toastify";
 import { useNavigate, Link } from "react-router-dom";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import {
-  MDBBtn,
-  MDBContainer,
-  MDBRow,
-  MDBCol,
-  MDBInput,
-} from "mdb-react-ui-kit";
-import { Form, Alert } from "react-bootstrap";
+  Form,
+  Alert,
+  Button,
+  Container,
+  Row,
+  Col,
+  Card,
+} from "react-bootstrap";
 import "../Customcss/loginpage.css";
 import { useLoginMutation } from "../slices/userApiSlices";
 import { setCredentials } from "../slices/authSlices";
@@ -24,7 +25,7 @@ const LoginScreen = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const [login, { isLoading, isError }] = useLoginMutation();
+  const [login, { isLoading }] = useLoginMutation();
   const { userInfo } = useSelector((state) => state.auth);
 
   useEffect(() => {
@@ -50,9 +51,7 @@ const LoginScreen = () => {
         setFeedback("Username or password is incorrect.");
       }
     } catch (error) {
-      setFeedback(
-        error?.data || "An error occurred. Please try again."
-      );
+      setFeedback(error?.data || "An error occurred. Please try again.");
     }
   };
 
@@ -61,20 +60,21 @@ const LoginScreen = () => {
   };
 
   return (
-    <MDBContainer fluid className="login-container">
-      <MDBRow className="d-flex justify-content-center align-items-center vh-100">
-        <MDBCol md="6" className="login-form-section">
+    <Container fluid className="login-container">
+      <Row className="d-flex justify-content-center align-items-center ">
+        <Col md={6} lg={4} className="login-form-section">
           <div className="back-btn">
             <Link to="/" className="text-dark">
-              <i className="fas fa-arrow-left text-dark fs-5"></i>
+              <i className="fas fa-arrow-left fs-5"></i>
             </Link>
           </div>
 
-          <div className="text-center mb-4 ">
+          <div className="text-center mb-4">
             <img
               src="/images/biznepallogo.png"
               alt="BizNepal Logo"
-              style={{ width: "185px" }}
+              className="img-fluid"
+              style={{ maxWidth: "185px" }}
             />
             <h3 className="mt-3 text-primary">Welcome Back</h3>
             <p className="text-muted">Sign in to continue to BizNepal</p>
@@ -87,19 +87,21 @@ const LoginScreen = () => {
           )}
 
           <Form onSubmit={submitHandler}>
-            <MDBInput
-              wrapperClass="mb-4"
-              label="Username or Email"
-              id="userIdentifier"
-              type="text"
-              value={userIdentifier}
-              onChange={(e) => setUserIdentifier(e.target.value)}
-            />
-            <div className="position-relative mb-4">
-              <MDBInput
-                label="Password"
-                id="password"
+            <Form.Group className="mb-3">
+              <Form.Label>Username or Email</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Enter username or email"
+                value={userIdentifier}
+                onChange={(e) => setUserIdentifier(e.target.value)}
+              />
+            </Form.Group>
+
+            <Form.Group className="mb-3 position-relative">
+              <Form.Label>Password</Form.Label>
+              <Form.Control
                 type={showPassword ? "text" : "password"}
+                placeholder="Enter password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
@@ -110,14 +112,11 @@ const LoginScreen = () => {
               >
                 {showPassword ? <FaEyeSlash /> : <FaEye />}
               </button>
-            </div>
-            <MDBBtn
-              type="submit"
-              className="mb-4 w-100 gradient-custom-2"
-              disabled={isLoading}
-            >
+            </Form.Group>
+
+            <Button type="submit" className="w-100 mb-3 gradient-custom-2" disabled={isLoading}>
               {isLoading ? "Signing in..." : "Sign In"}
-            </MDBBtn>
+            </Button>
           </Form>
 
           <div className="text-center mb-3">
@@ -132,9 +131,9 @@ const LoginScreen = () => {
               Register
             </Link>
           </div>
-        </MDBCol>
-      </MDBRow>
-    </MDBContainer>
+        </Col>
+      </Row>
+    </Container>
   );
 };
 
