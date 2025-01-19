@@ -31,10 +31,7 @@ const Header = () => {
           <Image src="/images/biznepallogo.png" style={{ width: "150px" }} />
         </Navbar.Brand>
 
-        <Navbar.Toggle
-          aria-controls="basic-navbar-nav"
-          className="toggle-btn"
-        />
+        <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto align-items-center navbar-menu-section">
             <Nav.Link as={Link} to="/" className="px-3">

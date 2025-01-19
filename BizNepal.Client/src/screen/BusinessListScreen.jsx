@@ -1,14 +1,11 @@
 // Desc: BusinessListScreen component to add business details
-import React, { useState, useEffect, useCallback } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState } from "react";
 import { Container, Form, Button, Row, Col, Alert } from "react-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
 import { setLocation } from "../slices/getlocationSclies";
 import GoogleMapReact from "google-map-react";
-
 import { useListbusinessMutation } from "../slices/userApiSlices";
 import { useGetAllCategoriesQuery } from "../slices/userApiSlices";
-
 import districtofNepal from "../data/Districtofnepal";
 
 import "../Customcss/Businesslist.css";
@@ -42,10 +39,7 @@ const BusinessListScreen = () => {
   const { location } = useSelector((state) => state.currentlocation);
   const { userInfo } = useSelector((state) => state.auth);
 
-  const dispatch = useDispatch();
-
-  //navigation
-  const navigate = useNavigate();
+  const dispatch = useDispatch(); 
 
   // Fetching listbusiness mutation
   const [
@@ -111,7 +105,17 @@ const BusinessListScreen = () => {
       formData.append("Images", image);
     });
 
-    console.log("Form Data: " + formData);
+    const clearForm = () => {
+      setBusinessname("");
+      setCity("");
+      setDistrict("");
+      setDescription("");
+      setWebsite("");
+      setPhone("");
+      setCategoryName("");
+      setCategoryId("");
+      setImages([]);
+    };
     // Debugging
     for (let pair of formData.entries()) {
       console.log(pair[0] + ": " + pair[1]);
@@ -122,6 +126,7 @@ const BusinessListScreen = () => {
       if (response?.message) {
         setFeedback("Business Added Successfully");
         setFeedbackType("success");
+        clearForm();
       } else {
         setFeedback("Unexpected response from server.");
         setFeedbackType("warning");
@@ -134,10 +139,11 @@ const BusinessListScreen = () => {
 
   const handleMapClick = ({ lat, lng }) => {
     // Handling map click
-    SetMyLocation({ lat, lng });
-    dispatch(setLocation({ lat, lng }));
+    if (lat && lng) {
+      SetMyLocation({ lat, lng });
+      dispatch(setLocation({ lat, lng }));
+    }
   };
-
   return (
     <div className="businesslist">
       <div className="header">

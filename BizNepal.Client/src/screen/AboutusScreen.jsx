@@ -9,7 +9,11 @@ import {
 
 const About = () => {
   const { data: reviewData } = useGetUserReviewQuery();
-  const { data: businessData } = useGetbusinessQuery();
+  const { data: businessData } = useGetbusinessQuery({
+    pageSize: 1000, // You can choose any page size here
+    pageNumber: 1, // Assuming you're loading all businesses at once
+    isAscending: true,
+  });
   const { data: userData } = useGetAlluserQuery();
 
   const animatedSections = useRef([]);
@@ -83,7 +87,7 @@ const About = () => {
           <h2>Why BizNepal?</h2>
           <div className="stats">
             <div className="stat-card">
-              <h3>{businessData?.length}+ </h3>
+              <h3>{businessData?.items?.length}+ </h3>
               <p>Listed Businesses</p>
             </div>
             <div className="stat-card">

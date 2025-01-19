@@ -18,6 +18,7 @@ import {
 } from "../slices/userApiSlices";
 import districtofNepal from "../data/Districtofnepal";
 import "../Customcss/Test.css";
+import Loader from "../Component/Loader";
 
 const API_BASE_URL = "https://localhost:5000";
 
@@ -27,7 +28,6 @@ const BusinessResult = () => {
   const searchParams = new URLSearchParams(search);
   const querySearch = searchParams.get("search") || "";
 
-  const [BusinessData, setBusinessData] = useState([]);
   const [filters, setFilters] = useState({
     ratings: [],
     search: querySearch,
@@ -127,7 +127,8 @@ const BusinessResult = () => {
     if (isLoading || loading) {
       return (
         <div className="text-center my-5">
-          <Spinner animation="border" variant="primary" />
+          {/* <Spinner animation="border" variant="primary" /> */}
+          <Loader />
           <p>Loading businesses...</p>
         </div>
       );
@@ -135,7 +136,9 @@ const BusinessResult = () => {
 
     if (error || feedback) {
       return (
-        <Alert variant="danger">{feedback || "Something went wrong."}</Alert>
+        <Alert variant="danger" onClose={() => setFeedback("")}>
+          {feedback || "Something went wrong."}
+        </Alert>
       );
     }
 
