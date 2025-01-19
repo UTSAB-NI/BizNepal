@@ -52,6 +52,8 @@ const userApiSlice = apiSlice.injectEndpoints({
         latitude,
         longitude,
         radiusInKm,
+        district,
+        ratings
       }) => ({
         url: `${BUSINESS_URL}`,
         method: "GET",
@@ -64,6 +66,8 @@ const userApiSlice = apiSlice.injectEndpoints({
           latitude,
           longitude,
           radiusInKm,
+          district,
+          ratings
         },
       }),
     }),
